@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "626597802116",
+    "project_id": "serenity-8fd4f",
+    "storage_bucket": "serenity-8fd4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626597802116:android:69be75719f862c4afd12d1",
+        "android_client_info": {
+          "package_name": "com.example.serenity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626597802116-logkuve287ppus7v4n9ffvc771este8l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.serenity",
+            "certificate_hash": "c8bbf4a92d13d5a38c41ee3ef64483e7ce84d383"
+          }
+        },
+        {
+          "client_id": "626597802116-nvj1p1iqkvtligfhf2m805t0i9g5ui2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlASvzG3CaoZjPb8W9SIzz1hwMYCagtr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626597802116-nvj1p1iqkvtligfhf2m805t0i9g5ui2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
