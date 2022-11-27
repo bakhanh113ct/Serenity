@@ -44,3 +44,11 @@ class GetAllCustomers extends CustomerEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetCustomersByFilter extends CustomerEvent {
+  const GetCustomersByFilter({required this.textSearch});
+  final String textSearch;
+  @override
+  List<Object> get props => [textSearch];
+}
+

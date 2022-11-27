@@ -17,6 +17,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<UpdateCustomer>(_onUpdateCustomer);
     on<DeleteCustomer>(_onDeleteCustomer);
     on<GetAllCustomers>(_onGetAllCustomers);
+    on<GetCustomersByFilter>(_onGetCustomersByFilter);
   }
 
   void _onAddCustomer(AddCustomer event, Emitter<CustomerState> emit) async {
@@ -43,7 +44,10 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       UpdateCustomer event, Emitter<CustomerState> emit) async {
     final state = this.state;
     final customer = event.customer;
-    await FirebaseFirestore.instance.collection('Customers').doc(customer.id).update({
+    await FirebaseFirestore.instance
+        .collection('Customers')
+        .doc(customer.id)
+        .update({
       'name': customer.name,
       'address': customer.address,
       'purchased': customer.purchased,
@@ -65,6 +69,26 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   void _onGetAllCustomers(
       GetAllCustomers event, Emitter<CustomerState> emit) async {
     List<Customer> allCustomers = await CustomerRepository().getListCustomers();
+    emit(CustomerState(allCustomers: allCustomers));
+  }
+
+  void _onGetCustomersByFilter(
+      GetCustomersByFilter event, Emitter<CustomerState> emit) async {
+    final text = event.textSearch;
+    List<Customer> allCustomers = await CustomerRepository().getListCustomers();
+    if (text.isEmpty || text == '') {
+      allCustomers = await CustomerRepository().getListCustomers();
+    } else {
+       allCustomers.retainWhere((cus) {
+          return (cus.id.contains(text) ||
+              cus.name.contains(text) ||
+              cus.address.contains(text) ||
+              cus.phone.contains(text) ||
+              cus.dateOfBirth.contains(text) ||
+              cus.email.contains(text));
+        });
+    }
+    print(allCustomers.length);
     emit(CustomerState(allCustomers: allCustomers));
   }
 }

@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:serenity/bloc/blocCustomer/customer_bloc.dart';
-import 'package:serenity/bloc/blocUser/user_bloc.dart';
 import 'package:serenity/screen/LoginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:serenity/screen/MainPage.dart';
+
+import 'bloc/bloc_exports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,24 +29,25 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: "Poppins",
           // canvasColor: Color(0xFF226B3F),
-          primaryColor: Color(0xFF226B3F),
-          backgroundColor:  Color(0xFFEBFDF2),
+          primaryColor: const Color(0xFF226B3F),
+          backgroundColor:  const Color(0xFFEBFDF2),
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color(0xFF226B3F),
             secondary: const Color(0xFF226B3F),
           ),
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
               headline1:
-                  const TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+                  TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
               headline2: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF226B3F)),
               headline6:
-                  const TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                  TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           ),
         ),
         home: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           },),
           
         ),
-         routes: {
+         routes: const {
         },
       ),
     );

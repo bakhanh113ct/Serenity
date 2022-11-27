@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
-import '../bloc/blocCustomer/customer_repository.dart';
-import '../model/Customer.dart';
+import '../../bloc/blocCustomer/customer_repository.dart';
+import '../../model/Customer.dart';
 import 'package:date_field/date_field.dart';
 import 'package:intl/intl.dart';
 class CustomerEditDialog extends StatefulWidget {
@@ -60,16 +60,24 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
       }
       if (!mounted) return;
       context.read<CustomerBloc>().add(AddCustomer(customer: editCustomer));
+      const snackBar = SnackBar(
+        content: Text('Add Successfully'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       // update customer
-      if(imageAvatar == null){
-        editCustomer = editCustomer.copyWith(imageUrl: defaultImageUrl);
+      if(imageAvatar == null ){
+        editCustomer = editCustomer.imageUrl.isEmpty ? editCustomer.copyWith(imageUrl: defaultImageUrl) : editCustomer;
       } else{
        String imageUrl = await CustomerRepository().uploadAndGetImageUrl(imageAvatar);
        editCustomer = editCustomer.copyWith(imageUrl: imageUrl);       
       }
       if (!mounted) return;
       context.read<CustomerBloc>().add(UpdateCustomer(customer: editCustomer));
+      const snackBar = SnackBar(
+        content: Text('Update Successfully'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     if (!mounted) return;
     Navigator.of(context).pop();
@@ -177,8 +185,9 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                                     children: <Widget>[
                                       imageAvatar == null
                                           ? CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  defaultImageUrl),
+                                            backgroundColor: Colors.white,
+                                              backgroundImage: editCustomer.imageUrl.isEmpty ? NetworkImage(
+                                                  defaultImageUrl) : NetworkImage(editCustomer.imageUrl) ,
                                               radius: 100,
                                             )
                                           : CircleAvatar(

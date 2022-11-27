@@ -336,6 +336,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_switcher:
+    dependency: "direct main"
+    description:
+      name: slide_switcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   source_span:
     dependency: transitive
     description:

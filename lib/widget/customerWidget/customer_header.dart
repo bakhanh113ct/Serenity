@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:serenity/widget/customerEdit_dialog.dart';
+import 'package:serenity/widget/customerWidget/customerEdit_dialog.dart';
 
 class CustomerHeader extends StatelessWidget {
   const CustomerHeader({

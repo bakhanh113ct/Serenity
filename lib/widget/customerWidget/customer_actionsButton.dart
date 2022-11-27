@@ -27,7 +27,12 @@ class _CustomerActionsButtonState extends State<CustomerActionsButton> {
       },
     );
   }
-  onDelete(){}
+  onDelete(){
+    const snackBar = SnackBar(
+      content:  Text('Don\'t have permission to delete'),
+    );
+     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
