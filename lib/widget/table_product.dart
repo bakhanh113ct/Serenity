@@ -1,30 +1,60 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../dataSource/import_order_datasource.dart';
 import '../model/import_order.dart';
 
-class TableContent extends StatefulWidget {
-  const TableContent({
-    Key? key,
-    required this.employees,
-  }) : super(key: key);
-  final List<ImportOrder> employees;
+class TableProduct extends StatefulWidget {
+  const TableProduct({super.key});
+
   @override
-  State<TableContent> createState() => _TableContentState();
+  State<TableProduct> createState() => _TableProductState();
 }
 
-class _TableContentState extends State<TableContent> {
+class _TableProductState extends State<TableProduct> {
+  List<ImportOrder> employees = <ImportOrder>[];
   late ImportOrderDataSource employeeDataSource;
 
   @override
   void initState() {
-    employeeDataSource = ImportOrderDataSource(employeeData: widget.employees);
     super.initState();
+    employees = getEmployeeData();
+    employeeDataSource = ImportOrderDataSource(employeeData: employees);
+  }
+
+  List<ImportOrder> getEmployeeData() {
+    return [
+      // ImportOrder(
+      //     '10001', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10002', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10003', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10004', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10005', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10006', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+      // ImportOrder(
+      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
+    ];
   }
 
   late Map<String, double> columnWidths = {
@@ -43,7 +73,7 @@ class _TableContentState extends State<TableContent> {
       height: double.infinity,
       child: SingleChildScrollView(
         child: Container(
-          height: 500,
+          height: 400,
           child: SfDataGridTheme(
             data: SfDataGridThemeData(
               gridLineColor: Colors.transparent,
@@ -70,9 +100,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'id',
                     width: columnWidths['id']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'ID',
                           style: TextStyle(
                               fontSize: 20,
@@ -86,9 +116,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'name',
                     // width: columnWidths['name']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Supplier Name',
                           maxLines: 5,
                           style: TextStyle(
@@ -102,9 +132,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'date',
                     width: columnWidths['date']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Date Created',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -116,9 +146,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'status',
                     width: columnWidths['status']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Status',
                           style: TextStyle(
                               fontSize: 20,
@@ -129,9 +159,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'price',
                     width: columnWidths['price']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Price',
                           style: TextStyle(
                               fontSize: 20,
@@ -142,9 +172,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'note',
                     width: columnWidths['note']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Note',
                           style: TextStyle(
                               fontSize: 20,
@@ -155,9 +185,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'button',
                     width: columnWidths['button']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           '',
                           style: TextStyle(
                               fontSize: 20,
@@ -170,60 +200,5 @@ class _TableContentState extends State<TableContent> {
         ),
       ),
     );
-  }
-
-  List<ImportOrder> getEmployeeData() {
-    return [
-      ImportOrder(
-          nameA: 'CT TNHH Dung Cot',
-          addressA: '22/35 abc',
-          phoneA: '0395823456',
-          bankA: '101287529',
-          atBankA: 'VCB',
-          authorizedPersonA: 'Nguyen Ba A',
-          positionA: 'NV',
-          noAuthorizationA: '1',
-          dateAuthorizationA: Timestamp.now(),
-          nameB: 'CT TNHH 3TV',
-          addressB: '38/123 xyz, abcd',
-          phoneB: '0395823456',
-          bankB: '10213356745',
-          atBankB: 'VCB',
-          authorizedPersonB: 'Nguyen Van B',
-          positionB: 'NVq',
-          noAuthorizationB: '214532',
-          dateAuthorizationB: Timestamp.now(),
-          pursuant: '123abc',
-          dateCreated: Timestamp.now(),
-          atPlace: '12/245 qqwe',
-          note: '',
-          totalPrice: 200,
-          idImportOrder: 'a7zSINGejYGBzDwhloeC',
-          status: 'pending'),
-      // ImportOrder(
-      //     '10002', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10003', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10004', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10005', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10006', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-    ];
   }
 }

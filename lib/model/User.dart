@@ -1,4 +1,6 @@
-class User {
+import 'package:equatable/equatable.dart';
+
+class User extends Equatable {
   String? idUser;
   String? fullName;
   String? phone;
@@ -45,4 +47,17 @@ class User {
     data['address'] = this.address;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        idUser,
+        fullName,
+        phone,
+        email,
+        dateOfBirth,
+        salary,
+        image,
+        position,
+        address,
+      ];
 }

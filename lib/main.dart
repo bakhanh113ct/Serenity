@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serenity/bloc/blocUser/user_bloc.dart';
+import 'package:serenity/bloc/employee/employee_bloc.dart';
+import 'package:serenity/bloc/importOrder/import_order_bloc.dart';
 import 'package:serenity/screen/LoginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:serenity/screen/MainPage.dart';
@@ -21,6 +23,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserBloc()),
+        BlocProvider(
+            create: (context) => ImportOrderBloc()..add(LoadImportOrder())),
+        BlocProvider(create: (context) => EmployeeBloc()..add(LoadEmployee())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

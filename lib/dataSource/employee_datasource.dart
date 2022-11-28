@@ -1,28 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/model/User.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../model/import_order.dart';
 
-class ImportOrderDataSource extends DataGridSource {
+class EmployeeDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
-  ImportOrderDataSource({required List<ImportOrder> employeeData}) {
+  EmployeeDataSource({required List<User> employeeData}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'id', value: e.idImportOrder),
-              DataGridCell<String>(columnName: 'name', value: e.nameA),
+              DataGridCell<String>(columnName: 'id', value: e.idUser),
+              DataGridCell<String>(columnName: 'name', value: e.fullName),
               DataGridCell<String>(
-                  columnName: 'date',
-                  value: e.dateCreated!.toDate().day.toString() +
-                      '/' +
-                      e.dateCreated!.toDate().month.toString() +
-                      '/' +
-                      e.dateCreated!.toDate().year.toString()),
-              DataGridCell<String>(columnName: 'status', value: e.status),
+                  columnName: 'date', value: e.dateOfBirth!.toString()),
+              DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<double>(
-                  columnName: 'price', value: e.totalPrice!.toDouble()),
-              DataGridCell<String>(columnName: 'note', value: e.note),
-              DataGridCell<String>(columnName: 'button', value: e.note),
+                  columnName: 'salary', value: e.salary!.toDouble()),
+              DataGridCell<String>(columnName: 'status', value: 'active'),
+              DataGridCell<String>(columnName: 'button', value: ''),
             ]))
         .toList();
   }

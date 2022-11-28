@@ -42,6 +42,9 @@ dependencies:
   equatable: ^2.0.5
   cloud_firestore: ^4.0.4
   syncfusion_flutter_datagrid: ^20.3.58
+  image_picker: ^0.8.6
+  firebase_storage: ^11.0.6
+  dropdown_button2: ^1.9.1
 
 dev_dependencies:
   flutter_test:
