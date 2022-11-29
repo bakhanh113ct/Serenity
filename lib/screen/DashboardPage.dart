@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../routes/Routes.dart';
+
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});
 
@@ -13,6 +15,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return Scaffold(
       body: Container(
         color: Color(0xFFEBFDF2),
+        child: Column(
+          children: [
+            ElevatedButton(onPressed: (){Navigator.pushNamed(context, Routes.test);}, child: Text("Test"))
+          ],
+        ),
       ),
     );
   }
