@@ -61,46 +61,6 @@ class _EmployeePageState extends State<EmployeePage> {
                         builder: (BuildContext context) => AlertDialog(
                           // title: const Text('AlertDialog Title'),
                           content: ModalAddEmployee(),
-                          // actions: <Widget>[
-                          //   // TextButton(
-                          //   //   onPressed: () => Navigator.pop(context, 'Cancel'),
-                          //   //   child: const Text('Cancel'),
-                          //   // ),
-                          //   ElevatedButton(
-                          //     onPressed: () {
-                          //       Navigator.pop(context, 'Cancel');
-                          //     },
-                          //     child: Text(
-                          //       'Cancle ',
-                          //       style: TextStyle(fontSize: 20),
-                          //     ),
-                          //     style: ButtonStyle(
-                          //         maximumSize:
-                          //             MaterialStateProperty.all(Size(110, 60)),
-                          //         padding: MaterialStateProperty.all(
-                          //             EdgeInsets.symmetric(
-                          //                 vertical: 12, horizontal: 15)),
-                          //         backgroundColor: MaterialStateProperty.all(
-                          //             Color(0xFF226B3F))),
-                          //   ),
-                          //   ElevatedButton(
-                          //     onPressed: () {
-                          //       // Navigator.pop(context, 'Cancel');
-                          //     },
-                          //     child: Text(
-                          //       'Save ',
-                          //       style: TextStyle(fontSize: 20),
-                          //     ),
-                          //     style: ButtonStyle(
-                          //         maximumSize:
-                          //             MaterialStateProperty.all(Size(110, 60)),
-                          //         padding: MaterialStateProperty.all(
-                          //             EdgeInsets.symmetric(
-                          //                 vertical: 12, horizontal: 15)),
-                          //         backgroundColor: MaterialStateProperty.all(
-                          //             Color(0xFF226B3F))),
-                          //   ),
-                          // ],
                         ),
                       ),
                       child: Row(

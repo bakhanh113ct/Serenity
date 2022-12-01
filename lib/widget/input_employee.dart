@@ -25,16 +25,17 @@ class InputEmployee extends StatelessWidget {
             SizedBox(
               height: 8,
             ),
-            TextField(
+            TextFormField(
+              validator: (value) {
+                print('object');
+                return 'error';
+              },
               controller: controller,
-              // obscureText: true,
               decoration: InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                // enabledBorder: OutlineInputBorder(
-                //     borderSide: BorderSide(color: Colors.black)),
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
