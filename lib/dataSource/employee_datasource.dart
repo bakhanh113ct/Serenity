@@ -6,19 +6,29 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../model/import_order.dart';
 
 class EmployeeDataSource extends DataGridSource {
+  int i = 0;
+  Function? onPress;
+
   /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<User> employeeData}) {
+  EmployeeDataSource(
+      {required List<User> employeeData, required Function onPress}) {
+    this.onPress = onPress;
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'id', value: e.idUser),
+              DataGridCell<String>(columnName: 'STT', value: e.idUser),
               DataGridCell<String>(columnName: 'name', value: e.fullName),
               DataGridCell<String>(
-                  columnName: 'date', value: e.dateOfBirth!.toString()),
+                  columnName: 'date',
+                  value: e.dateOfBirth!.toDate().day.toString() +
+                      '/' +
+                      e.dateOfBirth!.toDate().month.toString() +
+                      '/' +
+                      e.dateOfBirth!.toDate().year.toString()),
               DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<double>(
                   columnName: 'salary', value: e.salary!.toDouble()),
               DataGridCell<String>(columnName: 'status', value: 'active'),
-              DataGridCell<String>(columnName: 'button', value: ''),
+              DataGridCell<User>(columnName: 'button', value: e),
             ]))
         .toList();
   }
@@ -43,7 +53,11 @@ class EmployeeDataSource extends DataGridSource {
                   child: IconButton(
                     splashRadius: 20,
                     icon: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (onPress != null) {
+                        onPress!(e.value);
+                      }
+                    },
                   ),
                 )
               : e.columnName == 'status'
@@ -54,7 +68,7 @@ class EmployeeDataSource extends DataGridSource {
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       child: Text(
-                        'Completed',
+                        'complete',
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF5CB16F),
@@ -62,7 +76,9 @@ class EmployeeDataSource extends DataGridSource {
                       ),
                     )
                   : Text(
-                      e.value.toString(),
+                      e.columnName == 'STT'
+                          ? (i++).toString()
+                          : e.value.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(fontSize: 18, color: Colors.black),

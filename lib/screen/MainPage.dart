@@ -39,14 +39,20 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<UserBloc,UserState>(
+    return Scaffold(body: BlocBuilder<UserBloc, UserState>(
       builder: (BuildContext context, state) {
         if (state is UserLoading) {
-          return const Center(child: CircularProgressIndicator(color: Color(0xFF226B3F),));
+          return const Center(
+              child: CircularProgressIndicator(
+            color: Color(0xFF226B3F),
+          ));
         } else if (state is UserLoaded) {
           return Row(
             children: [
-              SideBar(controller: controller,user: state.user,),
+              SideBar(
+                controller: controller,
+                user: state.user,
+              ),
               Expanded(
                   child: AnimatedBuilder(
                 animation: controller,
@@ -57,15 +63,15 @@ class _MainPageState extends State<MainPage> {
                       return DashBoardPage();
                     case 1:
                       return OrderPage();
-                      case 2:
+                    case 2:
                       return ProductPage();
                     case 3:
                       return CustomerPage();
-                      case 4:
+                    case 4:
                       return ImportPage();
                     case 5:
                       return TroublePage();
-                      case 6:
+                    case 6:
                       return EmployeePage();
                     case 7:
                       return ProfilePage();
@@ -76,8 +82,7 @@ class _MainPageState extends State<MainPage> {
               )) // Your app screen body
             ],
           );
-        }
-        else{
+        } else {
           return Container();
         }
       },

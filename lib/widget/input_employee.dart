@@ -5,10 +5,14 @@ class InputEmployee extends StatelessWidget {
     Key? key,
     required this.text,
     required this.controller,
+    required this.icon,
+    required this.onPress,
   }) : super(key: key);
 
   final String text;
   final TextEditingController controller;
+  final IconData icon;
+  final Function onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,33 @@ class InputEmployee extends StatelessWidget {
               height: 8,
             ),
             TextFormField(
+              obscureText: text == 'Password',
+              keyboardType: text == 'Salary' || text == 'Phone number'
+                  ? TextInputType.number
+                  : text == 'Email'
+                      ? TextInputType.emailAddress
+                      : TextInputType.text,
               validator: (value) {
-                print('object');
-                return 'error';
+                if (value == null || value.isEmpty)
+                  return 'Please enter ' + text;
               },
+              readOnly: icon == Icons.calendar_month,
+              onTap: icon == Icons.calendar_month
+                  ? () {
+                      print('can\'t edit');
+                    }
+                  : () {},
               controller: controller,
               decoration: InputDecoration(
+                suffixIcon: icon != Icons.abc
+                    ? IconButton(
+                        icon: Icon(icon),
+                        onPressed: () {
+                          // _selectDate(context);
+                          onPress();
+                        },
+                      )
+                    : null,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 border: OutlineInputBorder(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serenity/model/User.dart';
@@ -25,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController confirmControler;
 
   XFile? image;
+  DateTime? selectedDate;
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
     newPasswordControler = TextEditingController();
     confirmControler = TextEditingController();
     image == null;
+    selectedDate = null;
     super.initState();
   }
 
@@ -55,6 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is UserLoaded) {
+                if (selectedDate == null) {
+                  selectedDate = state.user.dateOfBirth!.toDate();
+                }
                 return Column(
                   children: [
                     Container(
@@ -126,32 +132,40 @@ class _ProfilePageState extends State<ProfilePage> {
                                     height: 50,
                                   ),
                                   input('Name:', nameControler,
-                                      state.user.fullName!),
+                                      state.user.fullName!, Icons.abc),
                                   const SizedBox(
                                     height: 16,
                                   ),
                                   input('Email:', emailControler,
-                                      state.user.email!),
+                                      state.user.email!, Icons.abc),
                                   const SizedBox(
                                     height: 16,
                                   ),
                                   input('Phone number:', phoneControler,
-                                      state.user.phone!),
+                                      state.user.phone!, Icons.abc),
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  input('Date of birth:', dobControler,
-                                      state.user.dateOfBirth!),
+                                  input(
+                                      'Date of birth:',
+                                      dobControler,
+                                      selectedDate!.day.toString() +
+                                          '/' +
+                                          selectedDate!.month.toString() +
+                                          '/' +
+                                          selectedDate!.year.toString(),
+                                      Icons.calendar_month),
                                   const SizedBox(
                                     height: 16,
                                   ),
                                   input('Address:', addressControler,
-                                      state.user.address!),
+                                      state.user.address!, Icons.abc),
                                   const SizedBox(
                                     height: 16,
                                   ),
                                   input('Position:', positionControler,
-                                      state.user.position!)
+                                      state.user.position!, Icons.abc)
+                                  // combobox()
                                 ],
                               ),
                             ),
@@ -165,7 +179,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fullName: nameControler.text,
                                       phone: phoneControler.text,
                                       email: emailControler.text,
-                                      dateOfBirth: dobControler.text,
+                                      dateOfBirth:
+                                          Timestamp.fromDate(selectedDate!),
                                       salary: state.user.salary,
                                       image: state.user.image,
                                       position: state.user.position,
@@ -312,7 +327,21 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Row input(label, TextEditingController controller, text) {
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate!,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2023),
+    );
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  Row input(
+      label, TextEditingController controller, String text, IconData icon) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -329,8 +358,17 @@ class _ProfilePageState extends State<ProfilePage> {
           child: TextField(
             controller: controller..text = text,
             // obscureText: true,
-
+            readOnly: icon != Icons.abc || label == 'Position:',
             decoration: InputDecoration(
+              suffixIcon: icon != Icons.abc
+                  ? IconButton(
+                      icon: Icon(icon),
+                      onPressed: () {
+                        // _restorableDatePickerRouteFuture.present();
+                        _selectDate(context);
+                      },
+                    )
+                  : null,
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -344,6 +382,82 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
+
+  // Row combobox() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       Text(
+  //         'Position:',
+  //         style: TextStyle(fontSize: 18),
+  //       ),
+  //       SizedBox(
+  //         width: 20,
+  //       ),
+  //       Container(
+  //         height: 48,
+  //         width: 350,
+  //         child: Padding(
+  //           padding: EdgeInsets.only(bottom: 0),
+  //           child: DropdownButtonFormField2(
+  //             decoration: InputDecoration(
+  //               // hintText: 'Choose one',
+  //               //Add isDense true and zero Padding.
+  //               //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+  //               isDense: true,
+  //               contentPadding: EdgeInsets.zero,
+  //               border: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(10),
+  //               ),
+  //               //Add more decoration as you want here
+  //               //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+  //             ),
+  //             isExpanded: true,
+  //             hint: const Text(
+  //               'Choose one',
+  //               style: TextStyle(fontSize: 18),
+  //             ),
+  //             icon: const Icon(
+  //               Icons.arrow_drop_down,
+  //               color: Colors.black45,
+  //             ),
+  //             value: position,
+  //             iconSize: 30,
+  //             buttonHeight: 60,
+  //             buttonPadding: const EdgeInsets.only(left: 0, right: 10),
+  //             dropdownDecoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(15),
+  //             ),
+  //             items: listPosition
+  //                 .map((item) => DropdownMenuItem<String>(
+  //                       value: item,
+  //                       child: Text(
+  //                         item,
+  //                         style: const TextStyle(
+  //                           fontSize: 18,
+  //                         ),
+  //                       ),
+  //                     ))
+  //                 .toList(),
+  //             validator: (value) {
+  //               if (value == null) {
+  //                 return 'Please select gender.';
+  //               }
+  //             },
+  //             onChanged: (value) {
+  //               //Do something when changing the item if you want.
+  //               position = value.toString();
+  //             },
+  //             onSaved: (value) {
+  //               position = value.toString();
+  //             },
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _showDialog(BuildContext context, String content) {
     // status: false: error, true: success

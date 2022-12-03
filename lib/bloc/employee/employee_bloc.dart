@@ -23,10 +23,16 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     });
 
     on<AddEmployee>((event, emit) async {
-      employeeRepository.addNewEmployee(event.user);
+      employeeRepository.addNewEmployee(event.user, event.password);
     });
 
     on<UpdateListEmployee>(
         (event, emit) => {emit(EmployeeLoaded(listEmployee: event.listUser))});
+
+    on<UpdateEmployee>(
+        (event, emit) => employeeRepository.updateEmployee(event.user));
+
+    on<ResetPassword>(
+        (event, emit) => employeeRepository.resetPassword(event.email));
   }
 }

@@ -23,7 +23,8 @@ class _TableContentState extends State<TableContent> {
 
   @override
   void initState() {
-    employeeDataSource = ImportOrderDataSource(employeeData: widget.employees);
+    employeeDataSource =
+        ImportOrderDataSource(employeeData: widget.employees, context: context);
     super.initState();
   }
 
@@ -50,10 +51,10 @@ class _TableContentState extends State<TableContent> {
             ),
             child: SfDataGrid(
               rowHeight: 55,
-              onQueryRowHeight: (details) =>
-                  details.getIntrinsicRowHeight(details.rowIndex),
+              // onQueryRowHeight: (details) =>
+              //     details.getIntrinsicRowHeight(details.rowIndex),
               columnWidthMode: ColumnWidthMode.fill,
-              columnResizeMode: ColumnResizeMode.onResize,
+              // columnResizeMode: ColumnResizeMode.onResize,
               allowColumnsResizing: true,
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
                 setState(() {
@@ -67,13 +68,14 @@ class _TableContentState extends State<TableContent> {
               // columnWidthMode: ColumnWidthMode.fill,
               columns: <GridColumn>[
                 GridColumn(
-                    columnName: 'id',
-                    width: columnWidths['id']!,
+                    columnName: 'STT',
+                    // width: columnWidths['id']!,
+                    width: 60,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
                         child: const Text(
-                          'ID',
+                          'STT',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -100,7 +102,7 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'date',
-                    width: columnWidths['date']!,
+                    // width: columnWidths['date']!,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
@@ -114,7 +116,7 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'status',
-                    width: columnWidths['status']!,
+                    // width: columnWidths['status']!,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
@@ -127,7 +129,7 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'price',
-                    width: columnWidths['price']!,
+                    // width: columnWidths['price']!,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
@@ -140,7 +142,7 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'note',
-                    width: columnWidths['note']!,
+                    // width: columnWidths['note']!,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
@@ -153,12 +155,12 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'button',
-                    width: columnWidths['button']!,
+                    // width: columnWidths['button']!,
                     label: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
                         child: const Text(
-                          '',
+                          'More',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -170,60 +172,5 @@ class _TableContentState extends State<TableContent> {
         ),
       ),
     );
-  }
-
-  List<ImportOrder> getEmployeeData() {
-    return [
-      ImportOrder(
-          nameA: 'CT TNHH Dung Cot',
-          addressA: '22/35 abc',
-          phoneA: '0395823456',
-          bankA: '101287529',
-          atBankA: 'VCB',
-          authorizedPersonA: 'Nguyen Ba A',
-          positionA: 'NV',
-          noAuthorizationA: '1',
-          dateAuthorizationA: Timestamp.now(),
-          nameB: 'CT TNHH 3TV',
-          addressB: '38/123 xyz, abcd',
-          phoneB: '0395823456',
-          bankB: '10213356745',
-          atBankB: 'VCB',
-          authorizedPersonB: 'Nguyen Van B',
-          positionB: 'NVq',
-          noAuthorizationB: '214532',
-          dateAuthorizationB: Timestamp.now(),
-          pursuant: '123abc',
-          dateCreated: Timestamp.now(),
-          atPlace: '12/245 qqwe',
-          note: '',
-          totalPrice: 200,
-          idImportOrder: 'a7zSINGejYGBzDwhloeC',
-          status: 'pending'),
-      // ImportOrder(
-      //     '10002', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10003', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10004', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10005', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10006', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-    ];
   }
 }

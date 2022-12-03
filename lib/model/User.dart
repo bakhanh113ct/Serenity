@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -5,7 +6,7 @@ class User extends Equatable {
   String? fullName;
   String? phone;
   String? email;
-  String? dateOfBirth;
+  Timestamp? dateOfBirth;
   int? salary;
   String? image;
   String? position;

@@ -5,6 +5,7 @@ import 'package:serenity/widget/table_employee.dart';
 
 import '../bloc/employee/employee_bloc.dart';
 import '../bloc/importOrder/import_order_bloc.dart';
+import '../common/color.dart';
 import '../model/import_order.dart';
 import '../widget/modal_add_employee.dart';
 import '../widget/table_content.dart';
@@ -16,7 +17,8 @@ class EmployeePage extends StatefulWidget {
   State<EmployeePage> createState() => _EmployeePageState();
 }
 
-class _EmployeePageState extends State<EmployeePage> {
+class _EmployeePageState extends State<EmployeePage>
+    with TickerProviderStateMixin {
   int tabIndex = 0;
   List<ImportOrder> employees = <ImportOrder>[];
 
@@ -29,8 +31,10 @@ class _EmployeePageState extends State<EmployeePage> {
   List<String> listTab = ['All Employee', 'Active', 'Continuing', 'Canceled'];
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    TabController _tabController = TabController(length: 4, vsync: this);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFEBFDF2),
       body: BlocBuilder<EmployeeBloc, EmployeeState>(
         builder: (context, state) {
@@ -85,73 +89,58 @@ class _EmployeePageState extends State<EmployeePage> {
                   ],
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 32,
                 ),
                 Container(
-                  color: Colors.white,
-                  height: 700,
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 30),
-                  width: MediaQuery.of(context).size.width - 40,
-                  child: Column(children: [
-                    Container(
-                      height: 50,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: ((context, index) => TabButton(
-                                isChoose: tabIndex == index,
-                                text: listTab[index].toString(),
-                                onTap: () {
-                                  setState(() {
-                                    tabIndex = index;
-                                  });
-                                  tabController.animateToPage(index,
-                                      duration: Duration(microseconds: 1000),
-                                      curve: Curves.easeInSine);
-                                },
-                              ))),
+                    height: size.height * 0.8,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      // obscureText: true,
-                      decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          // enabledBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(color: Colors.black)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.black,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: 550,
+                            color: Colors.white,
+                            child: TabBar(
+                                controller: _tabController,
+                                labelColor: CustomColor.second,
+                                unselectedLabelColor: Colors.grey,
+                                indicatorColor: CustomColor.second,
+                                labelStyle: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                                tabs: [
+                                  Tab(
+                                    text: "All orders",
+                                  ),
+                                  Tab(
+                                    text: "Completed",
+                                  ),
+                                  Tab(
+                                    text: "Continuing",
+                                  ),
+                                  Tab(
+                                    text: "Cancelled",
+                                  )
+                                ]),
                           ),
-                          hintText: 'Search for orderID, customer'),
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // Table---------------------------------------------------------------------------------
-                    Container(
-                      height: 500,
-                      child: PageView.builder(
-                          controller: tabController,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 4,
-                          itemBuilder: ((context, index) =>
-                              TableEmployee(employees: state.listEmployee))),
-                    ),
-                    // TableContent(),
-                  ]),
-                )
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          height: 500,
+                          child:
+                              TabBarView(controller: _tabController, children: [
+                            TableEmployee(employees: state.listEmployee),
+                            TableEmployee(employees: state.listEmployee),
+                            TableEmployee(employees: state.listEmployee),
+                            TableEmployee(employees: state.listEmployee),
+                          ]),
+                        )
+                      ],
+                    )),
               ]),
             );
           } else
@@ -162,45 +151,45 @@ class _EmployeePageState extends State<EmployeePage> {
   }
 }
 
-class TabButton extends StatelessWidget {
-  const TabButton({
-    Key? key,
-    required this.text,
-    required this.isChoose,
-    required this.onTap,
-  }) : super(key: key);
-  final String text;
-  final bool isChoose;
-  final Function onTap;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            onTap();
-          },
-          child: Text(
-            text,
-            style: TextStyle(
-                fontFamily: 'Poppins',
-                color: isChoose ? Color(0xFF226B3F) : Color(0xFFA09E9E),
-                fontSize: 20,
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          width: 120,
-          child: Divider(
-            thickness: isChoose ? 4 : 2,
-            height: isChoose ? 4 : 2,
-            color: isChoose ? Color(0xFF226B3F) : Color(0xFF226B3F),
-          ),
-        )
-      ],
-    );
-  }
-}
+// class TabButton extends StatelessWidget {
+//   const TabButton({
+//     Key? key,
+//     required this.text,
+//     required this.isChoose,
+//     required this.onTap,
+//   }) : super(key: key);
+//   final String text;
+//   final bool isChoose;
+//   final Function onTap;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         InkWell(
+//           onTap: () {
+//             onTap();
+//           },
+//           child: Text(
+//             text,
+//             style: TextStyle(
+//                 fontFamily: 'Poppins',
+//                 color: isChoose ? Color(0xFF226B3F) : Color(0xFFA09E9E),
+//                 fontSize: 20,
+//                 fontWeight: FontWeight.w500),
+//           ),
+//         ),
+//         SizedBox(
+//           height: 10,
+//         ),
+//         SizedBox(
+//           width: 120,
+//           child: Divider(
+//             thickness: isChoose ? 4 : 2,
+//             height: isChoose ? 4 : 2,
+//             color: isChoose ? Color(0xFF226B3F) : Color(0xFF226B3F),
+//           ),
+//         )
+//       ],
+//     );
+//   }
+// }
