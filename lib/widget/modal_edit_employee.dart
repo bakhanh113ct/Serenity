@@ -72,7 +72,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
     super.initState();
   }
 
-  final List<String> stateItems = ['Active', 'unactive'];
+  final List<String> stateItems = ['Active', 'unActive'];
   final List<String> positionItems = [
     'Admin',
     'Staff',
@@ -343,16 +343,11 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
               padding: EdgeInsets.only(bottom: 26),
               child: DropdownButtonFormField2(
                 decoration: InputDecoration(
-                  // hintText: 'Choose one',
-                  //Add isDense true and zero Padding.
-                  //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  //Add more decoration as you want here
-                  //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
                 ),
                 isExpanded: true,
                 hint: const Text(

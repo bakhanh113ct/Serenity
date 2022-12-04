@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serenity/screen/invoice.dart';
+import 'package:serenity/screen/payment_voucher.dart';
 
 import '../bloc/importOrder/import_order_bloc.dart';
 import '../model/import_order.dart';
@@ -58,8 +59,7 @@ class _ImportPageState extends State<ImportPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Invoice(),
-                              ));
+                                  builder: (context) => Invoice()));
                         },
                         child: Row(
                           children: [

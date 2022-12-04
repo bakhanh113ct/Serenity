@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../model/import_order.dart';
+import '../screen/payment_voucher.dart';
 
 class ImportOrderDataSource extends DataGridSource {
   int i = 0;
@@ -81,7 +82,7 @@ class ImportOrderDataSource extends DataGridSource {
                     },
                     itemHeight: 48,
                     itemPadding: const EdgeInsets.only(left: 16, right: 16),
-                    dropdownWidth: 160,
+                    dropdownWidth: 210,
                     dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
                     dropdownDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
@@ -99,7 +100,7 @@ class ImportOrderDataSource extends DataGridSource {
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       child: Text(
-                        'Completed',
+                        e.value,
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF5CB16F),
@@ -130,12 +131,13 @@ class MenuItem {
 
 class MenuItems {
   static const List<MenuItem> firstItems = [home, share, check];
-  static const List<MenuItem> secondItems = [cancel];
+  static const List<MenuItem> secondItems = [importVoucher];
 
   static const home = MenuItem(text: 'Edit', icon: Icons.edit);
   static const share = MenuItem(text: 'Print', icon: Icons.print);
   static const check = MenuItem(text: 'Check', icon: Icons.checklist);
-  static const cancel = MenuItem(text: 'Close', icon: Icons.cancel);
+  static const importVoucher =
+      MenuItem(text: 'Payment voucher', icon: Icons.edit_note);
 
   static Widget buildItem(MenuItem item) {
     return Row(
@@ -165,8 +167,12 @@ class MenuItems {
       case MenuItems.share:
         //Do something
         break;
-      case MenuItems.cancel:
-        //Do something
+      case MenuItems.importVoucher:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentVoucher(),
+            ));
         break;
     }
   }

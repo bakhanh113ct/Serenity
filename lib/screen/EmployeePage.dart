@@ -36,116 +36,122 @@ class _EmployeePageState extends State<EmployeePage>
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFEBFDF2),
-      body: BlocBuilder<EmployeeBloc, EmployeeState>(
-        builder: (context, state) {
-          if (state is EmployeeLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is EmployeeLoaded) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(children: [
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Employee',
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 30,
-                          color: Color(0xFF226B3F),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => showDialog<String>(
-                        // barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          // title: const Text('AlertDialog Title'),
-                          content: ModalAddEmployee(),
-                        ),
+      body: SingleChildScrollView(
+        child: BlocBuilder<EmployeeBloc, EmployeeState>(
+          builder: (context, state) {
+            if (state is EmployeeLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is EmployeeLoaded) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(children: [
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Employee',
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 30,
+                            color: Color(0xFF226B3F),
+                            fontWeight: FontWeight.w600),
                       ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'New',
-                            style: TextStyle(fontSize: 20),
+                      ElevatedButton(
+                        onPressed: () => showDialog<String>(
+                          // barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            // title: const Text('AlertDialog Title'),
+                            content: ModalAddEmployee(),
                           ),
-                          Icon(
-                            Icons.add,
-                            size: 20,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'New',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Icon(
+                              Icons.add,
+                              size: 20,
+                            )
+                          ],
+                        ),
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15)),
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xFF226B3F))),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+
+                  // Table
+                  Container(
+                      height: size.height * 0.8,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              width: 550,
+                              color: Colors.white,
+                              child: TabBar(
+                                  controller: _tabController,
+                                  labelColor: CustomColor.second,
+                                  unselectedLabelColor: Colors.grey,
+                                  indicatorColor: CustomColor.second,
+                                  labelStyle: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                  tabs: [
+                                    Tab(
+                                      text: "All orders",
+                                    ),
+                                    Tab(
+                                      text: "Completed",
+                                    ),
+                                    Tab(
+                                      text: "Continuing",
+                                    ),
+                                    Tab(
+                                      text: "Cancelled",
+                                    )
+                                  ]),
+                            ),
+                          ),
+                          Container(
+                            width: double.maxFinite,
+                            height: 600,
+                            child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  TableEmployee(employees: state.listEmployee),
+                                  TableEmployee(employees: state.listEmployee),
+                                  TableEmployee(employees: state.listEmployee),
+                                  TableEmployee(employees: state.listEmployee),
+                                ]),
                           )
                         ],
-                      ),
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                  vertical: 13, horizontal: 15)),
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xFF226B3F))),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                Container(
-                    height: size.height * 0.8,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 550,
-                            color: Colors.white,
-                            child: TabBar(
-                                controller: _tabController,
-                                labelColor: CustomColor.second,
-                                unselectedLabelColor: Colors.grey,
-                                indicatorColor: CustomColor.second,
-                                labelStyle: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
-                                tabs: [
-                                  Tab(
-                                    text: "All orders",
-                                  ),
-                                  Tab(
-                                    text: "Completed",
-                                  ),
-                                  Tab(
-                                    text: "Continuing",
-                                  ),
-                                  Tab(
-                                    text: "Cancelled",
-                                  )
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          width: double.maxFinite,
-                          height: 500,
-                          child:
-                              TabBarView(controller: _tabController, children: [
-                            TableEmployee(employees: state.listEmployee),
-                            TableEmployee(employees: state.listEmployee),
-                            TableEmployee(employees: state.listEmployee),
-                            TableEmployee(employees: state.listEmployee),
-                          ]),
-                        )
-                      ],
-                    )),
-              ]),
-            );
-          } else
-            return Container();
-        },
+                      )),
+                ]),
+              );
+            } else
+              return Container();
+          },
+        ),
       ),
     );
   }
