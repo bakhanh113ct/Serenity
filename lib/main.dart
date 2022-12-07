@@ -7,6 +7,11 @@ import 'package:serenity/screen/LoginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:serenity/screen/MainPage.dart';
 import 'package:serenity/screen/TestPage.dart';
+import 'package:serenity/screen/cart_page.dart';
+
+import 'bloc/blocCart/bloc/cart_bloc.dart';
+import 'bloc/blocCheckOut/bloc/checkout_bloc.dart';
+import 'bloc/blocOrder/order_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,6 +27,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserBloc()),
+        BlocProvider(create: (context) => OrderBloc()),
+        BlocProvider(create: (context) => CartBloc()),
+        BlocProvider(create: (context) => CheckoutBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -60,9 +68,9 @@ class MyApp extends StatelessWidget {
 
 Route? getRoute(RouteSettings settings) {
   switch (settings.name) {
-    case Routes.test:{
+    case Routes.cart:{
       return MaterialPageRoute(
-            builder: (context) => const TestPage(), settings: settings);
+            builder: (context) => const CartPage(), settings: settings);
     }
   }
   return null;

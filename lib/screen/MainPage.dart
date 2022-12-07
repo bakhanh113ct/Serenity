@@ -12,6 +12,7 @@ import 'package:serenity/widget/SideBar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 import '../bloc/blocUser/user_bloc.dart';
+import '../bloc/blocUser/user_state.dart';
 import 'CustomerPage.dart';
 
 class MainPage extends StatefulWidget {

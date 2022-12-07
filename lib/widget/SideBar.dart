@@ -3,7 +3,7 @@ import 'package:serenity/repository/AuthRepository.dart';
 
 import 'package:sidebarx/sidebarx.dart';
 
-import '../model/User.dart';
+import '../model/user.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key, required this.controller, required this.user});

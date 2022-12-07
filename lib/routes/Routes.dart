@@ -1,3 +1,3 @@
 class Routes{
-  static const test='/TestPage';
+  static const cart='/CartPage';
 }
