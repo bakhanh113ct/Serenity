@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
+import 'package:serenity/model/product_import_order.dart';
 
-class ImportOrder {
+class ImportOrder extends Equatable {
   String? nameA;
   String? addressA;
   String? phoneA;
@@ -23,10 +25,10 @@ class ImportOrder {
   Timestamp? dateCreated;
   String? atPlace;
   String? note;
-  int? totalPrice;
+  String? totalPrice;
   String? idImportOrder;
   String? status;
-  List<ListProduct>? listProduct;
+  List<ProductImportOrder>? listProduct;
 
   ImportOrder(
       {this.nameA,
@@ -83,9 +85,9 @@ class ImportOrder {
     idImportOrder = json['idImportOrder'];
     status = json['status'];
     if (json['listProduct'] != null) {
-      listProduct = <ListProduct>[];
+      listProduct = <ProductImportOrder>[];
       json['listProduct'].forEach((v) {
-        listProduct!.add(new ListProduct.fromJson(v));
+        listProduct!.add(ProductImportOrder.fromJson(v));
       });
     }
   }
@@ -117,28 +119,38 @@ class ImportOrder {
     data['totalPrice'] = this.totalPrice;
     data['idImportOrder'] = this.idImportOrder;
     data['status'] = this.status;
-    // if (this.listProduct != null) {
-    //   data['listProduct'] = this.listProduct!.map((v) => v.toJson()).toList();
-    // }
+    if (this.listProduct != null) {
+      data['listProduct'] = this.listProduct!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
-}
 
-class ListProduct {
-  String? id;
-  int? price;
-
-  ListProduct({this.id, this.price});
-
-  ListProduct.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    price = json['price'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['price'] = this.price;
-    return data;
-  }
+  @override
+  List<Object?> get props => [
+        nameA,
+        addressA,
+        phoneA,
+        bankA,
+        atBankA,
+        authorizedPersonA,
+        positionA,
+        noAuthorizationA,
+        dateAuthorizationA,
+        nameB,
+        addressB,
+        phoneB,
+        bankB,
+        atBankB,
+        authorizedPersonB,
+        positionB,
+        noAuthorizationB,
+        dateAuthorizationB,
+        pursuant,
+        dateCreated,
+        atPlace,
+        note,
+        totalPrice,
+        idImportOrder,
+        status,
+      ];
 }

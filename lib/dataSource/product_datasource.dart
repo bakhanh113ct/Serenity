@@ -1,42 +1,36 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/model/User.dart';
 import 'package:serenity/model/product_import_order.dart';
-import 'package:serenity/screen/check_import_order.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../model/import_order.dart';
-import '../screen/create_import_order.dart';
-import '../screen/payment_voucher.dart';
 
-class ImportOrderDataSource extends DataGridSource {
-  BuildContext? context;
+class ProductDataSource extends DataGridSource {
+  int i = 1;
   Function? onPress;
-  List<ImportOrder> importOrders = [];
-  // int i = 0;
+  BuildContext? context;
 
   /// Creates the employee data source class with required details.
-  ImportOrderDataSource(
-      {required List<ImportOrder> employeeData,
-      required BuildContext this.context,
-      required Function this.onPress}) {
-    importOrders = employeeData;
-    _employeeData = employeeData
+  ProductDataSource(
+      {required List<ProductImportOrder> productData,
+      required Function this.onPress,
+      required BuildContext this.context}) {
+    _employeeData = productData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<ImportOrder>(columnName: 'STT', value: e),
-              DataGridCell<String>(columnName: 'name', value: e.nameA),
               DataGridCell<String>(
-                  columnName: 'date',
-                  value:
-                      '${e.dateCreated!.toDate().day}/${e.dateCreated!.toDate().month}/${e.dateCreated!.toDate().year}'),
-              DataGridCell<String>(columnName: 'status', value: e.status),
+                  columnName: 'STT', value: e.product!.idProduct),
+              DataGridCell<String>(columnName: 'name', value: e.product!.name),
               DataGridCell<String>(
-                  columnName: 'price', value: e.totalPrice!.toString()),
+                  columnName: 'price', value: e.product!.price),
+              DataGridCell<int>(columnName: 'amount', value: e.amount!),
+              DataGridCell<Object>(columnName: 'totalPrice', value: {
+                "amount": e.amount!,
+                "price": int.parse(e.product!.price!)
+              }),
               DataGridCell<String>(columnName: 'note', value: e.note),
-              DataGridCell<String>(
-                  columnName: 'button', value: e.idImportOrder),
+              DataGridCell<ProductImportOrder>(columnName: 'button', value: e),
             ]))
         .toList();
   }
@@ -50,10 +44,6 @@ class ImportOrderDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-      int i = 0;
-      if (e.columnName == 'STT') {
-        i = importOrders.indexOf(e.value);
-      }
       return Container(
           alignment: Alignment.centerLeft,
           // height: 100,
@@ -61,6 +51,8 @@ class ImportOrderDataSource extends DataGridSource {
           child: e.columnName == 'button'
               ? DropdownButtonHideUnderline(
                   child: DropdownButton2(
+                    alignment: AlignmentDirectional.centerStart,
+                    icon: const Icon(Icons.settings),
                     customButton: const Icon(
                       Icons.settings,
                       size: 30,
@@ -68,8 +60,8 @@ class ImportOrderDataSource extends DataGridSource {
                     ),
                     customItemsHeights: [
                       ...List<double>.filled(MenuItems.firstItems.length, 48),
-                      8,
-                      ...List<double>.filled(MenuItems.secondItems.length, 48),
+                      // 8,
+                      // ...List<double>.filled(MenuItems.secondItems.length, 48),
                     ],
                     items: [
                       ...MenuItems.firstItems.map(
@@ -78,23 +70,18 @@ class ImportOrderDataSource extends DataGridSource {
                           child: MenuItems.buildItem(item),
                         ),
                       ),
-                      const DropdownMenuItem<Divider>(
-                          enabled: false, child: Divider()),
-                      ...MenuItems.secondItems.map(
-                        (item) => DropdownMenuItem<MenuItem>(
-                          value: item,
-                          child: MenuItems.buildItem(item),
-                        ),
-                      ),
+                      // const DropdownMenuItem<Divider>(
+                      //     enabled: false, child: Divider()),
+                      // ...MenuItems.secondItems.map(
+                      //   (item) => DropdownMenuItem<MenuItem>(
+                      //     value: item,
+                      //     child: MenuItems.buildItem(item),
+                      //   ),
+                      // ),
                     ],
-                    onChanged: (value) {
-                      MenuItems.onChanged(
-                        context!,
-                        value as MenuItem,
-                        onPress!,
-                        importOrders,
-                        e.value,
-                      );
+                    onChanged: (valueChange) {
+                      MenuItems.onChanged(context!, valueChange as MenuItem,
+                          onPress!, e.value, i);
                     },
                     itemHeight: 48,
                     itemPadding: const EdgeInsets.only(left: 16, right: 16),
@@ -110,27 +97,34 @@ class ImportOrderDataSource extends DataGridSource {
                 )
               : e.columnName == 'status'
                   ? Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Color(0xFFDCFBD7),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       child: Text(
-                        e.value,
+                        'complete',
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF5CB16F),
                             fontWeight: FontWeight.w500),
                       ),
                     )
-                  : Text(
-                      e.columnName == 'STT'
-                          ? (i).toString()
-                          : e.value.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ));
+                  : e.columnName == 'totalPrice'
+                      ? Text(
+                          (e.value["amount"] * e.value["price"]).toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        )
+                      : Text(
+                          e.columnName == 'STT'
+                              ? (i++).toString()
+                              : e.value.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ));
     }).toList());
   }
 }
@@ -146,13 +140,13 @@ class MenuItem {
 }
 
 class MenuItems {
-  static const List<MenuItem> firstItems = [edit, print, check];
-  static const List<MenuItem> secondItems = [paymentVoucher];
+  static const List<MenuItem> firstItems = [edit, remove];
+  static const List<MenuItem> secondItems = [importVoucher];
 
   static const edit = MenuItem(text: 'Edit', icon: Icons.edit);
-  static const print = MenuItem(text: 'Print', icon: Icons.print);
+  static const remove = MenuItem(text: 'Remove', icon: Icons.delete);
   static const check = MenuItem(text: 'Check', icon: Icons.checklist);
-  static const paymentVoucher =
+  static const importVoucher =
       MenuItem(text: 'Payment voucher', icon: Icons.edit_note);
 
   static Widget buildItem(MenuItem item) {
@@ -173,38 +167,16 @@ class MenuItems {
   }
 
   static onChanged(BuildContext context, MenuItem item, Function onPress,
-      List<ImportOrder> importOrders, String id) {
+      ProductImportOrder product, int index) {
     switch (item) {
       case MenuItems.edit:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateImportOrder(),
-            ));
+        onPress(product.product!.name, product, index);
         break;
-      case MenuItems.check:
-        debugPrint(id);
-        List<ProductImportOrder> productImportOrder = importOrders
-            .where((element) => element.idImportOrder == id)
-            .first
-            .listProduct!;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  CheckImportOrder(products: productImportOrder),
-            ));
+      case MenuItems.remove:
+        onPress(product.product!.name, null, null);
+        break;
+      case MenuItems.importVoucher:
         //Do something
-        break;
-      case MenuItems.print:
-        //Do something
-        break;
-      case MenuItems.paymentVoucher:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PaymentVoucher(),
-            ));
         break;
     }
   }

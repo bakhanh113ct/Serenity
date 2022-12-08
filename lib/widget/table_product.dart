@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:serenity/dataSource/product_datasource.dart';
+import 'package:serenity/model/product.dart';
+import 'package:serenity/model/product_import_order.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -9,64 +10,44 @@ import '../dataSource/import_order_datasource.dart';
 import '../model/import_order.dart';
 
 class TableProduct extends StatefulWidget {
-  const TableProduct({super.key});
-
+  const TableProduct(
+      {super.key, required this.products, required this.onPress});
+  final List<ProductImportOrder> products;
+  final Function onPress;
   @override
   State<TableProduct> createState() => _TableProductState();
 }
 
 class _TableProductState extends State<TableProduct> {
-  List<ImportOrder> employees = <ImportOrder>[];
-  late ImportOrderDataSource employeeDataSource;
+  ProductDataSource? productDataSource;
 
   @override
   void initState() {
+    // print('table product init');
+    productDataSource = ProductDataSource(
+        productData: widget.products,
+        onPress: widget.onPress,
+        context: context);
     super.initState();
-    employees = getEmployeeData();
-    employeeDataSource =
-        ImportOrderDataSource(employeeData: employees, context: context);
   }
 
-  List<ImportOrder> getEmployeeData() {
-    return [
-      // ImportOrder(
-      //     '10001', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10002', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10003', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10004', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10005', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10006', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-      // ImportOrder(
-      //     '10007', 'James', Timestamp.now(), 'completed', 20000, 'aaaa'),
-    ];
+  @override
+  void didChangeDependencies() {
+    // print('did change');
+    super.didChangeDependencies();
   }
 
-  late Map<String, double> columnWidths = {
-    'id': double.nan,
-    'name': double.nan,
-    'date': double.nan,
-    'status': double.nan,
-    'price': double.nan,
-    'note': double.nan,
-    'button': double.nan,
-  };
+  @override
+  void didUpdateWidget(covariant TableProduct oldWidget) {
+    // print('change');
+    // setState(() {});
+    productDataSource = ProductDataSource(
+        productData: widget.products,
+        onPress: widget.onPress,
+        context: context);
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,37 +55,31 @@ class _TableProductState extends State<TableProduct> {
       height: double.infinity,
       child: SingleChildScrollView(
         child: Container(
-          height: 400,
+          height: 500,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: SfDataGridTheme(
             data: SfDataGridThemeData(
               gridLineColor: Colors.transparent,
             ),
             child: SfDataGrid(
+              allowEditing: true,
               rowHeight: 55,
-              onQueryRowHeight: (details) =>
-                  details.getIntrinsicRowHeight(details.rowIndex),
               columnWidthMode: ColumnWidthMode.fill,
-              columnResizeMode: ColumnResizeMode.onResize,
               allowColumnsResizing: true,
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                setState(() {
-                  columnWidths[details.column.columnName] = details.width;
-                });
                 return true;
               },
-
-              // gridLinesVisibility: GridLinesVisibility.both,
-              source: employeeDataSource,
-              // columnWidthMode: ColumnWidthMode.fill,
+              source: productDataSource!,
               columns: <GridColumn>[
                 GridColumn(
-                    columnName: 'id',
-                    width: columnWidths['id']!,
+                    width: 60,
+                    columnName: 'STT',
+                    // width: columnWidths['id']!,
                     label: Container(
-                        padding: EdgeInsets.all(16.0),
+                        // padding: EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'ID',
+                          'STT',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -117,10 +92,10 @@ class _TableProductState extends State<TableProduct> {
                     columnName: 'name',
                     // width: columnWidths['name']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Supplier Name',
+                          'Name',
                           maxLines: 5,
                           style: TextStyle(
                             fontSize: 20,
@@ -130,13 +105,13 @@ class _TableProductState extends State<TableProduct> {
                           ),
                         ))),
                 GridColumn(
-                    columnName: 'date',
-                    width: columnWidths['date']!,
+                    columnName: 'price',
+                    // width: columnWidths['date']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Date Created',
+                          'Price',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 20,
@@ -144,26 +119,26 @@ class _TableProductState extends State<TableProduct> {
                               color: Color(0xFF226B3F)),
                         ))),
                 GridColumn(
-                    columnName: 'status',
-                    width: columnWidths['status']!,
+                    columnName: 'amount',
+                    // width: columnWidths['status']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Status',
+                          'Amount',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Color(0xFF226B3F)),
                         ))),
                 GridColumn(
-                    columnName: 'price',
-                    width: columnWidths['price']!,
+                    columnName: 'totalPrice',
+                    // width: columnWidths['price']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Price',
+                          'Total Price',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -171,9 +146,9 @@ class _TableProductState extends State<TableProduct> {
                         ))),
                 GridColumn(
                     columnName: 'note',
-                    width: columnWidths['note']!,
+                    // width: columnWidths['note']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Note',
@@ -184,12 +159,12 @@ class _TableProductState extends State<TableProduct> {
                         ))),
                 GridColumn(
                     columnName: 'button',
-                    width: columnWidths['button']!,
+                    // width: columnWidths['note']!,
                     label: Container(
-                        padding: EdgeInsets.all(8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          '',
+                          'More',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,

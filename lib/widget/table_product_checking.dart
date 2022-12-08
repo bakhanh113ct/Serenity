@@ -1,42 +1,38 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/dataSource/product_datasource.dart';
+import 'package:serenity/model/product.dart';
+import 'package:serenity/model/product_import_order.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../dataSource/import_order_datasource.dart';
+import '../dataSource/product_checking_datasource.dart';
 import '../model/import_order.dart';
 
-class TableContent extends StatefulWidget {
-  const TableContent({
-    Key? key,
-    required this.employees,
-  }) : super(key: key);
-  final List<ImportOrder> employees;
+class TableProductChecking extends StatefulWidget {
+  const TableProductChecking(
+      {super.key, required this.products, required this.onPress});
+  final List<ProductImportOrder> products;
+  final Function onPress;
   @override
-  State<TableContent> createState() => _TableContentState();
+  State<TableProductChecking> createState() => _TableProductCheckingState();
 }
 
-class _TableContentState extends State<TableContent> {
-  late ImportOrderDataSource employeeDataSource;
+class _TableProductCheckingState extends State<TableProductChecking> {
+  late ProductCheckingDataSource productDataSource;
 
   @override
   void initState() {
-    employeeDataSource =
-        ImportOrderDataSource(employeeData: widget.employees, context: context);
+    // widget.onPress();
+    // print('table product init');
+    productDataSource = ProductCheckingDataSource(
+        productData: widget.products,
+        onPress: widget.onPress,
+        context: context);
     super.initState();
   }
 
-  late Map<String, double> columnWidths = {
-    'id': double.nan,
-    'name': double.nan,
-    'date': double.nan,
-    'status': double.nan,
-    'price': double.nan,
-    'note': double.nan,
-    'button': double.nan,
-  };
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,36 +41,29 @@ class _TableContentState extends State<TableContent> {
       child: SingleChildScrollView(
         child: Container(
           height: 500,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: SfDataGridTheme(
             data: SfDataGridThemeData(
               gridLineColor: Colors.transparent,
             ),
             child: SfDataGrid(
+              allowEditing: true,
               rowHeight: 55,
-              // onQueryRowHeight: (details) =>
-              //     details.getIntrinsicRowHeight(details.rowIndex),
               columnWidthMode: ColumnWidthMode.fill,
-              // columnResizeMode: ColumnResizeMode.onResize,
               allowColumnsResizing: true,
               onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                setState(() {
-                  columnWidths[details.column.columnName] = details.width;
-                });
                 return true;
               },
-
-              // gridLinesVisibility: GridLinesVisibility.both,
-              source: employeeDataSource,
-              // columnWidthMode: ColumnWidthMode.fill,
+              source: productDataSource,
               columns: <GridColumn>[
                 GridColumn(
+                    width: 60,
                     columnName: 'STT',
                     // width: columnWidths['id']!,
-                    width: 60,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'STT',
                           style: TextStyle(
                               fontSize: 20,
@@ -88,10 +77,10 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'name',
                     // width: columnWidths['name']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Supplier Name',
+                        child: Text(
+                          'Name',
                           maxLines: 5,
                           style: TextStyle(
                             fontSize: 20,
@@ -101,13 +90,13 @@ class _TableContentState extends State<TableContent> {
                           ),
                         ))),
                 GridColumn(
-                    columnName: 'date',
+                    columnName: 'price',
                     // width: columnWidths['date']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Date Created',
+                        child: Text(
+                          'Price',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 20,
@@ -115,26 +104,26 @@ class _TableContentState extends State<TableContent> {
                               color: Color(0xFF226B3F)),
                         ))),
                 GridColumn(
-                    columnName: 'status',
+                    columnName: 'amount',
                     // width: columnWidths['status']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Status',
+                        child: Text(
+                          'Amount',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Color(0xFF226B3F)),
                         ))),
                 GridColumn(
-                    columnName: 'price',
+                    columnName: 'totalPrice',
                     // width: columnWidths['price']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Price',
+                        child: Text(
+                          'Total Price',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -144,9 +133,9 @@ class _TableContentState extends State<TableContent> {
                     columnName: 'note',
                     // width: columnWidths['note']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Note',
                           style: TextStyle(
                               fontSize: 20,
@@ -155,11 +144,11 @@ class _TableContentState extends State<TableContent> {
                         ))),
                 GridColumn(
                     columnName: 'button',
-                    // width: columnWidths['button']!,
+                    // width: columnWidths['note']!,
                     label: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'More',
                           style: TextStyle(
                               fontSize: 20,

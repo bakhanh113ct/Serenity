@@ -31,16 +31,18 @@ class InputEmployee extends StatelessWidget {
             ),
             TextFormField(
               obscureText: text == 'Password',
-              keyboardType: text == 'Salary' || text == 'Phone number'
-                  ? TextInputType.number
-                  : text == 'Email'
-                      ? TextInputType.emailAddress
-                      : TextInputType.text,
+              keyboardType:
+                  text == 'Salary' || text == 'Phone number' || text == 'Amount'
+                      ? TextInputType.number
+                      : text == 'Email'
+                          ? TextInputType.emailAddress
+                          : TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty)
                   return 'Please enter ' + text;
               },
-              readOnly: icon == Icons.calendar_month,
+              readOnly:
+                  icon == Icons.calendar_month || icon == Icons.abc_outlined,
               onTap: icon == Icons.calendar_month
                   ? () {
                       print('can\'t edit');
@@ -48,7 +50,7 @@ class InputEmployee extends StatelessWidget {
                   : () {},
               controller: controller,
               decoration: InputDecoration(
-                suffixIcon: icon != Icons.abc
+                suffixIcon: icon != Icons.abc && icon != Icons.abc_outlined
                     ? IconButton(
                         icon: Icon(icon),
                         onPressed: () {

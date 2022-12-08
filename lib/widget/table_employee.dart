@@ -10,8 +10,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../bloc/employee/employee_bloc.dart';
 
 class TableEmployee extends StatefulWidget {
-  const TableEmployee({super.key, required this.employees});
-  final List<User> employees;
+  const TableEmployee({super.key});
+  // final List<User> employees;
   @override
   State<TableEmployee> createState() => _TableEmployeeState();
 }

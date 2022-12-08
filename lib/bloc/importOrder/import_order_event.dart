@@ -11,3 +11,11 @@ class LoadImportOrder extends ImportOrderEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateListImportOrder extends ImportOrderEvent {
+  final List<ImportOrder> listImportOrder;
+
+  const UpdateListImportOrder({required this.listImportOrder});
+  @override
+  List<Object> get props => [listImportOrder];
+}

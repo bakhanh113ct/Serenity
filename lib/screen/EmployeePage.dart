@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:serenity/screen/invoice.dart';
+import 'package:serenity/screen/create_import_order.dart';
 import 'package:serenity/widget/table_employee.dart';
 
 import '../bloc/employee/employee_bloc.dart';
@@ -8,7 +8,7 @@ import '../bloc/importOrder/import_order_bloc.dart';
 import '../common/color.dart';
 import '../model/import_order.dart';
 import '../widget/modal_add_employee.dart';
-import '../widget/table_content.dart';
+import '../widget/table_import_order.dart';
 
 class EmployeePage extends StatefulWidget {
   const EmployeePage({super.key});
@@ -22,7 +22,7 @@ class _EmployeePageState extends State<EmployeePage>
   int tabIndex = 0;
   List<ImportOrder> employees = <ImportOrder>[];
 
-  final PageController tabController = PageController();
+  // final PageController tabController = PageController();
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,7 @@ class _EmployeePageState extends State<EmployeePage>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TabController _tabController = TabController(length: 4, vsync: this);
+    TabController tabController = TabController(length: 4, vsync: this);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFEBFDF2),
@@ -109,7 +109,7 @@ class _EmployeePageState extends State<EmployeePage>
                               width: 550,
                               color: Colors.white,
                               child: TabBar(
-                                  controller: _tabController,
+                                  controller: tabController,
                                   labelColor: CustomColor.second,
                                   unselectedLabelColor: Colors.grey,
                                   indicatorColor: CustomColor.second,
@@ -136,12 +136,12 @@ class _EmployeePageState extends State<EmployeePage>
                             width: double.maxFinite,
                             height: 600,
                             child: TabBarView(
-                                controller: _tabController,
+                                controller: tabController,
                                 children: [
-                                  TableEmployee(employees: state.listEmployee),
-                                  TableEmployee(employees: state.listEmployee),
-                                  TableEmployee(employees: state.listEmployee),
-                                  TableEmployee(employees: state.listEmployee),
+                                  TableEmployee(),
+                                  TableEmployee(),
+                                  TableEmployee(),
+                                  TableEmployee(),
                                 ]),
                           )
                         ],

@@ -2,9 +2,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class InputDropdown extends StatefulWidget {
-  const InputDropdown({super.key, required this.text, required this.listItem});
+  const InputDropdown(
+      {super.key,
+      required this.text,
+      required this.listItem,
+      required this.onSave,
+      required this.initValue});
   final String text;
   final List<String> listItem;
+  final Function onSave;
+  final String initValue;
   @override
   State<InputDropdown> createState() => _InputDropdownState();
 }
@@ -30,6 +37,7 @@ class _InputDropdownState extends State<InputDropdown> {
             child: Padding(
               padding: EdgeInsets.only(bottom: 0),
               child: DropdownButtonFormField2(
+                value: widget.initValue != '' ? widget.initValue : null,
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
@@ -71,7 +79,9 @@ class _InputDropdownState extends State<InputDropdown> {
                 validator: (value) {
                   if (value == null) {}
                 },
-                onChanged: (value) {},
+                onChanged: (value) {
+                  widget.onSave(value);
+                },
                 onSaved: (value) {},
               ),
             ),

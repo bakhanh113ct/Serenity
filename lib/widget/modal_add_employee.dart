@@ -98,24 +98,27 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                 child: Row(children: [
                   Expanded(
                       child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
                       Stack(children: [
                         image == null
                             ? Container(
                                 // margin: EdgeInsets.only(top: 50),
-                                height: 180,
-                                width: 180,
-                                child: CircleAvatar(
+                                height: 170,
+                                width: 170,
+                                child: const CircleAvatar(
                                   backgroundColor: Colors.white,
                                   backgroundImage: NetworkImage(
                                       'https://firebasestorage.googleapis.com/v0/b/serenity-8fd4f.appspot.com/o/user.png?alt=media&token=e7581652-8c21-4952-aeb9-72a37922c6c7'),
                                 ))
                             : Container(
                                 // margin: EdgeInsets.only(top: 50),
-                                height: 180,
-                                width: 180,
+                                height: 170,
+                                width: 170,
                                 child: CircleAvatar(
                                   backgroundImage: FileImage(File(image!.path)),
                                 )),
@@ -123,11 +126,11 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             bottom: 0,
                             right: 0,
                             child: Material(
-                              color: Color(0xFFD9D9D9),
+                              color: const Color(0xFFD9D9D9),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
+                                  const BorderRadius.all(Radius.circular(50)),
                               child: IconButton(
-                                  padding: EdgeInsets.all(0),
+                                  padding: const EdgeInsets.all(0),
                                   splashRadius: 25,
                                   splashColor: Colors.grey,
                                   onPressed: () async {
@@ -140,14 +143,14 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                       this.image = image;
                                     });
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit,
                                     size: 20,
                                   )),
                             ))
                       ]),
-                      SizedBox(
-                        height: 39,
+                      const SizedBox(
+                        height: 14,
                       ),
                       InputEmployee(
                         text: 'Phone number',
@@ -192,10 +195,6 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                         icon: Icons.abc,
                         onPress: () {},
                       ),
-                      // InputEmployee(
-                      //   text: 'Position',
-                      //   controller: positionController,
-                      // ),
                       InputEmployee(
                         text: 'Password',
                         controller: passwordController,
@@ -217,18 +216,20 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                     onPressed: () {
                       Navigator.pop(context, 'Cancel');
                     },
-                    child: Text(
+                    child: const Text(
                       'Cancle ',
                       style: TextStyle(fontSize: 20),
                     ),
                     style: ButtonStyle(
-                        maximumSize: MaterialStateProperty.all(Size(110, 60)),
+                        maximumSize:
+                            MaterialStateProperty.all(const Size(110, 60)),
                         padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 15)),
+                            const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 15)),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xFF226B3F))),
+                            MaterialStateProperty.all(const Color(0xFF226B3F))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   BlocBuilder<EmployeeBloc, EmployeeState>(
@@ -259,18 +260,18 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             debugPrint('điền đầy đủ thông tin');
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           'Save ',
                           style: TextStyle(fontSize: 20),
                         ),
                         style: ButtonStyle(
                             maximumSize:
-                                MaterialStateProperty.all(Size(110, 60)),
+                                MaterialStateProperty.all(const Size(110, 60)),
                             padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(
+                                const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 15)),
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFF226B3F))),
+                            backgroundColor: MaterialStateProperty.all(
+                                const Color(0xFF226B3F))),
                       );
                     },
                   ),
@@ -289,18 +290,18 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Position',
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Container(
             height: 75,
             width: 300,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 26),
+              padding: const EdgeInsets.only(bottom: 26),
               child: DropdownButtonFormField2(
                 decoration: InputDecoration(
                   // hintText: 'Choose one',

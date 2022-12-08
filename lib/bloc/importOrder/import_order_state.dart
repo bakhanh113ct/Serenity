@@ -15,7 +15,7 @@ class ImportOrderLoaded extends ImportOrderState {
   ImportOrderLoaded({required this.listImportOrder});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [listImportOrder];
 }
 
 class ImportOrderError extends ImportOrderState {}

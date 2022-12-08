@@ -1,17 +1,22 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:serenity/model/party_import_order.dart';
+import 'package:intl/intl.dart';
+import 'package:serenity/model/product_import_order.dart';
+import 'package:serenity/widget/modal_add_product_import_order.dart';
+import 'package:serenity/widget/modal_edit_product_import_order.dart';
 import 'package:serenity/widget/table_product.dart';
-import '../widget/table_content.dart';
+import '../widget/table_import_order.dart';
 
-class Invoice extends StatefulWidget {
-  const Invoice({super.key});
+class CreateImportOrder extends StatefulWidget {
+  const CreateImportOrder({super.key});
 
   @override
-  State<Invoice> createState() => _InvoiceState();
+  State<CreateImportOrder> createState() => _CreateImportOrderState();
 }
 
-class _InvoiceState extends State<Invoice> {
+class _CreateImportOrderState extends State<CreateImportOrder> {
   DateTime selectedDate = DateTime.now();
   _selectDate(BuildContext context, String party) async {
     final DateTime? picked = await showDatePicker(
@@ -20,7 +25,7 @@ class _InvoiceState extends State<Invoice> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null)
       setState(() {
         selectedDate = picked;
         if (party == 'A') {
@@ -62,6 +67,8 @@ class _InvoiceState extends State<Invoice> {
   late TextEditingController noteController;
 
   late List<TextEditingController> listController;
+  List<ProductImportOrder> products = <ProductImportOrder>[];
+
   @override
   void initState() {
     enterpriseNameAControler = TextEditingController();
@@ -119,6 +126,17 @@ class _InvoiceState extends State<Invoice> {
 
   final _formKey = GlobalKey<FormState>();
   bool isValidate = false;
+
+  String caculateTotal() {
+    int total = 0;
+
+    final format = NumberFormat("###,###.###", "tr_TR");
+    products.forEach((element) {
+      total += (element.amount!) * int.parse(element.product!.price!);
+    });
+    return format.format(total);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,12 +158,12 @@ class _InvoiceState extends State<Invoice> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Container(
-                padding: EdgeInsets.all(16),
-                height: MediaQuery.of(context).size.height + 5,
+                padding: const EdgeInsets.all(16),
+                height: MediaQuery.of(context).size.height - 50,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -159,7 +177,7 @@ class _InvoiceState extends State<Invoice> {
                             color: Color(0xFF226B3F),
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 22,
                       ),
                       Row(
@@ -189,7 +207,7 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 22,
                       ),
                       Row(
@@ -221,7 +239,7 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 22,
                       ),
                       Row(
@@ -255,11 +273,11 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: SizedBox(
                           child: Divider(
                             height: 1,
@@ -267,7 +285,7 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
                       const Text(
@@ -278,7 +296,7 @@ class _InvoiceState extends State<Invoice> {
                             color: Color(0xFF226B3F),
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
                       Row(
@@ -308,7 +326,7 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
                       Row(
@@ -340,7 +358,7 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 22,
                       ),
                       Row(
@@ -374,56 +392,23 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
-
-                      // Align(
-                      //   alignment: Alignment.bottomRight,
-                      //   child: ElevatedButton(
-                      //     onPressed: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //             builder: (context) => ProductInvoice(),
-                      //           ));
-                      //     },
-                      //     child: Row(
-                      //       children: [
-                      //         Text(
-                      //           'Next ',
-                      //           style: TextStyle(fontSize: 20),
-                      //         ),
-                      //         Icon(
-                      //           Icons.arrow_right,
-                      //           size: 30,
-                      //         )
-                      //       ],
-                      //     ),
-                      //     style: ButtonStyle(
-                      //         maximumSize:
-                      //             MaterialStateProperty.all(Size(110, 60)),
-                      //         padding: MaterialStateProperty.all(
-                      //             EdgeInsets.symmetric(
-                      //                 vertical: 16, horizontal: 15)),
-                      //         backgroundColor: MaterialStateProperty.all(
-                      //             Color(0xFF226B3F))),
-                      //   ),
-                      // )
                     ]),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 100),
+                padding: const EdgeInsets.symmetric(horizontal: 100),
                 height: 64,
-                child: Divider(
+                child: const Divider(
                   height: 1,
                   color: Colors.black,
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 // height: 240 + 50 * 10,
-                height: 760,
+                height: MediaQuery.of(context).size.height - 100,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -457,40 +442,122 @@ class _InvoiceState extends State<Invoice> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
-                      const Text(
-                        'Party B (Buyer)',
-                        style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 20,
-                            color: Color(0xFF226B3F),
-                            fontWeight: FontWeight.w500),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'List Product',
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 22,
+                                color: Color(0xFF226B3F),
+                                fontWeight: FontWeight.w500),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                content: ModalAddProductImportOrder(
+                                    products: products),
+                              ),
+                            ).then((value) {
+                              if (value != null) {
+                                ProductImportOrder productImportOrder =
+                                    ProductImportOrder.fromJson(
+                                        jsonDecode(value));
+                                setState(() {
+                                  products.add(productImportOrder);
+                                });
+                              }
+                            }),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'New ',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            style: ButtonStyle(
+                                maximumSize: MaterialStateProperty.all(
+                                    const Size(110, 50)),
+                                padding: MaterialStateProperty.all(
+                                    const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color(0xFF226B3F))),
+                          ),
+                        ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 16,
                       ),
-                      Container(height: 410, child: TableProduct()),
-                      SizedBox(
+                      Container(
+                          height: 410,
+                          child: TableProduct(
+                            key: UniqueKey(),
+                            products: products,
+                            onPress: (name, product, index) {
+                              if (product != null) {
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    content: ModalEditProductImportOrder(
+                                      productImportOrder: product,
+                                    ),
+                                  ),
+                                ).then((value) {
+                                  if (value != null) {
+                                    ProductImportOrder newProduct =
+                                        ProductImportOrder.fromJson(
+                                            jsonDecode(value));
+                                    // setState(() {
+                                    //   products
+                                    //       .where((element) =>
+                                    //           element.product!.name! ==
+                                    //           newProduct.product!.name!)
+                                    //       .first
+                                    //       .amount = newProduct.amount;
+                                    // });
+                                    // print("index" + index.toString());
+                                    setState(() {
+                                      products[index - 2] = newProduct;
+                                    });
+                                    // print(product);
+                                  }
+                                });
+                              } else {
+                                setState(() {
+                                  products.removeWhere((element) =>
+                                      element.product!.name == name);
+                                });
+                              }
+                            },
+                          )),
+                      const SizedBox(
                         height: 16,
                       ),
                       SizedBox(
                         height: 80,
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Note:',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Flexible(
                               child: TextField(
                                 controller: noteController,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 16, horizontal: 16),
                                   enabledBorder: OutlineInputBorder(
@@ -500,21 +567,21 @@ class _InvoiceState extends State<Invoice> {
                                     borderSide: BorderSide(color: Colors.black),
                                   ),
                                 ),
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 70,
                             ),
                             Text(
-                              'Total price: \$200.00',
+                              'Total price: ' + caculateTotal(),
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Align(
@@ -524,27 +591,13 @@ class _InvoiceState extends State<Invoice> {
                             setState(() {
                               isValidate = true;
                             });
-                            FocusScope.of(context).unfocus();
+                            // FocusScope.of(context).unfocus();
+                            // print(products);
 
                             if (_formKey.currentState!.validate() &&
                                 !listController
                                     .any((element) => element.text == '')) {
-                              // PartyImportOrder partyA = PartyImportOrder(
-                              //     name: enterpriseNameAControler.text,
-                              //     address: addressAControler.text,
-                              //     phone: phoneAControler.text,
-                              //     bank: bankAControler.text,
-                              //     atBank: bankOpenAControler.text,
-                              //     authorizedPerson:
-                              //         nameAuthorizedAControler.text,
-                              //     position: positionAuthorizedAControler.text,
-                              //     noAuthorization: int.parse(
-                              //         noLetterAuthorizationAControler.text),
-                              //     dateAuthorization: DateTime.tryParse(
-                              //         dateLetterAuthorizationAControler
-                              //             .text)
-                              //             );
-                              // print(partyA.noAuthorization);
+                              print('â');
                               CollectionReference importOrder =
                                   FirebaseFirestore.instance
                                       .collection('ImportOrder');
@@ -576,11 +629,10 @@ class _InvoiceState extends State<Invoice> {
                                 'dateCreated': dateCreated,
                                 'atPlace': placeControler.text,
                                 'note': noteController.text,
-                                'totalPrice': 200,
+                                'totalPrice': caculateTotal(),
                                 'status': 'pending',
-                                'listProduct': [
-                                  {'id': "idnef", 'price': 1000}
-                                ]
+                                'listProduct':
+                                    products.map((e) => e.toJson()).toList()
                               }).then((value) => importOrder
                                   .doc(value.id)
                                   .update({'idImportOrder': value.id}));
@@ -588,24 +640,24 @@ class _InvoiceState extends State<Invoice> {
                           },
                           child: Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Next ',
                                 style: TextStyle(fontSize: 20),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_right,
                                 size: 30,
                               )
                             ],
                           ),
                           style: ButtonStyle(
-                              maximumSize:
-                                  MaterialStateProperty.all(Size(110, 60)),
+                              maximumSize: MaterialStateProperty.all(
+                                  const Size(110, 60)),
                               padding: MaterialStateProperty.all(
-                                  EdgeInsets.symmetric(
+                                  const EdgeInsets.symmetric(
                                       vertical: 16, horizontal: 15)),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Color(0xFF226B3F))),
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color(0xFF226B3F))),
                         ),
                       )
                     ]),
@@ -627,9 +679,9 @@ class _InvoiceState extends State<Invoice> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             TextFormField(
@@ -656,7 +708,7 @@ class _InvoiceState extends State<Invoice> {
                       )
                     : null,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 // border: OutlineInputBorder(
                 //     borderRadius: BorderRadius.all(Radius.circular(10)),
                 //     borderSide: BorderSide(
@@ -665,22 +717,16 @@ class _InvoiceState extends State<Invoice> {
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: isValidate ? Colors.red : Colors.grey)),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   // borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ],
         ),
       ),
     );
   }
-
-  // @override
-  // // TODO: implement restorationId
-  // String? get restorationId => 'aa';
 }
-
-
