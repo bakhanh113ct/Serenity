@@ -20,12 +20,20 @@ List<String> listTab = ['All Order', 'Completed', 'Continuing', 'Canceled'];
 
 class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
   int tabIndex = 0;
-  List<ImportOrder> employees = <ImportOrder>[];
+  // List<ImportOrder> importOrders = <ImportOrder>[];
 
   // final PageController tabController = PageController();
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ImportPage oldWidget) {
+    print('oldWidget');
+    BlocProvider.of<ImportOrderBloc>(context).add(LoadImportOrder());
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -63,7 +71,8 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CreateImportOrder()));
+                                  builder: (context) =>
+                                      const CreateImportOrder()));
                         },
                         child: Row(
                           children: [
@@ -86,11 +95,11 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Container(
-                      height: size.height * 0.82,
+                      height: size.height * 0.83,
                       width: size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -132,7 +141,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           ),
                           Container(
                             width: double.maxFinite,
-                            height: 650,
+                            height: size.height * 0.76,
                             child: TabBarView(
                                 controller: tabController,
                                 children: const [

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -102,7 +103,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 600,
+          height: 620,
           width: 600,
           child: Column(
             children: [
@@ -214,9 +215,9 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                       //   icon: Icons.abc,
                       //   onPress: () {},
                       // ),
-                      combobox('State'),
+                      comboBox('State'),
 
-                      combobox('Position'),
+                      comboBox('Position'),
                     ],
                   )),
                 ]),
@@ -227,92 +228,109 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<EmployeeBloc>()
-                          .add(ResetPassword(email: widget.user.email!));
-                    },
-                    child: Text(
-                      'Reset Password ',
-                      style: TextStyle(fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<EmployeeBloc>()
+                            .add(ResetPassword(email: widget.user.email!));
+                      },
+                      child: Text(
+                        'Reset Password ',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      style: ButtonStyle(
+                          // maximumSize: MaterialStateProperty.all(Size(110, 60)),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 15)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xFF226B3F))),
                     ),
-                    style: ButtonStyle(
-                        // maximumSize: MaterialStateProperty.all(Size(110, 60)),
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 15)),
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xFF226B3F))),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context, 'Cancel');
-                        },
-                        child: Text(
-                          'Cancle ',
-                          style: TextStyle(fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context, 'Cancel');
+                          },
+                          child: Text(
+                            'Cancle ',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          style: ButtonStyle(
+                              // maximumSize:
+                              //     MaterialStateProperty.all(Size(110, 60)),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 15)),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFF226B3F))),
                         ),
-                        style: ButtonStyle(
-                            // maximumSize:
-                            //     MaterialStateProperty.all(Size(110, 60)),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 15)),
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFF226B3F))),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      BlocBuilder<EmployeeBloc, EmployeeState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  !listController
-                                      .any((element) => element.text == '') &&
-                                  positionValue != null) {
-                                model_user.User user = model_user.User(
-                                  fullName: nameController.text,
-                                  address: addressController.text,
-                                  dateOfBirth:
-                                      Timestamp.fromDate(selectedDate!),
-                                  email: emailController.text,
-                                  idUser: widget.user.idUser,
-                                  image: image != null
-                                      ? image!.path
-                                      : widget.user.image,
-                                  phone: phoneController.text,
-                                  position: positionValue,
-                                  salary: int.tryParse(
-                                      salaryController.text.toString()),
-                                );
-                                context
-                                    .read<EmployeeBloc>()
-                                    .add(UpdateEmployee(user: user));
-                              } else {
-                                debugPrint('điền đầy đủ thông tin');
-                              }
-                            },
-                            child: Text(
-                              'Save ',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            style: ButtonStyle(
-                                // maximumSize:
-                                //     MaterialStateProperty.all(Size(110, 60)),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 15)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFF226B3F))),
-                          );
-                        },
-                      ),
-                    ],
+                        SizedBox(
+                          width: 20,
+                        ),
+                        BlocBuilder<EmployeeBloc, EmployeeState>(
+                          builder: (context, state) {
+                            return ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate() &&
+                                    !listController
+                                        .any((element) => element.text == '') &&
+                                    positionValue != null) {
+                                  model_user.User user = model_user.User(
+                                    fullName: nameController.text,
+                                    address: addressController.text,
+                                    dateOfBirth:
+                                        Timestamp.fromDate(selectedDate!),
+                                    email: emailController.text,
+                                    idUser: widget.user.idUser,
+                                    image: image != null
+                                        ? image!.path
+                                        : widget.user.image,
+                                    phone: phoneController.text,
+                                    position: positionValue,
+                                    salary: int.tryParse(
+                                        salaryController.text.toString()),
+                                  );
+                                  context
+                                      .read<EmployeeBloc>()
+                                      .add(UpdateEmployee(user: user));
+                                  Flushbar(
+                                    flushbarPosition: FlushbarPosition.TOP,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 300, vertical: 16),
+                                    borderRadius: BorderRadius.circular(8),
+                                    flushbarStyle: FlushbarStyle.FLOATING,
+                                    title: 'Notification',
+                                    message: 'Update information successful',
+                                    duration: const Duration(seconds: 3),
+                                  ).show(context);
+                                } else {
+                                  // debugPrint('điền đầy đủ thông tin');
+                                }
+                              },
+                              child: Text(
+                                'Save ',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              style: ButtonStyle(
+                                  // maximumSize:
+                                  //     MaterialStateProperty.all(Size(110, 60)),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 15)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color(0xFF226B3F))),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               )
@@ -323,7 +341,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
     );
   }
 
-  Padding combobox(String text) {
+  Padding comboBox(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(

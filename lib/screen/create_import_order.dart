@@ -127,7 +127,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
   final _formKey = GlobalKey<FormState>();
   bool isValidate = false;
 
-  String caculateTotal() {
+  String calculateTotal() {
     int total = 0;
 
     final format = NumberFormat("###,###.###", "tr_TR");
@@ -163,7 +163,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
               ),
               Container(
                 padding: const EdgeInsets.all(16),
-                height: MediaQuery.of(context).size.height - 50,
+                height: MediaQuery.of(context).size.height - 20,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -408,7 +408,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
               Container(
                 padding: const EdgeInsets.all(16),
                 // height: 240 + 50 * 10,
-                height: MediaQuery.of(context).size.height - 100,
+                height: MediaQuery.of(context).size.height - 50,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -498,47 +498,68 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       ),
                       Container(
                           height: 410,
-                          child: TableProduct(
-                            key: UniqueKey(),
-                            products: products,
-                            onPress: (name, product, index) {
-                              if (product != null) {
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    content: ModalEditProductImportOrder(
-                                      productImportOrder: product,
-                                    ),
+                          child: products.length > 0
+                              ? TableProduct(
+                                  key: UniqueKey(),
+                                  products: products,
+                                  onPress: (name, product, index) {
+                                    if (product != null) {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          content: ModalEditProductImportOrder(
+                                            productImportOrder: product,
+                                          ),
+                                        ),
+                                      ).then((value) {
+                                        if (value != null) {
+                                          ProductImportOrder newProduct =
+                                              ProductImportOrder.fromJson(
+                                                  jsonDecode(value));
+                                          setState(() {
+                                            products[index - 2] = newProduct;
+                                          });
+                                        }
+                                      });
+                                    } else {
+                                      setState(() {
+                                        products.removeWhere((element) =>
+                                            element.product!.name == name);
+                                      });
+                                    }
+                                  },
+                                )
+                              : Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Image(
+                                            height: 250,
+                                            width: 250,
+                                            image: AssetImage(
+                                                'assets/images/clipboard.png')),
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        'By clicking the "New" button above\nYou can add some product here',
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ))
+                                    ],
                                   ),
-                                ).then((value) {
-                                  if (value != null) {
-                                    ProductImportOrder newProduct =
-                                        ProductImportOrder.fromJson(
-                                            jsonDecode(value));
-                                    // setState(() {
-                                    //   products
-                                    //       .where((element) =>
-                                    //           element.product!.name! ==
-                                    //           newProduct.product!.name!)
-                                    //       .first
-                                    //       .amount = newProduct.amount;
-                                    // });
-                                    // print("index" + index.toString());
-                                    setState(() {
-                                      products[index - 2] = newProduct;
-                                    });
-                                    // print(product);
-                                  }
-                                });
-                              } else {
-                                setState(() {
-                                  products.removeWhere((element) =>
-                                      element.product!.name == name);
-                                });
-                              }
-                            },
-                          )),
+                                )),
                       const SizedBox(
                         height: 16,
                       ),
@@ -574,7 +595,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                               width: 70,
                             ),
                             Text(
-                              'Total price: ' + caculateTotal(),
+                              'Total price: ' + calculateTotal(),
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             ),
@@ -629,7 +650,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                                 'dateCreated': dateCreated,
                                 'atPlace': placeControler.text,
                                 'note': noteController.text,
-                                'totalPrice': caculateTotal(),
+                                'totalPrice': calculateTotal(),
                                 'status': 'pending',
                                 'listProduct':
                                     products.map((e) => e.toJson()).toList()

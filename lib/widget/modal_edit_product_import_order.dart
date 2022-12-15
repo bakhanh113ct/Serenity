@@ -28,19 +28,21 @@ class _ModalEditProductImportOrderState
   final noteController = TextEditingController();
   List<Product> listProduct = [];
   List<String> listDropdown = [];
-  String price = '';
+  String price = '', amount = '';
   final _formKey = GlobalKey<FormState>();
   String nameProduct = '';
   @override
   void initState() {
     nameProduct = widget.productImportOrder.product!.name!;
-    priceController.text = widget.productImportOrder.product!.price!;
+    priceController.text =
+        formatPrice(widget.productImportOrder.product!.price!);
     amountController.text = widget.productImportOrder.amount!.toString();
-    totalPriceController.text =
+    totalPriceController.text = formatPrice(
         (int.parse(widget.productImportOrder.product!.price!) *
                 widget.productImportOrder.amount!)
-            .toString();
+            .toString());
     price = widget.productImportOrder.product!.price!;
+    amount = widget.productImportOrder.amount!.toString();
     inventoryController.text = widget.productImportOrder.product!.category!;
     noteController.text = widget.productImportOrder.note!;
 
@@ -54,6 +56,13 @@ class _ModalEditProductImportOrderState
     });
 
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // priceController.text =
+    //     formatPrice(widget.productImportOrder.product!.price!);
+    super.didChangeDependencies();
   }
 
   @override
@@ -98,7 +107,11 @@ class _ModalEditProductImportOrderState
                             controller: inventoryController,
                             icon: Icons.abc_outlined,
                             onPress: () {}),
-                        inputAmount(),
+                        InputEmployee(
+                            text: 'Note',
+                            controller: noteController,
+                            icon: Icons.abc,
+                            onPress: () {}),
                       ],
                     ),
                   ),
@@ -110,11 +123,7 @@ class _ModalEditProductImportOrderState
                           controller: priceController,
                           icon: Icons.abc_outlined,
                           onPress: () {}),
-                      InputEmployee(
-                          text: 'Note',
-                          controller: noteController,
-                          icon: Icons.abc,
-                          onPress: () {}),
+                      inputAmount(),
                       InputEmployee(
                           text: 'Total Price',
                           controller: totalPriceController,
@@ -209,6 +218,7 @@ class _ModalEditProductImportOrderState
             TextFormField(
               keyboardType: TextInputType.number,
               onChanged: (value) {
+                amount = value;
                 final format = NumberFormat("###,###.###", "tr_TR");
                 if (value == '')
                   totalPriceController.text = priceController.text;
@@ -240,6 +250,12 @@ class _ModalEditProductImportOrderState
     );
   }
 
+  String formatPrice(price) {
+    final format = NumberFormat("###,###.###", "tr_TR");
+    String result = format.format(int.parse(price));
+    return result;
+  }
+
   void changeData(nameProduct) {
     final format = NumberFormat("###,###.###", "tr_TR");
     Product product =
@@ -248,5 +264,9 @@ class _ModalEditProductImportOrderState
     this.nameProduct = product.name!;
     priceController.text = format.format(int.parse(product.price!)).toString();
     inventoryController.text = product.category!;
+    if (amountController.text != '') {
+      totalPriceController.text =
+          format.format(int.parse(price) * int.parse(amount));
+    }
   }
 }

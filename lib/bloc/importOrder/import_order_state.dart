@@ -12,7 +12,7 @@ class ImportOrderLoading extends ImportOrderState {}
 class ImportOrderLoaded extends ImportOrderState {
   final List<ImportOrder> listImportOrder;
 
-  ImportOrderLoaded({required this.listImportOrder});
+  const ImportOrderLoaded({required this.listImportOrder});
 
   @override
   List<Object> get props => [listImportOrder];

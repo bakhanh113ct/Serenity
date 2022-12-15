@@ -22,6 +22,9 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
   late TextEditingController inWordsController;
   late TextEditingController noteController;
   late TextEditingController descriptionController;
+  late TextEditingController chiefAccountantController;
+  late TextEditingController cashierController;
+  late TextEditingController voteMakerController;
   DateTime? selectedDate;
   @override
   void initState() {
@@ -32,6 +35,9 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
     inWordsController = TextEditingController();
     noteController = TextEditingController();
     descriptionController = TextEditingController();
+    chiefAccountantController = TextEditingController();
+    cashierController = TextEditingController();
+    voteMakerController = TextEditingController();
     selectedDate = DateTime.now();
     super.initState();
   }
@@ -61,7 +67,7 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
             child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                 height: 16,
@@ -113,6 +119,15 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
                                         controller: totalController,
                                         onPress: () {},
                                         textInputType: TextInputType.text)),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: InputImportVoucher(
+                                        text: 'Chief accountant',
+                                        icon: Icons.abc,
+                                        controller: chiefAccountantController,
+                                        onPress: () {},
+                                        textInputType: TextInputType.text)),
                               ],
                             ),
                           ),
@@ -143,6 +158,15 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
                                         controller: inWordsController,
                                         onPress: () {},
                                         textInputType: TextInputType.text)),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: InputImportVoucher(
+                                        text: 'Cashier',
+                                        icon: Icons.abc,
+                                        controller: cashierController,
+                                        onPress: () {},
+                                        textInputType: TextInputType.text)),
                               ],
                             ),
                           ),
@@ -171,6 +195,15 @@ class _PaymentVoucherState extends State<PaymentVoucher> {
                                         text: 'Description',
                                         icon: Icons.abc,
                                         controller: descriptionController,
+                                        onPress: () {},
+                                        textInputType: TextInputType.text)),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: InputImportVoucher(
+                                        text: 'Vote maker',
+                                        icon: Icons.abc,
+                                        controller: voteMakerController,
                                         onPress: () {},
                                         textInputType: TextInputType.text)),
                               ],
