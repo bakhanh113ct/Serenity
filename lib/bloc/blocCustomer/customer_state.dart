@@ -1,9 +1,18 @@
 part of 'customer_bloc.dart';
 
 class CustomerState extends Equatable {
-  final List<Customer> allCustomers;
-  const CustomerState({this.allCustomers = const <Customer>[]});
+  const CustomerState();
 
   @override
-  List<Object> get props => [allCustomers];
+  List<Object> get props => [];
+}
+class CustomerInitial extends CustomerState {}
+
+class CustomerLoading extends CustomerState {}
+
+class CustomerLoaded extends CustomerState {
+  List<Customer> myData;
+  CustomerLoaded(this.myData);
+  @override
+  List<Object> get props => [myData];
 }

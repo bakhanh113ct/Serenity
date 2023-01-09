@@ -4,22 +4,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../model/Customer.dart';
+import '../../model/customer.dart';
 
 class CustomerRepository {
-  getListCustomers() async {
+  //get list customers from firebase
+  final _fireCloud = FirebaseFirestore.instance.collection('Customer');
+
+  Future<List<Customer>> get() async {
     List<Customer> allCustomers = [];
-    await FirebaseFirestore.instance.collection("Customers").get().then((doc) {
+    await _fireCloud.get().then((doc) {
        doc.docs.forEach(
       (customer) {
-        allCustomers.add(Customer.fromMap(customer.data()).copyWith(id: customer.id));
+        allCustomers.add(Customer.fromJson(customer.data()));
       },
     );
     });
     return allCustomers;
   }
 
-  uploadAndGetImageUrl(file) async {
+  Future<void> addCustomer(Customer customer) async{
+    await _fireCloud
+      .add(customer.toJson())
+      .then((value) {
+        customer.idCustomer = value.id;
+        updateCustomer(customer);
+      });
+    
+  }
+ Future<void>  updateCustomer(Customer customer) async {
+     await _fireCloud
+        .doc(customer.idCustomer)
+        .update(customer.toJson());
+  }
+  Future<String>  uploadAndGetImageUrl(file) async {
     String imageUrl = '';
     String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference referenceRoot = FirebaseStorage.instance.ref('imagesAvatar');

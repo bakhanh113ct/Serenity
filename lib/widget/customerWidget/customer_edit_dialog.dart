@@ -2,21 +2,23 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 import '../../bloc/blocCustomer/customer_repository.dart';
-import '../../model/Customer.dart';
+import '../../model/customer.dart';
 import 'package:date_field/date_field.dart';
-import 'package:intl/intl.dart';
 class CustomerEditDialog extends StatefulWidget {
   const CustomerEditDialog({
     Key? key,
-    required this.id,
+    required this.idCustomer,
     required this.title,
+    required this.isEdit,
   }) : super(key: key);
-  final String id;
+  final String idCustomer;
   final String title;
+  final bool isEdit;
   @override
   State<CustomerEditDialog> createState() => _CustomerEditDialogState();
 }
@@ -24,25 +26,25 @@ class CustomerEditDialog extends StatefulWidget {
 class _CustomerEditDialogState extends State<CustomerEditDialog> {
   XFile? imageAvatar;
 
-  String  defaultImageUrl = 'https://firebasestorage.googleapis.com/v0/b/serenity-8fd4f.appspot.com/o/4043232-avatar-batman-comics-hero_113278.png?alt=media&token=2e58b0ea-2708-4269-83aa-1f1f60d0ac15';
+  String  defaultImage = 'https://firebasestorage.googleapis.com/v0/b/serenity-8fd4f.appspot.com/o/4043232-avatar-batman-comics-hero_113278.png?alt=media&token=2e58b0ea-2708-4269-83aa-1f1f60d0ac15';
   var initValues = {
     'name': '',
     'address': '',
     'phone': '',
     'email': '',
-    'dateOfBirth': DateFormat('yyyy-MM-dd').format( DateTime.now()),
-    'imageUrl': '',
+    'dateOfBirth': Timestamp.now(),
+    'image': '',
   };
   var editCustomer = Customer(
-      id: '',
+      idCustomer: '',
       name: '',
       address: '',
       email: '',
       phone: '',
-      dateOfBirth: '',
-      imageUrl: '');
+      dateOfBirth: Timestamp.now(),
+      image: '');
   final _form = GlobalKey<FormState>();
-
+  var isLoading = true;
   void _saveForm(BuildContext context) async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
@@ -50,13 +52,13 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
     }
     _form.currentState!.save();
 
-    if (editCustomer.id == '') {
+    if (editCustomer.idCustomer == '') {
       //add customer
       if(imageAvatar == null){
-        editCustomer = editCustomer.copyWith(imageUrl: defaultImageUrl);
+        editCustomer = editCustomer.copyWith(image: defaultImage);
       } else{
-       String imageUrl = await CustomerRepository().uploadAndGetImageUrl(imageAvatar);
-       editCustomer = editCustomer.copyWith(imageUrl: imageUrl);       
+       String image = await CustomerRepository().uploadAndGetImageUrl(imageAvatar);
+       editCustomer = editCustomer.copyWith(image: image);       
       }
       if (!mounted) return;
       context.read<CustomerBloc>().add(AddCustomer(customer: editCustomer));
@@ -67,10 +69,10 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
     } else {
       // update customer
       if(imageAvatar == null ){
-        editCustomer = editCustomer.imageUrl.isEmpty ? editCustomer.copyWith(imageUrl: defaultImageUrl) : editCustomer;
+        editCustomer = editCustomer.image!.isEmpty ? editCustomer.copyWith(image: defaultImage) : editCustomer;
       } else{
-       String imageUrl = await CustomerRepository().uploadAndGetImageUrl(imageAvatar);
-       editCustomer = editCustomer.copyWith(imageUrl: imageUrl);       
+       String image = await CustomerRepository().uploadAndGetImageUrl(imageAvatar);
+       editCustomer = editCustomer.copyWith(image: image);       
       }
       if (!mounted) return;
       context.read<CustomerBloc>().add(UpdateCustomer(customer: editCustomer));
@@ -84,6 +86,7 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
   }
 
   void pickImageFromDevice() async {
+    if(!widget.isEdit) return;
     final ImagePicker picker = ImagePicker();
     final img = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -92,6 +95,7 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
   }
 
   void pickImageFromCamera() async {
+    if (!widget.isEdit) return;
     final ImagePicker picker = ImagePicker();
     final img = await picker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -106,30 +110,50 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (widget.id == '') {
+  void didChangeDependencies() async {
+    if(!mounted) return;
+    if (widget.idCustomer == '') {
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
-    editCustomer = BlocProvider.of<CustomerBloc>(context)
-        .state
-        .allCustomers
-        .firstWhere((element) => element.id == widget.id);
+    final listCustomers = await CustomerRepository().get();
+    editCustomer = listCustomers
+        .firstWhere((element) => element.idCustomer == widget.idCustomer);
     initValues = {
-      'name': editCustomer.name,
-      'address': editCustomer.address,
-      'phone': editCustomer.phone,
-      'email': editCustomer.email,
-      'imageUrl': editCustomer.imageUrl,
-      'dateOfBirth': editCustomer.dateOfBirth,
+      'name': editCustomer.name!,
+      'address': editCustomer.address!,
+      'phone': editCustomer.phone!,
+      'email': editCustomer.email!,
+      'image': editCustomer.image!,
+      'dateOfBirth': editCustomer.dateOfBirth!,
     };
+       setState(() {
+        isLoading = false;
+      });
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return isLoading ? const Center(child: CircularProgressIndicator(),) : AlertDialog(
       actions: [
-        Row(
+        !widget.isEdit ? Center(
+          child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor, // red as border color
+                ),
+              ),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel')),
+            ),
+        ) : Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
@@ -186,8 +210,8 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                                       imageAvatar == null
                                           ? CircleAvatar(
                                             backgroundColor: Colors.white,
-                                              backgroundImage: editCustomer.imageUrl.isEmpty ? NetworkImage(
-                                                  defaultImageUrl) : NetworkImage(editCustomer.imageUrl) ,
+                                              backgroundImage: editCustomer.image!.isEmpty ? NetworkImage(
+                                                  defaultImage) : NetworkImage(editCustomer.image!) ,
                                               radius: 100,
                                             )
                                           : CircleAvatar(
@@ -227,33 +251,34 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                         },
                         onSaved: (value) {
                           editCustomer = Customer(
-                              id: editCustomer.id,
+                              idCustomer: editCustomer.idCustomer,
                               name: value!,
                               address: editCustomer.address,
                               email: editCustomer.email,
                               phone: editCustomer.phone,
                               dateOfBirth: editCustomer.dateOfBirth,
-                              imageUrl: editCustomer.imageUrl);
+                              image: editCustomer.image);
                         },
+                        enabled: widget.isEdit,
                       ),
                        const SizedBox(
                         height: 10,
                       ),
                       DateTimeFormField(
-                        initialDate: DateTime.parse(initValues['dateOfBirth']!) ,
+                        initialDate: (initValues['dateOfBirth']! as Timestamp).toDate() ,
                         decoration: const InputDecoration(
                             labelText: 'Date Of Birth', border: OutlineInputBorder(), suffixIcon: Icon(Icons.calendar_month)), 
                         mode: DateTimeFieldPickerMode.date, 
-                        initialValue: DateTime.parse(initValues['dateOfBirth']!),               
+                        initialValue: (initValues['dateOfBirth']! as Timestamp).toDate(),               
                         onSaved: (value) {
                           editCustomer = Customer(
-                              id: editCustomer.id,
+                              idCustomer: editCustomer.idCustomer,
                               name: editCustomer.name,
                               address: editCustomer.address,
                               email: editCustomer.email,
                               phone: editCustomer.phone,
-                              dateOfBirth: DateFormat('yyyy-MM-dd').format(value!),
-                              imageUrl: editCustomer.imageUrl);
+                              dateOfBirth: Timestamp.fromDate(value!),
+                              image: editCustomer.image);
                         },
                       ),
                       const SizedBox(
@@ -264,21 +289,16 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                         decoration: const InputDecoration(
                             labelText: 'Address', border: OutlineInputBorder()),
                         textInputAction: TextInputAction.next,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please provide a address.';
-                          }
-                          return null;
-                        },
+                        enabled: widget.isEdit,
                         onSaved: (value) {
                           editCustomer = Customer(
-                              id: editCustomer.id,
+                              idCustomer: editCustomer.idCustomer,
                               name: editCustomer.name,
                               address: value!,
                               email: editCustomer.email,
                               phone: editCustomer.phone,
                               dateOfBirth: editCustomer.dateOfBirth,
-                              imageUrl: editCustomer.imageUrl);
+                              image: editCustomer.image);
                         },
                       ),
                       const SizedBox(
@@ -301,15 +321,16 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                           }
                           return null;
                         },
+                        enabled: widget.isEdit,
                         onSaved: (value) {
                           editCustomer = Customer(
-                              id: editCustomer.id,
+                              idCustomer: editCustomer.idCustomer,
                               name: editCustomer.name,
                               address: editCustomer.address,
                               email: value!,
                               phone: editCustomer.phone,
                               dateOfBirth: editCustomer.dateOfBirth,
-                              imageUrl: editCustomer.imageUrl);
+                              image: editCustomer.image);
                         },
                       ),
                       const SizedBox(
@@ -333,14 +354,15 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
                         },
                         onSaved: (value) {
                           editCustomer = Customer(
-                              id: editCustomer.id,
+                              idCustomer: editCustomer.idCustomer,
                               name: editCustomer.name,
                               address: editCustomer.address,
                               email: editCustomer.email,
                               phone: value!,
                               dateOfBirth: editCustomer.dateOfBirth,
-                              imageUrl: editCustomer.imageUrl);
+                              image: editCustomer.image);
                         },
+                        enabled: widget.isEdit,
                       ),
                     ],
                   ),

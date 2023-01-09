@@ -1,81 +1,71 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 
-class Customer extends Equatable {
-  final String id;
-  final String name;
-  final String address;
-  final String email;
-  final String phone;
-  final String imageUrl;
-  final String dateOfBirth;
-  double? purchased;
+class Customer {
+  String? idCustomer;
+  String? name;
+  Timestamp? dateOfBirth;
+  String? email;
+  String? address;
+  String? image;
+  String? phone;
+  String? purchased;
 
-  Customer({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.email,
-    required this.phone,
-    required this.imageUrl,
-    this.purchased, 
-    required this.dateOfBirth,
-  }) {
-    purchased = 0;
+  Customer( 
+      {this.idCustomer,
+      this.name,
+      this.dateOfBirth,
+      this.email,
+      this.address,
+      this.image,
+      this.phone,
+      this.purchased = '0'});
+
+  Customer.fromJson(Map<String, dynamic> json) {
+    idCustomer = json['idCustomer'];
+    name = json['name'];
+    dateOfBirth = json['dateOfBirth'];
+    email = json['email'];
+    address = json['address'];
+    image = json['image'];
+    phone = json['phone'];
+    purchased = json['purchased'];
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idCustomer'] = idCustomer;
+    data['name'] = name;
+    data['dateOfBirth'] = dateOfBirth;
+    data['email'] = email;
+    data['address'] = address;
+    data['image'] = image;
+    data['phone'] = phone;
+    data['purchased'] = purchased;
+    return data;
+  }
+  
 
   Customer copyWith({
-    String? id,
+    String? idCustomer,
     String? name,
-    String? address,
+    Timestamp? dateOfBirth,
     String? email,
+    String? address,
+    String? image,
     String? phone,
-    String? imageUrl,
-    String? dateOfBirth,
-    double? purchased,
+    String? purchased,
   }) {
     return Customer(
-      id: id ?? this.id,
+      idCustomer: idCustomer ??  this.idCustomer,
       name: name ?? this.name,
-      address: address ?? this.address,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       email: email ?? this.email,
+      address: address ?? this.address,
+      image: image ?? this.image,
       phone: phone ?? this.phone,
       purchased: purchased ?? this.purchased,
-      imageUrl: imageUrl ?? this.imageUrl,
-      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'address': address,
-      'email': email,
-      'phone': phone,
-      'imageUrl': imageUrl,
-      'dateOfBirth': dateOfBirth,
-      'purchased': purchased,
-    };
-  }
-
-  factory Customer.fromMap(Map<String, dynamic> map) {
-    return Customer(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      address: map['address'] as String,
-      email: map['email'] as String,
-      phone: map['phone'] as String,
-      imageUrl: map['imageUrl'] as String,
-      dateOfBirth: map['dateOfBirth'] as String,
-      purchased: map['purchased'] != null ? map['purchased'] as double : null,
-    );
-  }
-
-  @override
-  List<Object?> get props =>
-      [id, name, address, email, phone, purchased, imageUrl, dateOfBirth];
-
 }

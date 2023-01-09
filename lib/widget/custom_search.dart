@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 
-import '../../datasource/customer_datasource.dart';
+import 'customerWidget/customer_datasource.dart';
 
-class CustomerSearch extends StatefulWidget {
-  const CustomerSearch({super.key, required this.customerDataSource});
-  final CustomerDataSource customerDataSource;
+class CustomSearch extends StatefulWidget {
+  const CustomSearch({super.key, required this.onChangeText});
+  // final CustomerDataSource customerDataSource;
+  final Function onChangeText;
   @override
-  State<CustomerSearch> createState() => _CustomerSearchState();
+  State<CustomSearch> createState() => _CustomSearchState();
 }
 
-class _CustomerSearchState extends State<CustomerSearch> {
+class _CustomSearchState extends State<CustomSearch> {
   final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+
       children: [
         SizedBox(
           height: 40,
-          width: MediaQuery.of(context).size.width * 0.3,
+          
+          width: MediaQuery.of(context).size.width * 0.7,
           child: TextFormField(
             controller: searchController,
             decoration: const InputDecoration(
                 hintText: 'Search here...',
                 suffixIcon: Icon(Icons.search),
                 labelText: 'Search here',
+               contentPadding: EdgeInsets.only(left: 15, top: 10),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20.0)))),
             onChanged: (value) {
-              context.read<CustomerBloc>().add(GetCustomersByFilter(textSearch: value));
-              setState(() {
-                widget.customerDataSource
-                  .updateDataGriDataSource(RowsPerPage.row);
-              });
+              // context.read<CustomerBloc>().add(GetCustomersByFilter(textSearch: value));
+              widget.onChangeText(context, value);
             },
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.text,
+  
           ),
         ),
       ],

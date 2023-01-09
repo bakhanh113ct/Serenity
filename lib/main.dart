@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/bloc/blocTrouble/trouble_bloc.dart';
+import 'package:serenity/bloc/blocTrouble/trouble_repository.dart';
 import 'package:serenity/screen/LoginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:serenity/screen/MainPage.dart';
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => UserBloc()),
         BlocProvider(create: (context) => CustomerBloc()),
+        BlocProvider(create: (context) => TroubleBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

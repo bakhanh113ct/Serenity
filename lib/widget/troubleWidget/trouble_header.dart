@@ -1,9 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:serenity/widget/customerWidget/customer_edit_dialog.dart';
 
-class CustomerHeader extends StatelessWidget {
-  const CustomerHeader({
+
+import 'package:flutter/material.dart';
+
+import 'trouble_edit_dialog.dart';
+
+class TroubleHeader extends StatelessWidget {
+  const TroubleHeader({
     Key? key,
     required this.title,
   }) : super(key: key);
@@ -24,7 +26,6 @@ class CustomerHeader extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.headline1,
                   textAlign: TextAlign.left,
-                  
                 ),
               ),
             ],
@@ -43,10 +44,10 @@ class CustomerHeader extends StatelessWidget {
                   onPressed: () => showDialog(
                     context: context,
                     builder: (context) {
-                      return const CustomerEditDialog(
-                          idCustomer: '',
-                          title: 'Add customer',
-                          isEdit: true,
+                      return const TroubleEditDialog(
+                        idTrouble: '',
+                        title: 'Add Trouble',
+                        isEdit: true,
                       );
                     },
                   ),

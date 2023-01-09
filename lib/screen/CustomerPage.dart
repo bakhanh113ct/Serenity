@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/widget/customerWidget/customer_header.dart';
-import 'package:serenity/widget/customerWidget/customer_paging.dart';
-import 'package:serenity/widget/customerWidget/customer_search.dart';
-import 'package:slide_switcher/slide_switcher.dart';
+import 'package:serenity/widget/custom_search.dart';
 
 import '../bloc/bloc_exports.dart';
-import '../datasource/customer_datasource.dart';
-import '../model/Customer.dart';
+import '../common/color.dart';
+import '../widget/customerWidget/customer_datasource.dart';
+import '../model/customer.dart';
+import '../widget/customerWidget/customer_datagrid.dart';
 import '../widget/customerWidget/customer_list.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -16,40 +16,31 @@ class CustomerPage extends StatefulWidget {
   State<CustomerPage> createState() => _CustomerPageState();
 }
 
-class _CustomerPageState extends State<CustomerPage> {
-  Map<String, double> columnWidths = {
-    'id': 200,
-    'name': 200,
-    'address': 200,
-    'email': 200,
-    'phone': 200,
-    'purchased': 200,
-    'actions': 200,
-    'imageUrl': 200,
-    'dateOfBirth': 200,
-  };
+class _CustomerPageState extends State<CustomerPage>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
   int switcherIndex1 = 0;
   bool isLoading = true;
   final List<Customer> allCustomers = [];
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 1, vsync: this);
     BlocProvider.of<CustomerBloc>(context).add(const GetAllCustomers());
     setState(() {
       isLoading = false;
-      RowsPerPage.row = 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const CircularProgressIndicator()
-        : BlocBuilder<CustomerBloc, CustomerState>(
+    return BlocBuilder<CustomerBloc, CustomerState>(
             builder: (context, state) {
-              CustomerDataSource customerDataSource = CustomerDataSource(
-                  customers: state.allCustomers, context: context);
-              return Scaffold(
+              if(state is CustomerLoading){
+                return const Center(child: CircularProgressIndicator(),);
+              }
+              if (state is CustomerLoaded){
+                return Scaffold(
                 backgroundColor: Theme.of(context).backgroundColor,
                 resizeToAvoidBottomInset: false,
                 body: Column(
@@ -59,130 +50,71 @@ class _CustomerPageState extends State<CustomerPage> {
                     Expanded(
                       flex: 6,
                       child: Container(
-                        margin: const EdgeInsets.all(50),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.7),
-                              spreadRadius: 5,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  0, 1), // changes position of shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: SlideSwitcher(
-                                       containerColor: Colors.transparent,
-                                       containerBorder:
-                                          Border.all(color: Colors.greenAccent, width: 2 ),
-                                      slidersGradients: const [
-                                        LinearGradient(
-                                          colors: [
-                                            Color.fromRGBO(52, 206, 67, 1),
-                                            Color.fromRGBO(8, 166, 66, 1),
-                                          ],
-                                        ),
-                                        
-                                      ],
-                                      
-                                      indents: 2,
-                                      onSelect: (index) =>
-                                          setState(() => switcherIndex1 = index),
-                                      containerHeight: 40,
-                                      containerWight: 350,
-                                      children:  [
-                                        Text('Customers List', style: TextStyle(
-                                          color: switcherIndex1 == 0 ? Colors.white : Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15
-                                        ),),
-                                        Text(
-                                          '...',
-                                          style: TextStyle(
-                                              color: switcherIndex1 == 1
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                          margin: const EdgeInsets.all(50),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.7),
+                                spreadRadius: 5,
+                                blurRadius: 5,
+                                offset: const Offset(
+                                    0, 1), // changes position of shadow
                               ),
-                            ),
-                            if (switcherIndex1 == 0) ...[
-                              Expanded(
-                                flex: 9,
-                                child: CustomerListView(
-                                      customerDataSource: customerDataSource,
-                                      columnWidths: columnWidths)
-                              )
-                            ] else ...[
-                              Expanded(
-                                  flex: 9,
-                                  child: Container()),
-                              
                             ],
-                          ],
-                        ),
-                      ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Column(
+                            children: [
+                                 Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                 
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        
+                                        width: 200,
+                                        padding: const EdgeInsets.all(20),
+                                        child: TabBar(
+                                            controller: _tabController,
+                                            labelColor: CustomColor.second,
+                                            unselectedLabelColor: Colors.grey,
+                                            indicatorColor: CustomColor.second,
+                                            labelStyle: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                            tabs: const [
+                                              Tab(
+                                                text: "All Customers",
+                                              ),
+                                              
+                                            ]),
+                                      ),
+                                    ],
+                                  ),
+                              ),
+                              Expanded(
+                                flex: 8,
+                                child: TabBarView(
+                                    controller: _tabController,
+                                    children: const [
+                                      CustomerList(),
+                                    ]),
+                              )
+                            ],
+                          )),
                     ),
                   ],
                 ),
               );
+              }
+              else{
+                return Container();
+              }
+              
             },
           );
   }
 }
 
-class CustomerListView extends StatelessWidget {
-  const CustomerListView({
-    Key? key,
-    required this.customerDataSource,
-    required this.columnWidths,
-  }) : super(key: key);
-
-  final CustomerDataSource customerDataSource;
-  final Map<String, double> columnWidths;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: CustomerSearch(customerDataSource: customerDataSource),
-          ),
-          Expanded(
-              flex: 7,
-              child: customerDataSource.allCustomers.isEmpty
-                  ? const Center(child: (Text('No value')))
-                  : CustomerList(
-                      customerDataSource: customerDataSource,
-                      columnWidths: columnWidths)),
-          Expanded(
-              flex: 1,
-              child: customerDataSource.allCustomers.isEmpty
-                  ? Container()
-                  : CustomerPaging(
-                      customerDataSource: customerDataSource,
-                    ))
-        ],
-      ),
-    );
-  }
-}
