@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Order {
+class MyOrder {
   Timestamp? dateCreated;
   String? idCustomer;
   String? idUser;
@@ -11,7 +11,7 @@ class Order {
   String? profit;
   String? status;
 
-  Order(
+  MyOrder(
       {this.dateCreated,
       this.idCustomer,
       this.idUser,
@@ -22,7 +22,7 @@ class Order {
       this.profit,
       this.status});
 
-  Order.fromJson(Map<String, dynamic> json) {
+  MyOrder.fromJson(Map<String, dynamic> json) {
     dateCreated = json['dateCreated'];
     idCustomer = json['idCustomer'];
     idUser = json['idUser'];

@@ -9,10 +9,10 @@ part 'order_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   OrderBloc() : super(OrderInitial()) {
-    List<Order> listAllOrder=[];
-    List<Order> listCompletedOrder=[];
-    List<Order> listPendingOrder=[];
-    List<Order> listCancelledOrder=[];
+    List<MyOrder> listAllOrder=[];
+    List<MyOrder> listCompletedOrder=[];
+    List<MyOrder> listPendingOrder=[];
+    List<MyOrder> listCancelledOrder=[];
     on<LoadOrder>((event, emit) async{
       emit(OrderLoading());
       listAllOrder=await OrderRepository().getOrder();
@@ -24,7 +24,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<SearchAllOrder>((event, emit){
       final state=this.state as OrderLoaded;
       emit(OrderLoading());
-      List<Order> tempSearch;
+      List<MyOrder> tempSearch;
       if(event.query==""){
         tempSearch=listAllOrder;
       }

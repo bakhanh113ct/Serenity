@@ -8,7 +8,7 @@ import '../model/order.dart';
 
 class OrderDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
-  OrderDataSource({required List<Order> orderData}) {
+  OrderDataSource({required List<MyOrder> orderData}) {
     _orderData = orderData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<String>(columnName: 'idOrder', value: e.idOrder!.substring(0,12)),

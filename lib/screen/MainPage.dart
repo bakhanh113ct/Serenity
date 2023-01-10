@@ -8,6 +8,7 @@ import 'package:serenity/screen/OrderPage.dart';
 import 'package:serenity/screen/ProductPage.dart';
 import 'package:serenity/screen/ProfilePage.dart';
 import 'package:serenity/screen/TroublePage.dart';
+import 'package:serenity/screen/cart_page.dart';
 import 'package:serenity/widget/SideBar.dart';
 import 'package:sidebarx/sidebarx.dart';
 

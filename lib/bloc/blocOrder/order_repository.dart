@@ -21,10 +21,10 @@ class OrderRepository {
   final orders = FirebaseFirestore.instance.collection("Order");
   final detailOrders = FirebaseFirestore.instance.collection("DetailOrder");
   getOrder() async {
-    List<Order> listOrder = [];
+    List<MyOrder> listOrder = [];
     await orders.get().then((value) {
       listOrder
-          .addAll(value.docs.map((e) => Order.fromJson(e.data())).toList());
+          .addAll(value.docs.map((e) => MyOrder.fromJson(e.data())).toList());
     });
     return listOrder;
   }
