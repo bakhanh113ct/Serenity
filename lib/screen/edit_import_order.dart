@@ -79,12 +79,13 @@ class _EditImportOrderState extends State<EditImportOrder> {
   late List<ProductImportOrder> products;
   late List<ProductImportOrder> productsOld;
 
+  bool readOnly = false;
   @override
   void initState() {
     // List<ProductImportOrder> products = <ProductImportOrder>[];
     // productsOld = widget.importOrder.listProduct!;
-
     products = widget.listProduct;
+    if (widget.importOrder.status == 'completed') readOnly = true;
 
     enterpriseNameAControler.text = widget.importOrder.nameA!;
     addressAControler.text = widget.importOrder.addressA!;
@@ -190,7 +191,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(16),
-                  height: MediaQuery.of(context).size.height - 50,
+                  height: MediaQuery.of(context).size.height - 20,
                   width: MediaQuery.of(context).size.width - 232,
                   color: Colors.white,
                   child: Column(
@@ -210,30 +211,32 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Name of enterprise:',
-                              enterpriseNameAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (enterpriseNameAControler.text == '')
-                                  : false,
-                            ),
+                                'Name of enterprise:',
+                                enterpriseNameAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (enterpriseNameAControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The head office address:',
-                              addressAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (addressAControler.text == '')
-                                  : false,
-                            ),
+                                'The head office address:',
+                                addressAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (addressAControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Number phone:',
-                              phoneAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate ? (phoneAControler.text == '') : false,
-                            ),
+                                'Number phone:',
+                                phoneAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (phoneAControler.text == '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -242,30 +245,32 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Bank account No:',
-                              bankAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate ? (bankAControler.text == '') : false,
-                            ),
+                                'Bank account No:',
+                                bankAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (bankAControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Opening at bank:',
-                              bankOpenAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (bankOpenAControler.text == '')
-                                  : false,
-                            ),
+                                'Opening at bank:',
+                                bankOpenAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (bankOpenAControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Authorized peson:',
-                              nameAuthorizedAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (nameAuthorizedAControler.text == '')
-                                  : false,
-                            ),
+                                'Authorized peson:',
+                                nameAuthorizedAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (nameAuthorizedAControler.text == '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -274,33 +279,34 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Position:',
-                              positionAuthorizedAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (positionAuthorizedAControler.text == '')
-                                  : false,
-                            ),
+                                'Position:',
+                                positionAuthorizedAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (positionAuthorizedAControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The letter of authorization-NO:',
-                              noLetterAuthorizationAControler,
-                              Icons.abc,
-                              "A",
-                              isValidate
-                                  ? (noLetterAuthorizationAControler.text == '')
-                                  : false,
-                            ),
+                                'The letter of authorization-NO:',
+                                noLetterAuthorizationAControler,
+                                Icons.abc,
+                                "A",
+                                isValidate
+                                    ? (noLetterAuthorizationAControler.text ==
+                                        '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The letter of authorization-Date:',
-                              dateLetterAuthorizationAControler,
-                              Icons.calendar_month,
-                              "A",
-                              isValidate
-                                  ? (dateLetterAuthorizationAControler.text ==
-                                      '')
-                                  : false,
-                            ),
+                                'The letter of authorization-Date:',
+                                dateLetterAuthorizationAControler,
+                                Icons.calendar_month,
+                                "A",
+                                isValidate
+                                    ? (dateLetterAuthorizationAControler.text ==
+                                        '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -332,30 +338,32 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Name of enterprise:',
-                              enterpriseNameBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (enterpriseNameBControler.text == '')
-                                  : false,
-                            ),
+                                'Name of enterprise:',
+                                enterpriseNameBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (enterpriseNameBControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The head office address:',
-                              addressBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (addressBControler.text == '')
-                                  : false,
-                            ),
+                                'The head office address:',
+                                addressBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (addressBControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Number phone:',
-                              phoneBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate ? (phoneBControler.text == '') : false,
-                            ),
+                                'Number phone:',
+                                phoneBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (phoneBControler.text == '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -364,30 +372,32 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Bank account No:',
-                              bankBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate ? (bankBControler.text == '') : false,
-                            ),
+                                'Bank account No:',
+                                bankBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (bankBControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Opening at bank:',
-                              bankOpenBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (bankOpenBControler.text == '')
-                                  : false,
-                            ),
+                                'Opening at bank:',
+                                bankOpenBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (bankOpenBControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'Authorized peson:',
-                              nameAuthorizedBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (nameAuthorizedBControler.text == '')
-                                  : false,
-                            ),
+                                'Authorized peson:',
+                                nameAuthorizedBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (nameAuthorizedBControler.text == '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -396,33 +406,34 @@ class _EditImportOrderState extends State<EditImportOrder> {
                         Row(
                           children: [
                             Input(
-                              'Position:',
-                              positionAuthorizedBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (positionAuthorizedBControler.text == '')
-                                  : false,
-                            ),
+                                'Position:',
+                                positionAuthorizedBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (positionAuthorizedBControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The letter of authorization-NO:',
-                              noLetterAuthorizationBControler,
-                              Icons.abc,
-                              "B",
-                              isValidate
-                                  ? (noLetterAuthorizationBControler.text == '')
-                                  : false,
-                            ),
+                                'The letter of authorization-NO:',
+                                noLetterAuthorizationBControler,
+                                Icons.abc,
+                                "B",
+                                isValidate
+                                    ? (noLetterAuthorizationBControler.text ==
+                                        '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'The letter of authorization-Date:',
-                              dateLetterAuthorizationBControler,
-                              Icons.calendar_month,
-                              "B",
-                              isValidate
-                                  ? (dateLetterAuthorizationBControler.text ==
-                                      '')
-                                  : false,
-                            ),
+                                'The letter of authorization-Date:',
+                                dateLetterAuthorizationBControler,
+                                Icons.calendar_month,
+                                "B",
+                                isValidate
+                                    ? (dateLetterAuthorizationBControler.text ==
+                                        '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -457,24 +468,26 @@ class _EditImportOrderState extends State<EditImportOrder> {
                               isValidate
                                   ? (pursuantControler.text == '')
                                   : false,
-                              // true,
+                              readOnly,
                             ),
                             Input(
-                              'Date created:',
-                              dateCreatedControler,
-                              Icons.abc,
-                              "none",
-                              isValidate
-                                  ? (dateCreatedControler.text == '')
-                                  : false,
-                            ),
+                                'Date created:',
+                                dateCreatedControler,
+                                Icons.abc,
+                                "none",
+                                isValidate
+                                    ? (dateCreatedControler.text == '')
+                                    : false,
+                                readOnly),
                             Input(
-                              'At place:',
-                              placeControler,
-                              Icons.abc,
-                              "none",
-                              isValidate ? (placeControler.text == '') : false,
-                            ),
+                                'At place:',
+                                placeControler,
+                                Icons.abc,
+                                "none",
+                                isValidate
+                                    ? (placeControler.text == '')
+                                    : false,
+                                readOnly),
                           ],
                         ),
                         const SizedBox(
@@ -654,7 +667,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
 
                               if (_formKey.currentState!.validate() &&
                                   !listController
-                                      .any((element) => element.text == '')) {
+                                      .any((element) => element.text == '') &&
+                                  widget.importOrder.status != 'completed') {
                                 CollectionReference importOrder =
                                     FirebaseFirestore.instance
                                         .collection('ImportOrder');
@@ -732,24 +746,16 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 //     .update({'idImportOrder': value.id}));
                               }
                             },
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'Next ',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                const Icon(
-                                  Icons.arrow_right,
-                                  size: 30,
-                                )
-                              ],
+                            child: const Text(
+                              'Save ',
+                              style: TextStyle(fontSize: 20),
                             ),
                             style: ButtonStyle(
                                 maximumSize: MaterialStateProperty.all(
-                                    const Size(110, 60)),
+                                    const Size(110, 70)),
                                 padding: MaterialStateProperty.all(
                                     const EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 15)),
+                                        vertical: 16, horizontal: 30)),
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color(0xFF226B3F))),
                           ),
@@ -765,7 +771,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
   }
 
   Flexible Input(text, TextEditingController controller, IconData icon,
-      String party, bool isValidate) {
+      String party, bool isValidate, bool readOnly) {
     return Flexible(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -787,8 +793,9 @@ class _EditImportOrderState extends State<EditImportOrder> {
                 }
                 return null;
               },
-              readOnly: text == 'Date created:' ||
-                  text == 'The letter of authorization-Date:',
+              readOnly: readOnly ||
+                  (text == 'Date created:' ||
+                      text == 'The letter of authorization-Date:'),
               controller: controller,
               // obscureText: true,
               decoration: InputDecoration(

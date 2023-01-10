@@ -17,17 +17,22 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
       // emit(EmployeeLoaded(listEmployee: listEmployee));
 
-      employeeRepository
-          .getEmployee()
-          .listen((event) => add(UpdateListEmployee(listUser: event)));
+      employeeRepository.getEmployee().listen(
+          (event) => add(UpdateListEmployee(searchText: '', listUser: event)));
+    });
+
+    on<UpdateListEmployee>((event, emit) {
+      final employees = event.listUser
+          .where(
+            (e) => e.fullName!.contains(event.searchText),
+          )
+          .toList();
+      emit(EmployeeLoaded(listEmployee: employees));
     });
 
     on<AddEmployee>((event, emit) async {
       employeeRepository.addNewEmployee(event.user, event.password);
     });
-
-    on<UpdateListEmployee>(
-        (event, emit) => {emit(EmployeeLoaded(listEmployee: event.listUser))});
 
     on<UpdateEmployee>(
         (event, emit) => employeeRepository.updateEmployee(event.user));

@@ -47,6 +47,9 @@ dependencies:
   dropdown_button2: ^1.9.1
   intl: ^0.17.0
   another_flushbar: ^1.12.29
+  pdf: ^3.8.4
+  printing: ^5.9.3
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

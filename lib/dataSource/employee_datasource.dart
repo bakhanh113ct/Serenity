@@ -11,23 +11,19 @@ class EmployeeDataSource extends DataGridSource {
 
   /// Creates the employee data source class with required details.
   EmployeeDataSource(
-      {required List<User> employeeData, required Function onPress}) {
-    this.onPress = onPress;
+      {required List<User> employeeData, required Function this.onPress}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<String>(columnName: 'STT', value: e.idUser),
               DataGridCell<String>(columnName: 'name', value: e.fullName),
               DataGridCell<String>(
                   columnName: 'date',
-                  value: e.dateOfBirth!.toDate().day.toString() +
-                      '/' +
-                      e.dateOfBirth!.toDate().month.toString() +
-                      '/' +
-                      e.dateOfBirth!.toDate().year.toString()),
+                  value:
+                      '${e.dateOfBirth!.toDate().day}/${e.dateOfBirth!.toDate().month}/${e.dateOfBirth!.toDate().year}'),
               DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<double>(
                   columnName: 'salary', value: e.salary!.toDouble()),
-              DataGridCell<String>(columnName: 'status', value: 'active'),
+              DataGridCell<String>(columnName: 'status', value: e.state),
               DataGridCell<User>(columnName: 'button', value: e),
             ]))
         .toList();
@@ -42,6 +38,19 @@ class EmployeeDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
+      Color backgroundColor = Colors.white;
+      Color textColor = Colors.white;
+
+      if (e.columnName == 'status') {
+        if (e.value == 'active') {
+          backgroundColor = Color(0xFFDCFBD7);
+          textColor = Color(0xFF5CB16F);
+        } else {
+          backgroundColor = Color(0xFFFFEFEF);
+          textColor = Color(0xFFFD2B2B);
+        }
+      }
+
       return Container(
           alignment: Alignment.centerLeft,
           // height: 100,
@@ -63,15 +72,15 @@ class EmployeeDataSource extends DataGridSource {
               : e.columnName == 'status'
                   ? Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFFDCFBD7),
+                          color: backgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       child: Text(
-                        'complete',
+                        e.value,
                         style: TextStyle(
                             fontSize: 18,
-                            color: Color(0xFF5CB16F),
+                            color: textColor,
                             fontWeight: FontWeight.w500),
                       ),
                     )

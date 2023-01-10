@@ -11,6 +11,7 @@ class User extends Equatable {
   String? image;
   String? position;
   String? address;
+  String? state;
 
   User(
       {this.idUser,
@@ -21,7 +22,8 @@ class User extends Equatable {
       this.salary,
       this.image,
       this.position,
-      this.address});
+      this.address,
+      this.state});
 
   User.fromJson(Map<String, dynamic> json) {
     idUser = json['idUser'];
@@ -33,6 +35,7 @@ class User extends Equatable {
     image = json['image'];
     position = json['position'];
     address = json['address'];
+    state = json['state'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +49,7 @@ class User extends Equatable {
     data['image'] = this.image;
     data['position'] = this.position;
     data['address'] = this.address;
+    data['state'] = this.state;
     return data;
   }
 
@@ -60,5 +64,6 @@ class User extends Equatable {
         image,
         position,
         address,
+        state
       ];
 }
