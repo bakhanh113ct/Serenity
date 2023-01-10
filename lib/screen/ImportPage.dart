@@ -90,7 +90,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                     height: 16,
                   ),
                   Container(
-                      height: size.height * 0.82,
+                      height: size.height * 0.80,
                       width: size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -132,7 +132,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           ),
                           Container(
                             width: double.maxFinite,
-                            height: 650,
+                            height: 600,
                             child: TabBarView(
                                 controller: tabController,
                                 children: const [

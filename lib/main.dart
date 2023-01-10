@@ -13,7 +13,6 @@ import 'bloc/blocOrder/order_bloc.dart';
 import 'package:serenity/bloc/employee/employee_bloc.dart';
 import 'package:serenity/bloc/importOrder/import_order_bloc.dart';
 
-
 import 'bloc/bloc_exports.dart';
 
 void main() async {
@@ -46,10 +45,19 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: "Poppins",
             // canvasColor: Color(0xFF226B3F),
-            primaryColor: Color(0xFF226B3F),
+            primaryColor: const Color(0xFF226B3F),
+            backgroundColor: const Color(0xFFEBFDF2),
             colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: const Color(0xFF226B3F),
               secondary: const Color(0xFF226B3F),
+            ),
+            textTheme: const TextTheme(
+              headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+              headline2: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF226B3F)),
+              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             ),
           ),
           home: Scaffold(
@@ -75,10 +83,11 @@ class MyApp extends StatelessWidget {
 
 Route? getRoute(RouteSettings settings) {
   switch (settings.name) {
-    case Routes.cart:{
-      return MaterialPageRoute(
+    case Routes.cart:
+      {
+        return MaterialPageRoute(
             builder: (context) => const CartPage(), settings: settings);
-    }
+      }
   }
   return null;
 }
