@@ -10,20 +10,21 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../bloc/employee/employee_bloc.dart';
 
 class TableEmployee extends StatefulWidget {
-  const TableEmployee({super.key});
-  // final List<User> employees;
+  const TableEmployee({super.key, required this.state});
+  final String state;
   @override
   State<TableEmployee> createState() => _TableEmployeeState();
 }
 
 class _TableEmployeeState extends State<TableEmployee> {
-  late EmployeeDataSource employeeDataSource;
+  EmployeeDataSource? employeeDataSource;
 
   @override
   void initState() {
     super.initState();
   }
 
+  String searchText = '';
   late Map<String, double> columnWidths = {
     'id': double.nan,
     'name': double.nan,
@@ -45,8 +46,25 @@ class _TableEmployeeState extends State<TableEmployee> {
             if (state is EmployeeLoading) {
               return Container();
             } else if (state is EmployeeLoaded) {
+              List<User> data = state.listEmployee;
+              if (widget.state != 'all') {
+                if (widget.state == 'active') {
+                  data = state.listEmployee
+                      .where((element) => element.state == 'active')
+                      .toList();
+                } else {
+                  data = state.listEmployee
+                      .where((element) => element.state == 'inactive')
+                      .toList();
+                }
+              }
+              List<User> employees = data;
+              employees = data
+                  .where((element) =>
+                      element.fullName!.toLowerCase().contains(searchText))
+                  .toList();
               employeeDataSource = EmployeeDataSource(
-                  employeeData: state.listEmployee,
+                  employeeData: List.from(employees),
                   onPress: (user) {
                     showDialog<String>(
                       // barrierDismissible: false,
@@ -61,12 +79,39 @@ class _TableEmployeeState extends State<TableEmployee> {
                   });
               return Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value;
+                      });
+                      context.read<EmployeeBloc>().add(UpdateListEmployee(
+                          searchText: '', listUser: state.listEmployee));
+                      // print(value);
+                      // employees = data
+                      //     .where((element) => element.fullName!.contains(value))
+                      //     .toList();
+                      // print(employees);
+                      // employeeDataSource = EmployeeDataSource(
+                      //     employeeData: List.from(employees),
+                      //     onPress: (user) {
+                      //       showDialog<String>(
+                      //         // barrierDismissible: false,
+                      //         context: context,
+                      //         builder: (BuildContext context) => AlertDialog(
+                      //           // title: const Text('AlertDialog Title'),
+                      //           content: ModalEditEmployee(
+                      //             user: user,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     });
+                      // setState(() {});
+                    },
                     // obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         border: OutlineInputBorder(
@@ -83,9 +128,9 @@ class _TableEmployeeState extends State<TableEmployee> {
                           color: Colors.black,
                         ),
                         hintText: 'Search for orderID, customer'),
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
@@ -109,7 +154,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                           // });
                           return true;
                         },
-                        source: employeeDataSource,
+                        source: employeeDataSource!,
                         columns: <GridColumn>[
                           GridColumn(
                               width: 60,
@@ -118,7 +163,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(16.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'STT',
                                     style: TextStyle(
                                         fontSize: 20,
@@ -134,7 +179,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Name',
                                     maxLines: 5,
                                     style: TextStyle(
@@ -150,7 +195,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Date of birth',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -164,7 +209,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Email',
                                     style: TextStyle(
                                         fontSize: 20,
@@ -177,7 +222,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Salary',
                                     style: TextStyle(
                                         fontSize: 20,
@@ -190,7 +235,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Status',
                                     style: TextStyle(
                                         fontSize: 20,
@@ -203,7 +248,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                               label: Container(
                                   // padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
+                                  child: const Text(
                                     'Edit',
                                     style: TextStyle(
                                         fontSize: 20,

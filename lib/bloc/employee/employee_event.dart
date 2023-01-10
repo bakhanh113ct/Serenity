@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'employee_bloc.dart';
 
 abstract class EmployeeEvent extends Equatable {
@@ -24,11 +25,15 @@ class AddEmployee extends EmployeeEvent {
 }
 
 class UpdateListEmployee extends EmployeeEvent {
+  final String searchText;
   final List<User> listUser;
 
-  const UpdateListEmployee({required this.listUser});
+  const UpdateListEmployee({
+    required this.searchText,
+    required this.listUser,
+  });
   @override
-  List<Object> get props => [listUser];
+  List<Object> get props => [listUser, searchText];
 }
 
 class UpdateEmployee extends EmployeeEvent {

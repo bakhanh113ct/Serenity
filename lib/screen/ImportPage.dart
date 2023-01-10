@@ -20,12 +20,20 @@ List<String> listTab = ['All Order', 'Completed', 'Continuing', 'Canceled'];
 
 class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
   int tabIndex = 0;
-  List<ImportOrder> employees = <ImportOrder>[];
+  // List<ImportOrder> importOrders = <ImportOrder>[];
 
   // final PageController tabController = PageController();
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ImportPage oldWidget) {
+    print('oldWidget');
+    BlocProvider.of<ImportOrderBloc>(context).add(LoadImportOrder());
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -63,7 +71,8 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CreateImportOrder()));
+                                  builder: (context) =>
+                                      const CreateImportOrder()));
                         },
                         child: Row(
                           children: [
@@ -86,7 +95,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Container(

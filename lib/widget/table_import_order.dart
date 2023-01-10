@@ -23,10 +23,16 @@ class TableImportOrder extends StatefulWidget {
 
 class _TableImportOrderState extends State<TableImportOrder> {
   late ImportOrderDataSource employeeDataSource;
-
+  String searchText = '';
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TableImportOrder oldWidget) {
+    // BlocProvider.of<ImportOrderBloc>(context).add(LoadImportOrder());
+    super.didUpdateWidget(oldWidget);
   }
 
   late Map<String, double> columnWidths = {
@@ -51,26 +57,34 @@ class _TableImportOrderState extends State<TableImportOrder> {
               if (state is ImportOrderLoading) {
                 return Container();
               } else if (state is ImportOrderLoaded) {
+                List<ImportOrder> data = state.listImportOrder;
                 if (widget.tab != 'All') {
-                  List<ImportOrder> importOrders = state.listImportOrder
+                  data = state.listImportOrder
                       .where((element) =>
                           element.status == widget.tab.toLowerCase())
                       .toList();
-                  employeeDataSource = ImportOrderDataSource(
-                      employeeData: importOrders,
-                      context: context,
-                      onPress: (item) {});
-                } else {
-                  employeeDataSource = ImportOrderDataSource(
-                      employeeData: state.listImportOrder,
-                      context: context,
-                      onPress: (item) {});
                 }
+                List<ImportOrder> importOrders = data
+                    .where((element) =>
+                        element.nameB!.toLowerCase().contains(searchText))
+                    .toList();
 
+                employeeDataSource = ImportOrderDataSource(
+                    importOrders: importOrders,
+                    context: context,
+                    onPress: (item) {});
                 return Column(
                   children: [
                     TextField(
-                      decoration: InputDecoration(
+                      onChanged: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
+                        context.read<ImportOrderBloc>().add(
+                            UpdateListImportOrder(
+                                listImportOrder: state.listImportOrder));
+                      },
+                      decoration: const InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           border: OutlineInputBorder(
@@ -87,9 +101,9 @@ class _TableImportOrderState extends State<TableImportOrder> {
                             color: Colors.black,
                           ),
                           hintText: 'Search for orderID, customer'),
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     SingleChildScrollView(
@@ -100,7 +114,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                             gridLineColor: Colors.transparent,
                           ),
                           child: SfDataGrid(
-                            rowHeight: 55,
+                            rowHeight: 60,
                             // onQueryRowHeight: (details) =>
                             //     details.getIntrinsicRowHeight(details.rowIndex),
                             columnWidthMode: ColumnWidthMode.fill,
@@ -130,7 +144,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'STT',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -148,7 +162,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                         'Supplier Name',
                                         maxLines: 5,
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w600,
                                           overflow: TextOverflow.ellipsis,
                                           color: Color(0xFF226B3F),
@@ -165,7 +179,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                         'Date Created',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -179,7 +193,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Status',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -193,7 +207,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Price',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -207,7 +221,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Note',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -221,7 +235,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'More',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),

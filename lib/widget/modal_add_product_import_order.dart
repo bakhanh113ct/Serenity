@@ -27,7 +27,7 @@ class _ModalAddProductImportOrderState
   final noteController = TextEditingController();
   List<Product> listProduct = [];
   List<String> listDropdown = [];
-  String price = '';
+  String price = '', amount = '';
   final _formKey = GlobalKey<FormState>();
   String nameProduct = '';
   @override
@@ -92,7 +92,11 @@ class _ModalAddProductImportOrderState
                             controller: inventoryController,
                             icon: Icons.abc_outlined,
                             onPress: () {}),
-                        inputAmount(),
+                        InputEmployee(
+                            text: 'Note',
+                            controller: noteController,
+                            icon: Icons.abc,
+                            onPress: () {}),
                       ],
                     ),
                   ),
@@ -104,11 +108,7 @@ class _ModalAddProductImportOrderState
                           controller: priceController,
                           icon: Icons.abc_outlined,
                           onPress: () {}),
-                      InputEmployee(
-                          text: 'Note',
-                          controller: noteController,
-                          icon: Icons.abc,
-                          onPress: () {}),
+                      inputAmount(),
                       InputEmployee(
                           text: 'Total Price',
                           controller: totalPriceController,
@@ -202,6 +202,7 @@ class _ModalAddProductImportOrderState
             TextFormField(
               keyboardType: TextInputType.number,
               onChanged: (value) {
+                amount = value;
                 final format = NumberFormat("###,###.###", "tr_TR");
                 if (value == '')
                   totalPriceController.text = priceController.text;
@@ -241,5 +242,10 @@ class _ModalAddProductImportOrderState
     this.nameProduct = product.name!;
     priceController.text = format.format(int.parse(product.price!)).toString();
     inventoryController.text = product.category!;
+
+    if (amountController.text != '') {
+      totalPriceController.text =
+          format.format(int.parse(price) * int.parse(amount));
+    }
   }
 }

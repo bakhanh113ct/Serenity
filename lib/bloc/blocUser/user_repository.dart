@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -43,11 +44,50 @@ class UserRepository {
     final user = FirebaseAuth.instance.currentUser;
     print('111');
     try {
-      await user
-          ?.updatePassword(password)
-          .then((value) => _showDialog(context, true));
+      await user?.updatePassword(password).then((value) => Flushbar(
+            flushbarPosition: FlushbarPosition.TOP,
+            margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+            borderRadius: BorderRadius.circular(8),
+            flushbarStyle: FlushbarStyle.FLOATING,
+            title: 'Notification',
+            message: 'Update password successful',
+            duration: const Duration(seconds: 3),
+          ).show(context));
     } catch (e) {
-      _showDialog(context, false);
+      if (e.toString() ==
+          '[firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.') {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+          borderRadius: BorderRadius.circular(8),
+          flushbarStyle: FlushbarStyle.FLOATING,
+          title: 'Fail',
+          message: 'Please login again to change password',
+          duration: const Duration(seconds: 3),
+        ).show(context);
+      } else if (e.toString() ==
+          '[firebase_auth/weak-password] Password should be at least 6 characters') {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+          borderRadius: BorderRadius.circular(8),
+          flushbarStyle: FlushbarStyle.FLOATING,
+          title: 'Fail',
+          message: 'Password should be at least 6 characters',
+          duration: const Duration(seconds: 3),
+        ).show(context);
+      } else {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+          borderRadius: BorderRadius.circular(8),
+          flushbarStyle: FlushbarStyle.FLOATING,
+          title: 'Fail',
+          message: e.toString(),
+          duration: const Duration(seconds: 3),
+        ).show(context);
+      }
+
       print(e);
     }
   }

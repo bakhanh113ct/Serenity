@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -236,7 +237,6 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                     builder: (context, state) {
                       return ElevatedButton(
                         onPressed: () {
-                          // Navigator.pop(context, 'Cancel');if (_formKey.currentState!.validate()
                           if (_formKey.currentState!.validate() &&
                               !listController
                                   .any((element) => element.text == '') &&
@@ -256,6 +256,16 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             );
                             context.read<EmployeeBloc>().add(AddEmployee(
                                 user: user, password: passwordController.text));
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 300, vertical: 16),
+                              borderRadius: BorderRadius.circular(8),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              title: 'Notification',
+                              message: 'Create user successful',
+                              duration: const Duration(seconds: 3),
+                            ).show(context);
                           } else {
                             debugPrint('điền đầy đủ thông tin');
                           }

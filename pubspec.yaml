@@ -54,7 +54,7 @@ dependencies:
   slide_switcher: ^1.1.2
   infinite_scroll_tab_view: ^1.0.3
   dropdown_search: ^5.0.5
-  
+  another_flushbar: ^1.12.29
 
 dev_dependencies:
   flutter_test:
