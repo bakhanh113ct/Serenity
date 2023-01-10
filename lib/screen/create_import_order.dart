@@ -95,6 +95,9 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
     dateCreatedControler = TextEditingController();
     placeControler = TextEditingController();
     noteController = TextEditingController();
+
+    pursuantControler.text =
+        'Pursuant to the civil code No. 91/2015/QH13 dated November 24, 2015';
     listController = [
       enterpriseNameAControler,
       addressAControler,
@@ -714,7 +717,8 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                 return null;
               },
               readOnly: text == 'Date created:' ||
-                  text == 'The letter of authorization-Date:',
+                  text == 'The letter of authorization-Date:' ||
+                  text == 'Pursuant to:',
               controller: controller,
               // obscureText: true,
               decoration: InputDecoration(
