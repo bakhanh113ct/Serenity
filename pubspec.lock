@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  date_field:
+    dependency: "direct main"
+    description:
+      name: date_field
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   dropdown_button2:
     dependency: "direct main"
     description:
@@ -317,6 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.2"
+  infinite_scroll_tab_view:
+    dependency: "direct main"
+    description:
+      name: infinite_scroll_tab_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   intl:
     dependency: "direct main"
     description:
@@ -504,6 +518,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_switcher:
+    dependency: "direct main"
+    description:
+      name: slide_switcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   source_span:
     dependency: transitive
     description:

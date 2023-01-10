@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(
+                  child: SizedBox(
                     height: size.height-MediaQuery.of(context).padding.top,
                     child: Column(
                       children: [
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(top: 30),
                           child: Column(
                             children: [
-                              SizedBox(height: 130,),
+                              const SizedBox(height: 130,),
                               Text(
                                 "Welcome back",
                                 style: TextStyle(
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                                       color: CustomColor.second,
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w400)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 40,
                               ),
                               Padding(
@@ -108,11 +108,11 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text("Forgot Password?", style: TextStyle(color: CustomColor.second,fontWeight: FontWeight.w600,fontSize: 16)))
                                 ],),
                               ),
-                              SizedBox(height: 30,),
+                              const SizedBox(height: 30,),
                               CustomButton(onTap: () {
                                 AuthRepository().SignIn(_emailController.text, _passController.text);
                               },
-                              child: Text("Login"),)
+                              child: const Text("Login"),)
                             ],
                           ),
                         )
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                   flex: 3,
                   child: Container( 
                     height: size.height-MediaQuery.of(context).padding.top,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(image: AssetImage('assets/images/background.png',),fit: BoxFit.cover)
                     ),
                   )

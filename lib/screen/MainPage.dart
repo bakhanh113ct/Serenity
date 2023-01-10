@@ -39,7 +39,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<UserBloc, UserState>(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BlocBuilder<UserBloc,UserState>(
+      
       builder: (BuildContext context, state) {
         if (state is UserLoading) {
           return const Center(
