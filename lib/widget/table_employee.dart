@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../bloc/employee/employee_bloc.dart';
+import '../common/color.dart';
 
 class TableEmployee extends StatefulWidget {
   const TableEmployee({super.key, required this.state});
@@ -18,22 +19,22 @@ class TableEmployee extends StatefulWidget {
 
 class _TableEmployeeState extends State<TableEmployee> {
   EmployeeDataSource? employeeDataSource;
-
+  final TextEditingController _queryController = TextEditingController();
   @override
   void initState() {
     super.initState();
   }
 
   String searchText = '';
-  late Map<String, double> columnWidths = {
-    'id': double.nan,
-    'name': double.nan,
-    'date': double.nan,
-    'status': double.nan,
-    'price': double.nan,
-    'note': double.nan,
-    'button': double.nan,
-  };
+  // late Map<String, double> columnWidths = {
+  //   'id': double.nan,
+  //   'name': double.nan,
+  //   'date': double.nan,
+  //   'status': double.nan,
+  //   'price': double.nan,
+  //   'note': double.nan,
+  //   'button': double.nan,
+  // };
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,7 +62,8 @@ class _TableEmployeeState extends State<TableEmployee> {
               List<User> employees = data;
               employees = data
                   .where((element) =>
-                      element.fullName!.toLowerCase().contains(searchText))
+                      element.fullName!.toLowerCase().contains(searchText) ||
+                      element.email!.toLowerCase().contains(searchText))
                   .toList();
               employeeDataSource = EmployeeDataSource(
                   employeeData: List.from(employees),
@@ -82,54 +84,104 @@ class _TableEmployeeState extends State<TableEmployee> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        searchText = value;
-                      });
-                      context.read<EmployeeBloc>().add(UpdateListEmployee(
-                          searchText: '', listUser: state.listEmployee));
-                      // print(value);
-                      // employees = data
-                      //     .where((element) => element.fullName!.contains(value))
-                      //     .toList();
-                      // print(employees);
-                      // employeeDataSource = EmployeeDataSource(
-                      //     employeeData: List.from(employees),
-                      //     onPress: (user) {
-                      //       showDialog<String>(
-                      //         // barrierDismissible: false,
-                      //         context: context,
-                      //         builder: (BuildContext context) => AlertDialog(
-                      //           // title: const Text('AlertDialog Title'),
-                      //           content: ModalEditEmployee(
-                      //             user: user,
-                      //           ),
-                      //         ),
-                      //       );
-                      //     });
-                      // setState(() {});
-                    },
-                    // obscureText: true,
-                    decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        // enabledBorder: OutlineInputBorder(
-                        //     borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            // obscureText: true,
+                            controller: _queryController,
+                            decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 16),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30))),
+                                // enabledBorder: OutlineInputBorder(
+                                //     borderSide: BorderSide(color: Colors.black)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30))),
+                                hintText: 'Search for name, email'),
+                            style: const TextStyle(fontSize: 16),
+                          ),
                         ),
-                        hintText: 'Search for orderID, customer'),
-                    style: const TextStyle(fontSize: 16),
+                        const SizedBox(width: 15),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: CustomColor.second),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                searchText = _queryController.text;
+                              });
+                              context.read<EmployeeBloc>().add(
+                                  UpdateListEmployee(
+                                      searchText: '',
+                                      listUser: state.listEmployee));
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  // TextField(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       searchText = value;
+                  //     });
+                  //     context.read<EmployeeBloc>().add(UpdateListEmployee(
+                  //         searchText: '', listUser: state.listEmployee));
+                  //     // print(value);
+                  //     // employees = data
+                  //     //     .where((element) => element.fullName!.contains(value))
+                  //     //     .toList();
+                  //     // print(employees);
+                  //     // employeeDataSource = EmployeeDataSource(
+                  //     //     employeeData: List.from(employees),
+                  //     //     onPress: (user) {
+                  //     //       showDialog<String>(
+                  //     //         // barrierDismissible: false,
+                  //     //         context: context,
+                  //     //         builder: (BuildContext context) => AlertDialog(
+                  //     //           // title: const Text('AlertDialog Title'),
+                  //     //           content: ModalEditEmployee(
+                  //     //             user: user,
+                  //     //           ),
+                  //     //         ),
+                  //     //       );
+                  //     //     });
+                  //     // setState(() {});
+                  //   },
+                  //   // obscureText: true,
+                  //   decoration: const InputDecoration(
+                  //       contentPadding:
+                  //           EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  //       border: OutlineInputBorder(
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(30))),
+                  //       // enabledBorder: OutlineInputBorder(
+                  //       //     borderSide: BorderSide(color: Colors.black)),
+                  //       focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.black),
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(30))),
+                  //       icon: Icon(
+                  //         Icons.search,
+                  //         color: Colors.black,
+                  //       ),
+                  //       hintText: 'Search for orderID, customer'),
+                  //   style: const TextStyle(fontSize: 16),
+                  // ),
                   const SizedBox(
                     height: 20,
                   ),

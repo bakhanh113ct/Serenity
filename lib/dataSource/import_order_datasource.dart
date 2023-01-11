@@ -6,6 +6,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:serenity/model/payment_voucher.dart';
 import 'package:serenity/model/product_import_order.dart';
 import 'package:serenity/screen/check_import_order.dart';
 import 'package:serenity/screen/edit_import_order.dart';
@@ -34,7 +35,7 @@ class ImportOrderDataSource extends DataGridSource {
     _employeeData = importOrders
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<ImportOrder>(columnName: 'STT', value: e),
-              DataGridCell<String>(columnName: 'name', value: e.nameA),
+              DataGridCell<String>(columnName: 'name', value: e.nameB),
               DataGridCell<String>(
                   columnName: 'date',
                   value:
@@ -60,6 +61,9 @@ class ImportOrderDataSource extends DataGridSource {
       Color backgroundColor = Colors.white, textColor = Colors.black;
       bool isCanceled = false;
       bool isCompleted = false;
+      bool isPending = false;
+      bool isChecked = false;
+
       int index = 0;
       if (e.columnName == 'STT') {
         index = importOrders.indexOf(e.value);
@@ -69,11 +73,16 @@ class ImportOrderDataSource extends DataGridSource {
           isCanceled = true;
         } else if (e.value.status == 'completed') {
           isCompleted = true;
+        } else if (e.value.status == 'pending') {
+          isPending = true;
+        } else if (e.value.status == 'checked') {
+          isChecked = true;
         }
       }
       if (e.columnName == 'status') {
         switch (e.value) {
           case 'pending':
+          case 'checked':
             backgroundColor = const Color(0xFFFEFFCB);
             textColor = const Color(0xFFEDB014);
             break;
@@ -88,8 +97,8 @@ class ImportOrderDataSource extends DataGridSource {
 
             break;
           case 'trouble':
-            backgroundColor = const Color(0xFFFEFFCB);
-            textColor = const Color(0xFFEDB014);
+            backgroundColor = const Color(0xFF86E5FF).withOpacity(0.2);
+            textColor = const Color(0xFF0081C9);
             break;
         }
       }
@@ -106,29 +115,73 @@ class ImportOrderDataSource extends DataGridSource {
                       color: Colors.black,
                     ),
                     customItemsHeights: [
-                      ...List<double>.filled(MenuItems.firstItems.length, 48),
-                      if (!(isCanceled || isCompleted)) 8,
-                      if (!(isCanceled || isCompleted))
-                        ...List<double>.filled(
-                            MenuItems.secondItems.length, 48),
+                      if (isPending)
+                        ...List<double>.filled(MenuItems.pending.length, 48),
+
+                      if (isChecked)
+                        ...List<double>.filled(MenuItems.checked.length, 48),
+                      if (isCompleted)
+                        ...List<double>.filled(MenuItems.completed.length, 48),
+                      if (isCanceled)
+                        ...List<double>.filled(MenuItems.canceled.length, 48),
+                      // ...List<double>.filled(MenuItems.firstItems.length, 48),
+                      // if (!(isCanceled || isCompleted)) 8,
+                      // // if (!(isCanceled || isCompleted))
+                      // ...List<double>.filled(1, 48),
                     ],
                     items: [
-                      ...MenuItems.firstItems.map(
-                        (item) => DropdownMenuItem<MenuItem>(
-                          value: item,
-                          child: MenuItems.buildItem(item),
-                        ),
-                      ),
-                      if (!(isCanceled || isCompleted))
-                        const DropdownMenuItem<Divider>(
-                            enabled: false, child: Divider()),
-                      if (!(isCanceled || isCompleted))
-                        ...MenuItems.secondItems.map(
-                          (item) => DropdownMenuItem<MenuItem>(
-                            value: item,
-                            child: MenuItems.buildItem(item),
-                          ),
-                        ),
+                      if (isPending)
+                        ...MenuItems.pending
+                            .map((item) => DropdownMenuItem<MenuItem>(
+                                  value: item,
+                                  child: MenuItems.buildItem(item),
+                                )),
+                      if (isChecked)
+                        ...MenuItems.checked
+                            .map((item) => DropdownMenuItem<MenuItem>(
+                                  value: item,
+                                  child: MenuItems.buildItem(item),
+                                )),
+                      if (isCanceled)
+                        ...MenuItems.canceled
+                            .map((item) => DropdownMenuItem<MenuItem>(
+                                  value: item,
+                                  child: MenuItems.buildItem(item),
+                                )),
+                      if (isCompleted)
+                        ...MenuItems.completed
+                            .map((item) => DropdownMenuItem<MenuItem>(
+                                  value: item,
+                                  child: MenuItems.buildItem(item),
+                                )),
+
+                      // if (isChecked)
+                      //   ...List<double>.filled(MenuItems.checked.length, 48),
+                      // if (isCompleted)
+                      //   ...List<double>.filled(MenuItems.completed.length, 48),
+                      // if (isCanceled)
+                      //   ...List<double>.filled(MenuItems.canceled.length, 48),
+                      // ...MenuItems.firstItems.map(
+                      //   (item) => DropdownMenuItem<MenuItem>(
+                      //     value: item,
+                      //     child: MenuItems.buildItem(item),
+                      //   ),
+                      // ),
+                      // if (!(isCanceled || isCompleted))
+                      //   const DropdownMenuItem<Divider>(
+                      //       enabled: false, child: Divider()),
+                      // // if (!isCanceled)
+                      // DropdownMenuItem<MenuItem>(
+                      //   value: MenuItems.paymentVoucher,
+                      //   child: MenuItems.buildItem(MenuItems.paymentVoucher),
+                      // ),
+                      // if (!(isCanceled || isCompleted))
+                      //   ...MenuItems.secondItems.map(
+                      //     (item) => DropdownMenuItem<MenuItem>(
+                      //       value: item,
+                      //       child: MenuItems.buildItem(item),
+                      //     ),
+                      //   ),
                     ],
                     onChanged: (value) {
                       // print(importOrders
@@ -177,7 +230,7 @@ class ImportOrderDataSource extends DataGridSource {
                     )
                   : Text(
                       e.columnName == 'STT'
-                          ? (index).toString()
+                          ? e.value.idImportOrder
                           : e.value.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -198,8 +251,10 @@ class MenuItem {
 }
 
 class MenuItems {
-  static const List<MenuItem> firstItems = [edit, print];
-  static const List<MenuItem> secondItems = [check, paymentVoucher];
+  static const List<MenuItem> completed = [edit, print, paymentVoucher];
+  static const List<MenuItem> pending = [edit, print, check];
+  static const List<MenuItem> checked = [edit, check, paymentVoucher];
+  static const List<MenuItem> canceled = [edit];
 
   static const edit = MenuItem(text: 'View/Edit', icon: Icons.edit);
   static const print = MenuItem(text: 'Print', icon: Icons.print);
@@ -225,7 +280,7 @@ class MenuItems {
   }
 
   static onChanged(BuildContext context, MenuItem item, Function onPress,
-      List<ImportOrder> importOrders, ImportOrder order) {
+      List<ImportOrder> importOrders, ImportOrder order) async {
     switch (item) {
       case MenuItems.edit:
         // ImportOrder tempOrder = importOrders
@@ -256,15 +311,38 @@ class MenuItems {
         //Do something
         break;
       case MenuItems.print:
-        //Do something
         Print(order);
         break;
       case MenuItems.paymentVoucher:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PaymentVoucher(),
-            ));
+        await FirebaseFirestore.instance
+            .collection('PaymentVoucher')
+            .where('idImportOrder', isEqualTo: order.idImportOrder)
+            .get()
+            .then((value) {
+          if (value.docs.isNotEmpty) {
+            PaymentVoucher paymentVoucher =
+                PaymentVoucher.fromJson(value.docs.first.data());
+            debugPrint(paymentVoucher.totalAmount);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentVoucherScreen(
+                    importOrder: order,
+                    paymentVoucher: paymentVoucher,
+                  ),
+                ));
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentVoucherScreen(
+                    importOrder: order,
+                    paymentVoucher: null,
+                  ),
+                ));
+          }
+        });
+
         break;
     }
   }

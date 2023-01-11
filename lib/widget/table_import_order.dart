@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../bloc/importOrder/import_order_bloc.dart';
+import '../common/color.dart';
 import '../dataSource/import_order_datasource.dart';
 import '../model/import_order.dart';
 
@@ -24,6 +25,8 @@ class TableImportOrder extends StatefulWidget {
 class _TableImportOrderState extends State<TableImportOrder> {
   late ImportOrderDataSource employeeDataSource;
   String searchText = '';
+  final TextEditingController _queryController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -64,9 +67,14 @@ class _TableImportOrderState extends State<TableImportOrder> {
                           element.status == widget.tab.toLowerCase())
                       .toList();
                 }
+                print(searchText);
+
                 List<ImportOrder> importOrders = data
                     .where((element) =>
-                        element.nameB!.toLowerCase().contains(searchText))
+                        element.nameB!.toLowerCase().contains(searchText) ||
+                        element.idImportOrder!
+                            .toLowerCase()
+                            .contains(searchText))
                     .toList();
 
                 employeeDataSource = ImportOrderDataSource(
@@ -75,34 +83,86 @@ class _TableImportOrderState extends State<TableImportOrder> {
                     onPress: (item) {});
                 return Column(
                   children: [
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
-                        context.read<ImportOrderBloc>().add(
-                            UpdateListImportOrder(
-                                listImportOrder: state.listImportOrder));
-                      },
-                      decoration: const InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          // enabledBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(color: Colors.black)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              // obscureText: true,
+                              controller: _queryController,
+                              decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  // enabledBorder: OutlineInputBorder(
+                                  //     borderSide: BorderSide(color: Colors.black)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  hintText:
+                                      'Search for ID import, supplier name'),
+                              style: const TextStyle(fontSize: 16),
+                            ),
                           ),
-                          hintText: 'Search for orderID, customer'),
-                      style: const TextStyle(fontSize: 16),
+                          const SizedBox(width: 15),
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: CustomColor.second),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  searchText = _queryController.text;
+                                });
+                                context.read<ImportOrderBloc>().add(
+                                    UpdateListImportOrder(
+                                        listImportOrder:
+                                            state.listImportOrder));
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
+                    // TextField(
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       searchText = value;
+                    //     });
+                    //     context.read<ImportOrderBloc>().add(
+                    //         UpdateListImportOrder(
+                    //             listImportOrder: state.listImportOrder));
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //       contentPadding:
+                    //           EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    //       border: OutlineInputBorder(
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(30))),
+                    //       // enabledBorder: OutlineInputBorder(
+                    //       //     borderSide: BorderSide(color: Colors.black)),
+                    //       focusedBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: Colors.black),
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(30))),
+                    //       icon: Icon(
+                    //         Icons.search,
+                    //         color: Colors.black,
+                    //       ),
+                    //       hintText: 'Search for orderID, customer'),
+                    //   style: const TextStyle(fontSize: 16),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -136,7 +196,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                               GridColumn(
                                   columnName: 'STT',
                                   // width: columnWidths['id']!,
-                                  width: 60,
+                                  width: 120,
                                   label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -227,7 +287,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       ))),
                               GridColumn(
                                   columnName: 'button',
-                                  // width: columnWidths['button']!,
+                                  width: 60,
                                   label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),

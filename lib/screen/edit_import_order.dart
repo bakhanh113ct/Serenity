@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,7 +86,9 @@ class _EditImportOrderState extends State<EditImportOrder> {
     // List<ProductImportOrder> products = <ProductImportOrder>[];
     // productsOld = widget.importOrder.listProduct!;
     products = widget.listProduct;
-    if (widget.importOrder.status == 'completed') readOnly = true;
+    if (widget.importOrder.status == 'completed' ||
+        widget.importOrder.status == 'checked' ||
+        widget.importOrder.status == 'canceled') readOnly = true;
 
     enterpriseNameAControler.text = widget.importOrder.nameA!;
     addressAControler.text = widget.importOrder.addressA!;
@@ -218,7 +221,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (enterpriseNameAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'The head office address:',
                                 addressAControler,
@@ -227,7 +231,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (addressAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'Number phone:',
                                 phoneAControler,
@@ -236,7 +241,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (phoneAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                           ],
                         ),
                         const SizedBox(
@@ -252,7 +258,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (bankAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                             Input(
                                 'Opening at bank:',
                                 bankOpenAControler,
@@ -261,7 +268,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (bankOpenAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'Authorized peson:',
                                 nameAuthorizedAControler,
@@ -270,7 +278,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (nameAuthorizedAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                           ],
                         ),
                         const SizedBox(
@@ -286,7 +295,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (positionAuthorizedAControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'The letter of authorization-NO:',
                                 noLetterAuthorizationAControler,
@@ -296,7 +306,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                     ? (noLetterAuthorizationAControler.text ==
                                         '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                             Input(
                                 'The letter of authorization-Date:',
                                 dateLetterAuthorizationAControler,
@@ -306,7 +317,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                     ? (dateLetterAuthorizationAControler.text ==
                                         '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                           ],
                         ),
                         const SizedBox(
@@ -345,7 +357,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (enterpriseNameBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'The head office address:',
                                 addressBControler,
@@ -354,7 +367,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (addressBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'Number phone:',
                                 phoneBControler,
@@ -363,7 +377,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (phoneBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                           ],
                         ),
                         const SizedBox(
@@ -379,7 +394,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (bankBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                             Input(
                                 'Opening at bank:',
                                 bankOpenBControler,
@@ -388,7 +404,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (bankOpenBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'Authorized peson:',
                                 nameAuthorizedBControler,
@@ -397,7 +414,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (nameAuthorizedBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                           ],
                         ),
                         const SizedBox(
@@ -413,7 +431,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (positionAuthorizedBControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'The letter of authorization-NO:',
                                 noLetterAuthorizationBControler,
@@ -423,7 +442,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                     ? (noLetterAuthorizationBControler.text ==
                                         '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.number),
                             Input(
                                 'The letter of authorization-Date:',
                                 dateLetterAuthorizationBControler,
@@ -433,7 +453,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                     ? (dateLetterAuthorizationBControler.text ==
                                         '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                           ],
                         ),
                         const SizedBox(
@@ -469,6 +490,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                   ? (pursuantControler.text == '')
                                   : false,
                               readOnly,
+                              TextInputType.text,
                             ),
                             Input(
                                 'Date created:',
@@ -478,7 +500,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (dateCreatedControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                             Input(
                                 'At place:',
                                 placeControler,
@@ -487,7 +510,8 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                 isValidate
                                     ? (placeControler.text == '')
                                     : false,
-                                readOnly),
+                                readOnly,
+                                TextInputType.text),
                           ],
                         ),
                         const SizedBox(
@@ -551,6 +575,26 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                     // key: UniqueKey(),
                                     products: products,
                                     onPress: (name, product, index) {
+                                      if (widget.importOrder.status ==
+                                              'completed' ||
+                                          widget.importOrder.status ==
+                                              'canceled' ||
+                                          widget.importOrder.status ==
+                                              'checked') {
+                                        Flushbar(
+                                          flushbarPosition:
+                                              FlushbarPosition.TOP,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 300, vertical: 16),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          flushbarStyle: FlushbarStyle.FLOATING,
+                                          title: 'Notification',
+                                          message: 'Order can\'t edit',
+                                          duration: const Duration(seconds: 1),
+                                        ).show(context);
+                                        return;
+                                      }
                                       if (product != null) {
                                         showDialog<String>(
                                           context: context,
@@ -627,6 +671,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                               Flexible(
                                 child: TextField(
                                   controller: noteController,
+                                  readOnly: readOnly,
                                   decoration: const InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 16, horizontal: 16),
@@ -707,7 +752,9 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                   'totalPrice': calculateTotal(),
                                   'status': widget.importOrder.status,
                                   'listProduct':
-                                      products.map((e) => e.toJson()).toList()
+                                      products.map((e) => e.toJson()).toList(),
+                                  'listCheck': widget.importOrder.listCheck!
+                                    ..add(false),
                                 });
                                 // await importOrder.add({
                                 //   'nameA': enterpriseNameAControler.text,
@@ -770,8 +817,14 @@ class _EditImportOrderState extends State<EditImportOrder> {
     );
   }
 
-  Flexible Input(text, TextEditingController controller, IconData icon,
-      String party, bool isValidate, bool readOnly) {
+  Flexible Input(
+      text,
+      TextEditingController controller,
+      IconData icon,
+      String party,
+      bool isValidate,
+      bool readOnly,
+      TextInputType textInputType) {
     return Flexible(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -793,9 +846,11 @@ class _EditImportOrderState extends State<EditImportOrder> {
                 }
                 return null;
               },
+              keyboardType: textInputType,
               readOnly: readOnly ||
                   (text == 'Date created:' ||
-                      text == 'The letter of authorization-Date:'),
+                      text == 'The letter of authorization-Date:' ||
+                      text == 'Pursuant to:'),
               controller: controller,
               // obscureText: true,
               decoration: InputDecoration(

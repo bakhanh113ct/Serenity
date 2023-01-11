@@ -13,9 +13,10 @@ class ImportOrderRepository {
     });
   }
 
-  void updateStateImportOrder(String id, String state) {
+  void updateStateImportOrder(String id, String state, List<bool> listCheck) {
     _importOrder.doc(id).update({
       'status': state,
+      'listCheck': listCheck,
     });
   }
 }

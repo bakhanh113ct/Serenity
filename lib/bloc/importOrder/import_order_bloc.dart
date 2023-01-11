@@ -21,7 +21,8 @@ class ImportOrderBloc extends Bloc<ImportOrderEvent, ImportOrderState> {
     on<UpdateListImportOrder>((event, emit) =>
         emit(ImportOrderLoaded(listImportOrder: event.listImportOrder)));
 
-    on<UpdateStateImportOrder>((event, emit) => importOrderRepository
-        .updateStateImportOrder(event.idImportOrder, event.state));
+    on<UpdateStateImportOrder>((event, emit) =>
+        importOrderRepository.updateStateImportOrder(
+            event.idImportOrder, event.state, event.listCheck));
   }
 }

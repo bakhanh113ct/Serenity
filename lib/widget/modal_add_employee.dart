@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:serenity/model/User.dart';
+import 'package:serenity/model/User.dart' as user_model;
 import 'package:serenity/widget/input_employee.dart';
 
 import '../bloc/employee/employee_bloc.dart';
@@ -35,15 +38,17 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
   final _formKey = GlobalKey<FormState>();
   DateTime? selectedDate;
 
+  final storageRef = FirebaseStorage.instance.ref();
+
   @override
   void initState() {
-    nameController = new TextEditingController();
-    emailController = new TextEditingController();
-    addressController = new TextEditingController();
-    phoneController = new TextEditingController();
-    dobController = new TextEditingController();
-    passwordController = new TextEditingController();
-    salaryController = new TextEditingController();
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    addressController = TextEditingController();
+    phoneController = TextEditingController();
+    dobController = TextEditingController();
+    passwordController = TextEditingController();
+    salaryController = TextEditingController();
 
     listController = [
       nameController,
@@ -63,8 +68,8 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
   }
 
   final List<String> genderItems = [
-    'Admin',
-    'Staff',
+    'admin',
+    'staff',
   ];
 
   _selectDate(BuildContext context) async {
@@ -72,17 +77,14 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       context: context,
       initialDate: selectedDate!,
       firstDate: DateTime(1900),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2024),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
-        dobController.text = picked.day.toString() +
-            '/' +
-            picked.month.toString() +
-            '/' +
-            picked.year.toString();
+        dobController.text = '${picked.day}/${picked.month}/${picked.year}';
       });
+    }
   }
 
   @override
@@ -217,10 +219,6 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                     onPressed: () {
                       Navigator.pop(context, 'Cancel');
                     },
-                    child: const Text(
-                      'Cancle ',
-                      style: TextStyle(fontSize: 20),
-                    ),
                     style: ButtonStyle(
                         maximumSize:
                             MaterialStateProperty.all(const Size(110, 60)),
@@ -229,6 +227,10 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                 vertical: 12, horizontal: 15)),
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF226B3F))),
+                    child: const Text(
+                      'Cancel ',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                   const SizedBox(
                     width: 20,
@@ -238,24 +240,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                       return ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate() &&
-                              !listController
-                                  .any((element) => element.text == '') &&
-                              image != null &&
-                              selectedValue != null) {
-                            User user = User(
-                              fullName: nameController.text,
-                              address: addressController.text,
-                              dateOfBirth: Timestamp.fromDate(selectedDate!),
-                              email: emailController.text,
-                              idUser: 'idUser',
-                              image: image!.path,
-                              phone: phoneController.text,
-                              position: selectedValue,
-                              salary: int.tryParse(
-                                  salaryController.text.toString()),
-                            );
-                            context.read<EmployeeBloc>().add(AddEmployee(
-                                user: user, password: passwordController.text));
+                              image == null) {
                             Flushbar(
                               flushbarPosition: FlushbarPosition.TOP,
                               margin: const EdgeInsets.symmetric(
@@ -263,17 +248,78 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                               borderRadius: BorderRadius.circular(8),
                               flushbarStyle: FlushbarStyle.FLOATING,
                               title: 'Notification',
-                              message: 'Create user successful',
+                              message: 'Please upload image',
                               duration: const Duration(seconds: 3),
                             ).show(context);
+                          }
+                          if (_formKey.currentState!.validate() &&
+                              !listController
+                                  .any((element) => element.text == '') &&
+                              image != null &&
+                              selectedValue != null) {
+                            final bool emailValid = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(emailController.text);
+                            if (!emailValid) {
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 300, vertical: 16),
+                                borderRadius: BorderRadius.circular(8),
+                                flushbarStyle: FlushbarStyle.FLOATING,
+                                title: 'Notification',
+                                message: 'Check email address again',
+                                duration: const Duration(seconds: 3),
+                              ).show(context);
+                              return;
+                            }
+                            if (passwordController.text.length < 6) {
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 300, vertical: 16),
+                                borderRadius: BorderRadius.circular(8),
+                                flushbarStyle: FlushbarStyle.FLOATING,
+                                title: 'Notification',
+                                message: 'Password has least 6 character',
+                                duration: const Duration(seconds: 3),
+                              ).show(context);
+                              return;
+                            }
+                            user_model.User user = user_model.User(
+                                fullName: nameController.text,
+                                address: addressController.text,
+                                dateOfBirth: Timestamp.fromDate(selectedDate!),
+                                email: emailController.text,
+                                idUser: 'idUser',
+                                image: image!.path,
+                                phone: phoneController.text,
+                                position: selectedValue,
+                                salary: int.tryParse(
+                                    salaryController.text.toString()),
+                                state: 'active');
+                            context.read<EmployeeBloc>().add(AddEmployee(
+                                user: user, password: passwordController.text));
+
+                            // addNewEmployee(user, passwordController.text)
+                            //     .then((value) {
+                            //   print(value);
+                            // });
+
+                            // Flushbar(
+                            //   flushbarPosition: FlushbarPosition.TOP,
+                            //   margin: const EdgeInsets.symmetric(
+                            //       horizontal: 300, vertical: 16),
+                            //   borderRadius: BorderRadius.circular(8),
+                            //   flushbarStyle: FlushbarStyle.FLOATING,
+                            //   title: 'Notification',
+                            //   message: 'Create user successful',
+                            //   duration: const Duration(seconds: 3),
+                            // ).show(context);
                           } else {
-                            debugPrint('điền đầy đủ thông tin');
+                            debugPrint('Điền đầy đủ thông tin');
                           }
                         },
-                        child: const Text(
-                          'Save ',
-                          style: TextStyle(fontSize: 20),
-                        ),
                         style: ButtonStyle(
                             maximumSize:
                                 MaterialStateProperty.all(const Size(110, 60)),
@@ -282,6 +328,10 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                     vertical: 12, horizontal: 15)),
                             backgroundColor: MaterialStateProperty.all(
                                 const Color(0xFF226B3F))),
+                        child: const Text(
+                          'Save ',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       );
                     },
                   ),

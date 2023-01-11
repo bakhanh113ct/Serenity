@@ -25,21 +25,20 @@ class TableProductChecking extends StatefulWidget {
 class _TableProductCheckingState extends State<TableProductChecking> {
   late ProductCheckingDataSource productDataSource;
   List<bool>? _listChoose;
-  bool choose = true;
+  // bool choose = true;
   @override
   void initState() {
-    _listChoose = widget.importOrder.listProduct!.map((e) => false).toList();
-
+    _listChoose = widget.importOrder.listCheck!.map((e) => e).toList();
+    print(_listChoose);
     int i = 0;
     productDataSource = ProductCheckingDataSource(
+        importOrder: _listChoose!,
         productData: widget.importOrder.listProduct!,
         onPress: widget.onOpenReport,
         onChoose: (int index, value) {
-          // choose = !choose;
-          // print(index.toString() + '/' + value.toString());
           _listChoose![index] = value;
         },
-        isChoose: choose,
+        // isChoose: _listChoose![i++],
         context: context);
     super.initState();
   }
@@ -175,6 +174,28 @@ class _TableProductCheckingState extends State<TableProductChecking> {
             ElevatedButton(
                 onPressed: () {
                   if (_listChoose!.any((element) => element == false)) {
+                    ImportOrderBloc().add(UpdateStateImportOrder(
+                        idImportOrder: widget.importOrder.idImportOrder!,
+                        state: 'pending',
+                        listCheck: _listChoose!));
+                    // Flushbar(
+                    //   flushbarPosition: FlushbarPosition.TOP,
+                    //   margin: const EdgeInsets.symmetric(
+                    //       horizontal: 300, vertical: 16),
+                    //   borderRadius: BorderRadius.circular(8),
+                    //   flushbarStyle: FlushbarStyle.FLOATING,
+                    //   title: 'Notification',
+                    //   message: 'Please check full',
+                    //   duration: const Duration(seconds: 3),
+                    // ).show(context);
+                  } else {
+                    BlocProvider.of<ImportOrderBloc>(context).add(
+                        UpdateStateImportOrder(
+                            idImportOrder: widget.importOrder.idImportOrder!,
+                            state: 'checked',
+                            listCheck: _listChoose!));
+                    Navigator.pop(context);
+
                     Flushbar(
                       flushbarPosition: FlushbarPosition.TOP,
                       margin: const EdgeInsets.symmetric(
@@ -182,18 +203,14 @@ class _TableProductCheckingState extends State<TableProductChecking> {
                       borderRadius: BorderRadius.circular(8),
                       flushbarStyle: FlushbarStyle.FLOATING,
                       title: 'Notification',
-                      message: 'Please check full',
+                      message: 'Successful',
                       duration: const Duration(seconds: 3),
                     ).show(context);
-                  } else {
-                    BlocProvider.of<ImportOrderBloc>(context).add(
-                        UpdateStateImportOrder(
-                            idImportOrder: widget.importOrder.idImportOrder!,
-                            state: 'checked'));
                   }
                   // ImportOrderBloc().add(UpdateStateImportOrder(
-                  // idImportOrder: widget.importOrder.idImportOrder!,
-                  // state: 'Checked'));
+                  //     idImportOrder: widget.importOrder.idImportOrder!,
+                  //     state: 'checked',
+                  //     listCheck: _listChoose!));
                 },
                 child: const Text('Save'))
           ],

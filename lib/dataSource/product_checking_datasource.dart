@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,17 @@ class ProductCheckingDataSource extends DataGridSource {
   Function onPress;
   Function onChoose;
   BuildContext context;
-  bool isChoose;
   List<ProductImportOrder> productData;
+  List<bool> importOrder;
 
   /// Creates the employee data source class with required details.
-  ProductCheckingDataSource(
-      {required this.productData,
-      required this.onPress,
-      required this.context,
-      required this.onChoose,
-      required this.isChoose}) {
-    print(isChoose);
+  ProductCheckingDataSource({
+    required this.onPress,
+    required this.onChoose,
+    required this.context,
+    required this.productData,
+    required this.importOrder,
+  }) {
     _employeeData = productData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<String>(
@@ -66,7 +67,11 @@ class ProductCheckingDataSource extends DataGridSource {
                     // color: Color(0xFFFD2B2B),
                   ))
               : e.columnName == 'check'
-                  ? CustomCheckbox(onPress: onChoose, index: index)
+                  ? CustomCheckbox(
+                      onPress: onChoose,
+                      index: index,
+                      isChecked: importOrder[index],
+                    )
                   : Text(
                       e.columnName == 'STT'
                           ? (i++).toString()

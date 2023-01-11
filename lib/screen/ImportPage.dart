@@ -39,7 +39,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    TabController tabController = TabController(length: 5, vsync: this);
+    TabController tabController = TabController(length: 6, vsync: this);
 
     return Scaffold(
       backgroundColor: Color(0xFFEBFDF2),
@@ -110,7 +110,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              width: 550,
+                              width: 750,
                               color: Colors.white,
                               child: TabBar(
                                   controller: tabController,
@@ -126,6 +126,9 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                                     ),
                                     Tab(
                                       text: "Pending",
+                                    ),
+                                    Tab(
+                                      text: "Checked",
                                     ),
                                     Tab(
                                       text: "Trouble",
@@ -155,6 +158,12 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                                     padding: EdgeInsets.all(32.0),
                                     child: TableImportOrder(
                                       tab: 'Pending',
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(32.0),
+                                    child: TableImportOrder(
+                                      tab: 'Checked',
                                     ),
                                   ),
                                   Padding(
