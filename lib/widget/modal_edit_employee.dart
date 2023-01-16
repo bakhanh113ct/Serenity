@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:serenity/model/User.dart' as model_user;
 import 'package:serenity/widget/input_employee.dart';
 
+import '../bloc/blocUser/user_bloc.dart';
+import '../bloc/blocUser/user_state.dart';
 import '../bloc/employee/employee_bloc.dart';
 
 class ModalEditEmployee extends StatefulWidget {
@@ -45,12 +48,8 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
     addressController = TextEditingController()..text = widget.user.address!;
     phoneController = TextEditingController()..text = widget.user.phone!;
     dobController = TextEditingController()
-      ..text = widget.user.dateOfBirth!.toDate().day.toString() +
-          '/' +
-          widget.user.dateOfBirth!.toDate().month.toString() +
-          '/' +
-          widget.user.dateOfBirth!.toDate().year.toString() +
-          '/';
+      ..text =
+          '${widget.user.dateOfBirth!.toDate().day}/${widget.user.dateOfBirth!.toDate().month}/${widget.user.dateOfBirth!.toDate().year}/';
     // passwordController = TextEditingController()..text = '';
     salaryController = TextEditingController()
       ..text = widget.user.salary.toString();
@@ -64,18 +63,18 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       salaryController,
     ];
 
-    positionValue = positionItems[1];
-    stateValue = stateItems[0];
+    positionValue = widget.user.position;
+    stateValue = widget.user.state;
     selectedDate = widget.user.dateOfBirth!.toDate();
     image = null;
 
     super.initState();
   }
 
-  final List<String> stateItems = ['Active', 'unActive'];
+  final List<String> stateItems = ['active', 'inactive'];
   final List<String> positionItems = [
-    'Admin',
-    'Staff',
+    'admin',
+    'staff',
   ];
 
   _selectDate(BuildContext context) async {
@@ -85,15 +84,12 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2023),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
-        dobController.text = picked.day.toString() +
-            '/' +
-            picked.month.toString() +
-            '/' +
-            picked.year.toString();
+        dobController.text = '${picked.day}/${picked.month}/${picked.year}';
       });
+    }
   }
 
   @override
@@ -102,7 +98,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 600,
+          height: 620,
           width: 600,
           child: Column(
             children: [
@@ -135,11 +131,11 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                             bottom: 0,
                             right: 0,
                             child: Material(
-                              color: Color(0xFFD9D9D9),
+                              color: const Color(0xFFD9D9D9),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
+                                  const BorderRadius.all(Radius.circular(50)),
                               child: IconButton(
-                                  padding: EdgeInsets.all(0),
+                                  padding: const EdgeInsets.all(0),
                                   splashRadius: 25,
                                   splashColor: Colors.grey,
                                   onPressed: () async {
@@ -152,13 +148,13 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                                       this.image = image;
                                     });
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit,
                                     size: 20,
                                   )),
                             ))
                       ]),
-                      SizedBox(
+                      const SizedBox(
                         height: 39,
                       ),
                       InputEmployee(
@@ -214,9 +210,9 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                       //   icon: Icons.abc,
                       //   onPress: () {},
                       // ),
-                      combobox('State'),
+                      comboBox('State'),
 
-                      combobox('Position'),
+                      comboBox('Position'),
                     ],
                   )),
                 ]),
@@ -227,92 +223,136 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<EmployeeBloc>()
-                          .add(ResetPassword(email: widget.user.email!));
-                    },
-                    child: Text(
-                      'Reset Password ',
-                      style: TextStyle(fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Cancel');
+                      },
+                      style: ButtonStyle(
+                          // maximumSize:
+                          //     MaterialStateProperty.all(Size(110, 60)),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 15)),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xFF226B3F))),
+                      child: const Text(
+                        'Cancle ',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                    style: ButtonStyle(
-                        // maximumSize: MaterialStateProperty.all(Size(110, 60)),
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 15)),
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xFF226B3F))),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context, 'Cancel');
-                        },
-                        child: Text(
-                          'Cancle ',
-                          style: TextStyle(fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<EmployeeBloc>()
+                                .add(ResetPassword(email: widget.user.email!));
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 300, vertical: 16),
+                              borderRadius: BorderRadius.circular(8),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              title: 'Notification',
+                              message:
+                                  'To reset your password, an email was sent to email address ${widget.user.email}',
+                              duration: const Duration(seconds: 3),
+                            ).show(context);
+                          },
+                          style: ButtonStyle(
+                              // maximumSize: MaterialStateProperty.all(Size(110, 60)),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 15)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color(0xFF226B3F))),
+                          child: const Text(
+                            'Reset Password ',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
-                        style: ButtonStyle(
-                            // maximumSize:
-                            //     MaterialStateProperty.all(Size(110, 60)),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 15)),
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFF226B3F))),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      BlocBuilder<EmployeeBloc, EmployeeState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  !listController
-                                      .any((element) => element.text == '') &&
-                                  positionValue != null) {
-                                model_user.User user = model_user.User(
-                                  fullName: nameController.text,
-                                  address: addressController.text,
-                                  dateOfBirth:
-                                      Timestamp.fromDate(selectedDate!),
-                                  email: emailController.text,
-                                  idUser: widget.user.idUser,
-                                  image: image != null
-                                      ? image!.path
-                                      : widget.user.image,
-                                  phone: phoneController.text,
-                                  position: positionValue,
-                                  salary: int.tryParse(
-                                      salaryController.text.toString()),
-                                );
-                                context
-                                    .read<EmployeeBloc>()
-                                    .add(UpdateEmployee(user: user));
-                              } else {
-                                debugPrint('điền đầy đủ thông tin');
-                              }
-                            },
-                            child: Text(
-                              'Save ',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            style: ButtonStyle(
-                                // maximumSize:
-                                //     MaterialStateProperty.all(Size(110, 60)),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 15)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFF226B3F))),
-                          );
-                        },
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        BlocBuilder<EmployeeBloc, EmployeeState>(
+                          builder: (context, state) {
+                            return ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate() &&
+                                    !listController
+                                        .any((element) => element.text == '') &&
+                                    positionValue != null) {
+                                  final bool emailValid = RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(emailController.text);
+                                  if (!emailValid) {
+                                    Flushbar(
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 300, vertical: 16),
+                                      borderRadius: BorderRadius.circular(8),
+                                      flushbarStyle: FlushbarStyle.FLOATING,
+                                      title: 'Notification',
+                                      message: 'Check email address again',
+                                      duration: const Duration(seconds: 3),
+                                    ).show(context);
+                                    return;
+                                  }
+                                  model_user.User user = model_user.User(
+                                      fullName: nameController.text,
+                                      address: addressController.text,
+                                      dateOfBirth:
+                                          Timestamp.fromDate(selectedDate!),
+                                      email: emailController.text,
+                                      idUser: widget.user.idUser,
+                                      image: image != null
+                                          ? image!.path
+                                          : widget.user.image,
+                                      phone: phoneController.text,
+                                      position: positionValue,
+                                      salary: int.tryParse(
+                                          salaryController.text.toString()),
+                                      state: stateValue);
+                                  context
+                                      .read<EmployeeBloc>()
+                                      .add(UpdateEmployee(user: user));
+                                  Flushbar(
+                                    flushbarPosition: FlushbarPosition.TOP,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 300, vertical: 16),
+                                    borderRadius: BorderRadius.circular(8),
+                                    flushbarStyle: FlushbarStyle.FLOATING,
+                                    title: 'Notification',
+                                    message: 'Update information successful',
+                                    duration: const Duration(seconds: 3),
+                                  ).show(context);
+                                } else {
+                                  // debugPrint('điền đầy đủ thông tin');
+                                }
+                              },
+                              style: ButtonStyle(
+                                  // maximumSize:
+                                  //     MaterialStateProperty.all(Size(110, 60)),
+                                  padding: MaterialStateProperty.all(
+                                      const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 15)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFF226B3F))),
+                              child: const Text(
+                                'Save ',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               )
@@ -323,7 +363,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
     );
   }
 
-  Padding combobox(String text) {
+  Padding comboBox(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -331,16 +371,16 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
         children: [
           Text(
             text,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Container(
             height: 75,
             width: 300,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 26),
+              padding: const EdgeInsets.only(bottom: 26),
               child: DropdownButtonFormField2(
                 decoration: InputDecoration(
                   isDense: true,
@@ -358,7 +398,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                   Icons.arrow_drop_down,
                   color: Colors.black45,
                 ),
-                value: text == 'Position' ? positionItems[1] : stateItems[1],
+                value: text == 'Position' ? positionValue : stateValue,
                 iconSize: 30,
                 buttonHeight: 60,
                 buttonPadding: const EdgeInsets.only(left: 0, right: 10),

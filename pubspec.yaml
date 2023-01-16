@@ -56,6 +56,7 @@ dependencies:
   dropdown_search: ^5.0.5
   flutter_format_money_vietnam: ^0.0.2
   material_dialogs: ^1.1.4
+  another_flushbar: ^1.12.29
 
 dev_dependencies:
   flutter_test:

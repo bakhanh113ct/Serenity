@@ -43,8 +43,17 @@ class Product extends Equatable {
     data['historicalCost'] = this.historicalCost;
     return data;
   }
-  
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [name,price,idProduct];
+  // List<Object?> get props => [name,price,idProduct];
+  List<Object?> get props => [
+        name,
+        price,
+        idProduct,
+        amount,
+        category,
+        content,
+        image,
+        historicalCost
+      ];
 }

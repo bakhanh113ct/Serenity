@@ -29,6 +29,7 @@ class ImportOrder extends Equatable {
   String? idImportOrder;
   String? status;
   List<ProductImportOrder>? listProduct;
+  List<bool>? listCheck;
 
   ImportOrder(
       {this.nameA,
@@ -56,7 +57,8 @@ class ImportOrder extends Equatable {
       this.totalPrice,
       this.idImportOrder,
       this.status,
-      this.listProduct});
+      this.listProduct,
+      this.listCheck});
 
   ImportOrder.fromJson(Map<String, dynamic> json) {
     nameA = json['nameA'];
@@ -90,6 +92,7 @@ class ImportOrder extends Equatable {
         listProduct!.add(ProductImportOrder.fromJson(v));
       });
     }
+    listCheck = json['listCheck'].cast<bool>();
   }
 
   Map<String, dynamic> toJson() {
@@ -120,8 +123,9 @@ class ImportOrder extends Equatable {
     data['idImportOrder'] = this.idImportOrder;
     data['status'] = this.status;
     if (this.listProduct != null) {
-      data['listProduct'] = this.listProduct!.map((v) => v.toJson()).toList();
+      data['listProduct'] = this.listProduct!.map((v) => v).toList();
     }
+    data['listCheck'] = this.listCheck;
     return data;
   }
 
@@ -152,5 +156,7 @@ class ImportOrder extends Equatable {
         totalPrice,
         idImportOrder,
         status,
+        listProduct,
+        listCheck
       ];
 }

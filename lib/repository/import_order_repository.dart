@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:serenity/model/import_order.dart';
 
 class ImportOrderRepository {
-  // final _users = FirebaseFirestore.instance.collection('ImportOrder');
+  final _importOrder = FirebaseFirestore.instance.collection('ImportOrder');
 
   Stream<List<ImportOrder>> getImportOrder() {
     return FirebaseFirestore.instance
@@ -13,6 +13,7 @@ class ImportOrderRepository {
       return event.docs.map((e) => ImportOrder.fromJson(e.data())).toList();
     });
   }
+
   Future<List<ImportOrder>> getListImportOrder() async {
     final _fireCloud = FirebaseFirestore.instance.collection('ImportOrder');
     List<ImportOrder> importOrderList = [];
@@ -32,7 +33,7 @@ class ImportOrderRepository {
     }
   }
 
-   Future<ImportOrder> getIO(String idImportOrder) async {
+  Future<ImportOrder> getIO(String idImportOrder) async {
     final _fireCloud = FirebaseFirestore.instance.collection('ImportOrder');
     ImportOrder result = ImportOrder();
     await _fireCloud
@@ -42,5 +43,12 @@ class ImportOrderRepository {
       result = ImportOrder.fromJson(value.docs.first.data());
     });
     return result;
+  }
+
+  void updateStateImportOrder(String id, String state, List<bool> listCheck) {
+    _importOrder.doc(id).update({
+      'status': state,
+      'listCheck': listCheck,
+    });
   }
 }

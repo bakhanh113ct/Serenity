@@ -20,7 +20,7 @@ List<String> listTab = ['All Order', 'Completed', 'Continuing', 'Canceled'];
 
 class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
   int tabIndex = 0;
-  List<ImportOrder> employees = <ImportOrder>[];
+  // List<ImportOrder> importOrders = <ImportOrder>[];
 
   // final PageController tabController = PageController();
   @override
@@ -29,9 +29,17 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
   }
 
   @override
+  void didUpdateWidget(covariant ImportPage oldWidget) {
+    print('oldWidget');
+    BlocProvider.of<ImportOrderBloc>(context).add(LoadImportOrder());
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    TabController tabController = TabController(length: 5, vsync: this);
+    TabController tabController = TabController(length: 6, vsync: this);
 
     return Scaffold(
       backgroundColor: Color(0xFFEBFDF2),
@@ -63,7 +71,8 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CreateImportOrder()));
+                                  builder: (context) =>
+                                      const CreateImportOrder()));
                         },
                         child: Row(
                           children: [
@@ -86,11 +95,11 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Container(
-                      height: size.height * 0.82,
+                      height: size.height * 0.80,
                       width: size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -101,7 +110,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              width: 550,
+                              width: 750,
                               color: Colors.white,
                               child: TabBar(
                                   controller: tabController,
@@ -119,6 +128,9 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                                       text: "Pending",
                                     ),
                                     Tab(
+                                      text: "Checked",
+                                    ),
+                                    Tab(
                                       text: "Trouble",
                                     ),
                                     Tab(
@@ -132,7 +144,7 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                           ),
                           Container(
                             width: double.maxFinite,
-                            height: 650,
+                            height: 600,
                             child: TabBarView(
                                 controller: tabController,
                                 children: const [
@@ -146,6 +158,12 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
                                     padding: EdgeInsets.all(32.0),
                                     child: TableImportOrder(
                                       tab: 'Pending',
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(32.0),
+                                    child: TableImportOrder(
+                                      tab: 'Checked',
                                     ),
                                   ),
                                   Padding(

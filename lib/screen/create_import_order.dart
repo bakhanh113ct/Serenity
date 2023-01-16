@@ -25,7 +25,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
         if (party == 'A') {
@@ -38,6 +38,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
           dateB = picked;
         }
       });
+    }
   }
 
   late DateTime? dateA, dateB, dateCreated;
@@ -95,6 +96,9 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
     dateCreatedControler = TextEditingController();
     placeControler = TextEditingController();
     noteController = TextEditingController();
+
+    pursuantControler.text =
+        'Pursuant to the civil code No. 91/2015/QH13 dated November 24, 2015';
     listController = [
       enterpriseNameAControler,
       addressAControler,
@@ -127,7 +131,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
   final _formKey = GlobalKey<FormState>();
   bool isValidate = false;
 
-  String caculateTotal() {
+  String calculateTotal() {
     int total = 0;
 
     final format = NumberFormat("###,###.###", "tr_TR");
@@ -163,7 +167,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
               ),
               Container(
                 padding: const EdgeInsets.all(16),
-                height: MediaQuery.of(context).size.height - 50,
+                height: MediaQuery.of(context).size.height - 20,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -183,28 +187,30 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Name of enterprise:',
-                            enterpriseNameAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate
-                                ? (enterpriseNameAControler.text == '')
-                                : false,
-                          ),
+                              'Name of enterprise:',
+                              enterpriseNameAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (enterpriseNameAControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'The head office address:',
-                            addressAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate ? (addressAControler.text == '') : false,
-                          ),
+                              'The head office address:',
+                              addressAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (addressAControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'Number phone:',
-                            phoneAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate ? (phoneAControler.text == '') : false,
-                          ),
+                              'Number phone:',
+                              phoneAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate ? (phoneAControler.text == '') : false,
+                              TextInputType.number),
                         ],
                       ),
                       const SizedBox(
@@ -213,30 +219,30 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Bank account No:',
-                            bankAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate ? (bankAControler.text == '') : false,
-                          ),
+                              'Bank account No:',
+                              bankAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate ? (bankAControler.text == '') : false,
+                              TextInputType.number),
                           Input(
-                            'Opening at bank:',
-                            bankOpenAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate
-                                ? (bankOpenAControler.text == '')
-                                : false,
-                          ),
+                              'Opening at bank:',
+                              bankOpenAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (bankOpenAControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'Authorized peson:',
-                            nameAuthorizedAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate
-                                ? (nameAuthorizedAControler.text == '')
-                                : false,
-                          ),
+                              'Authorized peson:',
+                              nameAuthorizedAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (nameAuthorizedAControler.text == '')
+                                  : false,
+                              TextInputType.text),
                         ],
                       ),
                       const SizedBox(
@@ -245,32 +251,33 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Position:',
-                            positionAuthorizedAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate
-                                ? (positionAuthorizedAControler.text == '')
-                                : false,
-                          ),
+                              'Position:',
+                              positionAuthorizedAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (positionAuthorizedAControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'The letter of authorization-NO:',
-                            noLetterAuthorizationAControler,
-                            Icons.abc,
-                            "A",
-                            isValidate
-                                ? (noLetterAuthorizationAControler.text == '')
-                                : false,
-                          ),
+                              'The letter of authorization-NO:',
+                              noLetterAuthorizationAControler,
+                              Icons.abc,
+                              "A",
+                              isValidate
+                                  ? (noLetterAuthorizationAControler.text == '')
+                                  : false,
+                              TextInputType.number),
                           Input(
-                            'The letter of authorization-Date:',
-                            dateLetterAuthorizationAControler,
-                            Icons.calendar_month,
-                            "A",
-                            isValidate
-                                ? (dateLetterAuthorizationAControler.text == '')
-                                : false,
-                          ),
+                              'The letter of authorization-Date:',
+                              dateLetterAuthorizationAControler,
+                              Icons.calendar_month,
+                              "A",
+                              isValidate
+                                  ? (dateLetterAuthorizationAControler.text ==
+                                      '')
+                                  : false,
+                              TextInputType.text),
                         ],
                       ),
                       const SizedBox(
@@ -302,28 +309,30 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Name of enterprise:',
-                            enterpriseNameBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate
-                                ? (enterpriseNameBControler.text == '')
-                                : false,
-                          ),
+                              'Name of enterprise:',
+                              enterpriseNameBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (enterpriseNameBControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'The head office address:',
-                            addressBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate ? (addressBControler.text == '') : false,
-                          ),
+                              'The head office address:',
+                              addressBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (addressBControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'Number phone:',
-                            phoneBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate ? (phoneBControler.text == '') : false,
-                          ),
+                              'Number phone:',
+                              phoneBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate ? (phoneBControler.text == '') : false,
+                              TextInputType.number),
                         ],
                       ),
                       const SizedBox(
@@ -332,30 +341,30 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Bank account No:',
-                            bankBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate ? (bankBControler.text == '') : false,
-                          ),
+                              'Bank account No:',
+                              bankBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate ? (bankBControler.text == '') : false,
+                              TextInputType.number),
                           Input(
-                            'Opening at bank:',
-                            bankOpenBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate
-                                ? (bankOpenBControler.text == '')
-                                : false,
-                          ),
+                              'Opening at bank:',
+                              bankOpenBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (bankOpenBControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'Authorized peson:',
-                            nameAuthorizedBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate
-                                ? (nameAuthorizedBControler.text == '')
-                                : false,
-                          ),
+                              'Authorized peson:',
+                              nameAuthorizedBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (nameAuthorizedBControler.text == '')
+                                  : false,
+                              TextInputType.text),
                         ],
                       ),
                       const SizedBox(
@@ -364,32 +373,33 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Position:',
-                            positionAuthorizedBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate
-                                ? (positionAuthorizedBControler.text == '')
-                                : false,
-                          ),
+                              'Position:',
+                              positionAuthorizedBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (positionAuthorizedBControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'The letter of authorization-NO:',
-                            noLetterAuthorizationBControler,
-                            Icons.abc,
-                            "B",
-                            isValidate
-                                ? (noLetterAuthorizationBControler.text == '')
-                                : false,
-                          ),
+                              'The letter of authorization-NO:',
+                              noLetterAuthorizationBControler,
+                              Icons.abc,
+                              "B",
+                              isValidate
+                                  ? (noLetterAuthorizationBControler.text == '')
+                                  : false,
+                              TextInputType.number),
                           Input(
-                            'The letter of authorization-Date:',
-                            dateLetterAuthorizationBControler,
-                            Icons.calendar_month,
-                            "B",
-                            isValidate
-                                ? (dateLetterAuthorizationBControler.text == '')
-                                : false,
-                          ),
+                              'The letter of authorization-Date:',
+                              dateLetterAuthorizationBControler,
+                              Icons.calendar_month,
+                              "B",
+                              isValidate
+                                  ? (dateLetterAuthorizationBControler.text ==
+                                      '')
+                                  : false,
+                              TextInputType.text),
                         ],
                       ),
                       const SizedBox(
@@ -408,7 +418,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
               Container(
                 padding: const EdgeInsets.all(16),
                 // height: 240 + 50 * 10,
-                height: MediaQuery.of(context).size.height - 100,
+                height: MediaQuery.of(context).size.height - 50,
                 width: MediaQuery.of(context).size.width - 232,
                 color: Colors.white,
                 child: Column(
@@ -417,29 +427,31 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       Row(
                         children: [
                           Input(
-                            'Pursuant to:',
-                            pursuantControler,
-                            Icons.abc,
-                            "none",
-                            isValidate ? (pursuantControler.text == '') : false,
-                            // true,
-                          ),
+                              'Pursuant to:',
+                              pursuantControler,
+                              Icons.abc,
+                              "none",
+                              isValidate
+                                  ? (pursuantControler.text == '')
+                                  : false,
+                              // true,
+                              TextInputType.text),
                           Input(
-                            'Date created:',
-                            dateCreatedControler,
-                            Icons.abc,
-                            "none",
-                            isValidate
-                                ? (dateCreatedControler.text == '')
-                                : false,
-                          ),
+                              'Date created:',
+                              dateCreatedControler,
+                              Icons.abc,
+                              "none",
+                              isValidate
+                                  ? (dateCreatedControler.text == '')
+                                  : false,
+                              TextInputType.text),
                           Input(
-                            'At place:',
-                            placeControler,
-                            Icons.abc,
-                            "none",
-                            isValidate ? (placeControler.text == '') : false,
-                          ),
+                              'At place:',
+                              placeControler,
+                              Icons.abc,
+                              "none",
+                              isValidate ? (placeControler.text == '') : false,
+                              TextInputType.text),
                         ],
                       ),
                       const SizedBox(
@@ -457,31 +469,26 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                                 fontWeight: FontWeight.w500),
                           ),
                           ElevatedButton(
-                            onPressed: () => showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                content: ModalAddProductImportOrder(
-                                    products: products),
-                              ),
-                            ).then((value) {
-                              if (value != null) {
-                                ProductImportOrder productImportOrder =
-                                    ProductImportOrder.fromJson(
-                                        jsonDecode(value));
-                                setState(() {
-                                  products.add(productImportOrder);
-                                });
-                              }
-                            }),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'New ',
-                                  style: TextStyle(fontSize: 20),
+                            onPressed: () {
+                              // FocusScope.of(context).unfocus();
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  content: ModalAddProductImportOrder(
+                                      products: products),
                                 ),
-                              ],
-                            ),
+                              ).then((value) {
+                                if (value != null) {
+                                  ProductImportOrder productImportOrder =
+                                      ProductImportOrder.fromJson(
+                                          jsonDecode(value));
+                                  setState(() {
+                                    products.add(productImportOrder);
+                                  });
+                                }
+                              });
+                            },
                             style: ButtonStyle(
                                 maximumSize: MaterialStateProperty.all(
                                     const Size(110, 50)),
@@ -490,6 +497,15 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                                         vertical: 10, horizontal: 15)),
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color(0xFF226B3F))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  'New ',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -498,47 +514,68 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                       ),
                       Container(
                           height: 410,
-                          child: TableProduct(
-                            key: UniqueKey(),
-                            products: products,
-                            onPress: (name, product, index) {
-                              if (product != null) {
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    content: ModalEditProductImportOrder(
-                                      productImportOrder: product,
-                                    ),
+                          child: products.length > 0
+                              ? TableProduct(
+                                  key: UniqueKey(),
+                                  products: products,
+                                  onPress: (name, product, index) {
+                                    if (product != null) {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          content: ModalEditProductImportOrder(
+                                            productImportOrder: product,
+                                          ),
+                                        ),
+                                      ).then((value) {
+                                        if (value != null) {
+                                          ProductImportOrder newProduct =
+                                              ProductImportOrder.fromJson(
+                                                  jsonDecode(value));
+                                          setState(() {
+                                            products[index - 2] = newProduct;
+                                          });
+                                        }
+                                      });
+                                    } else {
+                                      setState(() {
+                                        products.removeWhere((element) =>
+                                            element.product!.name == name);
+                                      });
+                                    }
+                                  },
+                                )
+                              : Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Image(
+                                            height: 250,
+                                            width: 250,
+                                            image: AssetImage(
+                                                'assets/images/clipboard.png')),
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        'By clicking the "New" button above\nYou can add some product here',
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ))
+                                    ],
                                   ),
-                                ).then((value) {
-                                  if (value != null) {
-                                    ProductImportOrder newProduct =
-                                        ProductImportOrder.fromJson(
-                                            jsonDecode(value));
-                                    // setState(() {
-                                    //   products
-                                    //       .where((element) =>
-                                    //           element.product!.name! ==
-                                    //           newProduct.product!.name!)
-                                    //       .first
-                                    //       .amount = newProduct.amount;
-                                    // });
-                                    // print("index" + index.toString());
-                                    setState(() {
-                                      products[index - 2] = newProduct;
-                                    });
-                                    // print(product);
-                                  }
-                                });
-                              } else {
-                                setState(() {
-                                  products.removeWhere((element) =>
-                                      element.product!.name == name);
-                                });
-                              }
-                            },
-                          )),
+                                )),
                       const SizedBox(
                         height: 16,
                       ),
@@ -574,7 +611,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                               width: 70,
                             ),
                             Text(
-                              'Total price: ' + caculateTotal(),
+                              'Total price: ' + calculateTotal(),
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             ),
@@ -592,12 +629,14 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                               isValidate = true;
                             });
                             // FocusScope.of(context).unfocus();
+                            FocusManager.instance.primaryFocus?.unfocus();
+
                             // print(products);
 
                             if (_formKey.currentState!.validate() &&
                                 !listController
                                     .any((element) => element.text == '')) {
-                              print('â');
+                              // print('â');
                               CollectionReference importOrder =
                                   FirebaseFirestore.instance
                                       .collection('ImportOrder');
@@ -629,27 +668,17 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                                 'dateCreated': dateCreated,
                                 'atPlace': placeControler.text,
                                 'note': noteController.text,
-                                'totalPrice': caculateTotal(),
+                                'totalPrice': calculateTotal(),
                                 'status': 'pending',
                                 'listProduct':
-                                    products.map((e) => e.toJson()).toList()
+                                    products.map((e) => e.toJson()).toList(),
+                                'listCheck': List.generate(
+                                    products.length, (index) => false),
                               }).then((value) => importOrder
                                   .doc(value.id)
                                   .update({'idImportOrder': value.id}));
                             }
                           },
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Next ',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              const Icon(
-                                Icons.arrow_right,
-                                size: 30,
-                              )
-                            ],
-                          ),
                           style: ButtonStyle(
                               maximumSize: MaterialStateProperty.all(
                                   const Size(110, 60)),
@@ -658,6 +687,10 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                                       vertical: 16, horizontal: 15)),
                               backgroundColor: MaterialStateProperty.all(
                                   const Color(0xFF226B3F))),
+                          child: const Text(
+                            'Save ',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       )
                     ]),
@@ -670,7 +703,7 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
   }
 
   Flexible Input(text, TextEditingController controller, IconData icon,
-      String party, bool isValidate) {
+      String party, bool isValidate, TextInputType textInputType) {
     return Flexible(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -692,8 +725,10 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                 }
                 return null;
               },
+              keyboardType: textInputType,
               readOnly: text == 'Date created:' ||
-                  text == 'The letter of authorization-Date:',
+                  text == 'The letter of authorization-Date:' ||
+                  text == 'Pursuant to:',
               controller: controller,
               // obscureText: true,
               decoration: InputDecoration(

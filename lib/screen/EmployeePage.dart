@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:serenity/screen/create_import_order.dart';
 import 'package:serenity/widget/table_employee.dart';
 
 import '../bloc/employee/employee_bloc.dart';
-import '../bloc/importOrder/import_order_bloc.dart';
 import '../common/color.dart';
 import '../model/import_order.dart';
 import '../widget/modal_add_employee.dart';
-import '../widget/table_import_order.dart';
 
 class EmployeePage extends StatefulWidget {
   const EmployeePage({super.key});
@@ -32,26 +29,26 @@ class _EmployeePageState extends State<EmployeePage>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TabController tabController = TabController(length: 4, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFFEBFDF2),
+      backgroundColor: const Color(0xFFEBFDF2),
       body: SingleChildScrollView(
         child: BlocBuilder<EmployeeBloc, EmployeeState>(
           builder: (context, state) {
             if (state is EmployeeLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is EmployeeLoaded) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Employee',
                         style: TextStyle(
                             fontFamily: 'Poppins',
@@ -63,13 +60,19 @@ class _EmployeePageState extends State<EmployeePage>
                         onPressed: () => showDialog<String>(
                           // barrierDismissible: false,
                           context: context,
-                          builder: (BuildContext context) => AlertDialog(
+                          builder: (BuildContext context) => const AlertDialog(
                             // title: const Text('AlertDialog Title'),
                             content: ModalAddEmployee(),
                           ),
                         ),
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15)),
+                            backgroundColor: MaterialStateProperty.all(
+                                const Color(0xFF226B3F))),
                         child: Row(
-                          children: [
+                          children: const [
                             Text(
                               'New',
                               style: TextStyle(fontSize: 20),
@@ -80,16 +83,10 @@ class _EmployeePageState extends State<EmployeePage>
                             )
                           ],
                         ),
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(
-                                    vertical: 13, horizontal: 15)),
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFF226B3F))),
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
 
@@ -116,19 +113,16 @@ class _EmployeePageState extends State<EmployeePage>
                                   labelStyle: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500),
-                                  tabs: [
+                                  tabs: const [
                                     Tab(
-                                      text: "All orders",
+                                      text: "All",
                                     ),
                                     Tab(
-                                      text: "Completed",
+                                      text: "Active",
                                     ),
                                     Tab(
-                                      text: "Continuing",
+                                      text: "Inactive",
                                     ),
-                                    Tab(
-                                      text: "Cancelled",
-                                    )
                                   ]),
                             ),
                           ),
@@ -137,11 +131,11 @@ class _EmployeePageState extends State<EmployeePage>
                             height: 600,
                             child: TabBarView(
                                 controller: tabController,
-                                children: [
-                                  TableEmployee(),
-                                  TableEmployee(),
-                                  TableEmployee(),
-                                  TableEmployee(),
+                                children: const [
+                                  TableEmployee(state: 'all'),
+                                  TableEmployee(state: 'active'),
+                                  TableEmployee(state: 'inactive'),
+                                  // TableEmployee(),
                                 ]),
                           )
                         ],

@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../bloc/importOrder/import_order_bloc.dart';
+import '../common/color.dart';
 import '../dataSource/import_order_datasource.dart';
 import '../model/import_order.dart';
 
@@ -23,10 +24,18 @@ class TableImportOrder extends StatefulWidget {
 
 class _TableImportOrderState extends State<TableImportOrder> {
   late ImportOrderDataSource employeeDataSource;
+  String searchText = '';
+  final TextEditingController _queryController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TableImportOrder oldWidget) {
+    // BlocProvider.of<ImportOrderBloc>(context).add(LoadImportOrder());
+    super.didUpdateWidget(oldWidget);
   }
 
   late Map<String, double> columnWidths = {
@@ -51,45 +60,110 @@ class _TableImportOrderState extends State<TableImportOrder> {
               if (state is ImportOrderLoading) {
                 return Container();
               } else if (state is ImportOrderLoaded) {
+                List<ImportOrder> data = state.listImportOrder;
                 if (widget.tab != 'All') {
-                  List<ImportOrder> importOrders = state.listImportOrder
+                  data = state.listImportOrder
                       .where((element) =>
                           element.status == widget.tab.toLowerCase())
                       .toList();
-                  employeeDataSource = ImportOrderDataSource(
-                      employeeData: importOrders,
-                      context: context,
-                      onPress: (item) {});
-                } else {
-                  employeeDataSource = ImportOrderDataSource(
-                      employeeData: state.listImportOrder,
-                      context: context,
-                      onPress: (item) {});
                 }
+                print(searchText);
 
+                List<ImportOrder> importOrders = data
+                    .where((element) =>
+                        element.nameB!.toLowerCase().contains(searchText) ||
+                        element.idImportOrder!
+                            .toLowerCase()
+                            .contains(searchText))
+                    .toList();
+
+                employeeDataSource = ImportOrderDataSource(
+                    importOrders: importOrders,
+                    context: context,
+                    onPress: (item) {});
                 return Column(
                   children: [
-                    TextField(
-                      decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          // enabledBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(color: Colors.black)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              // obscureText: true,
+                              controller: _queryController,
+                              decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  // enabledBorder: OutlineInputBorder(
+                                  //     borderSide: BorderSide(color: Colors.black)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  hintText:
+                                      'Search for ID import, supplier name'),
+                              style: const TextStyle(fontSize: 16),
+                            ),
                           ),
-                          hintText: 'Search for orderID, customer'),
-                      style: TextStyle(fontSize: 16),
+                          const SizedBox(width: 15),
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: CustomColor.second),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  searchText = _queryController.text;
+                                });
+                                context.read<ImportOrderBloc>().add(
+                                    UpdateListImportOrder(
+                                        listImportOrder:
+                                            state.listImportOrder));
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(
+                    // TextField(
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       searchText = value;
+                    //     });
+                    //     context.read<ImportOrderBloc>().add(
+                    //         UpdateListImportOrder(
+                    //             listImportOrder: state.listImportOrder));
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //       contentPadding:
+                    //           EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    //       border: OutlineInputBorder(
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(30))),
+                    //       // enabledBorder: OutlineInputBorder(
+                    //       //     borderSide: BorderSide(color: Colors.black)),
+                    //       focusedBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: Colors.black),
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(30))),
+                    //       icon: Icon(
+                    //         Icons.search,
+                    //         color: Colors.black,
+                    //       ),
+                    //       hintText: 'Search for orderID, customer'),
+                    //   style: const TextStyle(fontSize: 16),
+                    // ),
+                    const SizedBox(
                       height: 20,
                     ),
                     SingleChildScrollView(
@@ -100,7 +174,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                             gridLineColor: Colors.transparent,
                           ),
                           child: SfDataGrid(
-                            rowHeight: 55,
+                            rowHeight: 60,
                             // onQueryRowHeight: (details) =>
                             //     details.getIntrinsicRowHeight(details.rowIndex),
                             columnWidthMode: ColumnWidthMode.fill,
@@ -122,7 +196,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                               GridColumn(
                                   columnName: 'STT',
                                   // width: columnWidths['id']!,
-                                  width: 60,
+                                  width: 120,
                                   label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -130,7 +204,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'STT',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -148,7 +222,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                         'Supplier Name',
                                         maxLines: 5,
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w600,
                                           overflow: TextOverflow.ellipsis,
                                           color: Color(0xFF226B3F),
@@ -165,7 +239,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                         'Date Created',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -179,7 +253,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Status',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -193,7 +267,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Price',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
@@ -207,13 +281,13 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'Note',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),
                               GridColumn(
                                   columnName: 'button',
-                                  // width: columnWidths['button']!,
+                                  width: 60,
                                   label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -221,7 +295,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                       child: const Text(
                                         'More',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xFF226B3F)),
                                       ))),

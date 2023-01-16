@@ -12,15 +12,6 @@ class ImportOrderBloc extends Bloc<ImportOrderEvent, ImportOrderState> {
   ImportOrderBloc() : super(ImportOrderLoading()) {
     on<LoadImportOrder>((event, emit) async {
       List<ImportOrder> employees = [];
-      // final importOrder =
-      //     await FirebaseFirestore.instance.collection('ImportOrder');
-      // await importOrder.get().then(
-      //   (value) {
-      //     value.docs.forEach((e) {
-      //       employees.add(ImportOrder.fromJson(e.data()));
-      //     });
-      //   },
-      // );
 
       importOrderRepository.getImportOrder().listen(
             (event) => add(UpdateListImportOrder(listImportOrder: event)),
@@ -29,5 +20,9 @@ class ImportOrderBloc extends Bloc<ImportOrderEvent, ImportOrderState> {
 
     on<UpdateListImportOrder>((event, emit) =>
         emit(ImportOrderLoaded(listImportOrder: event.listImportOrder)));
+
+    on<UpdateStateImportOrder>((event, emit) =>
+        importOrderRepository.updateStateImportOrder(
+            event.idImportOrder, event.state, event.listCheck));
   }
 }

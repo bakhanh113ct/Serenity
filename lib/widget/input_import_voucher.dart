@@ -50,14 +50,15 @@ class InputImportVoucher extends StatelessWidget {
                       },
                     )
                   : null,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              border: OutlineInputBorder(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
         ],
       ),

@@ -14,7 +14,6 @@ import 'bloc/blocOrder/order_bloc.dart';
 import 'package:serenity/bloc/employee/employee_bloc.dart';
 import 'package:serenity/bloc/importOrder/import_order_bloc.dart';
 
-
 import 'bloc/bloc_exports.dart';
 
 void main() async {
@@ -87,10 +86,11 @@ class MyApp extends StatelessWidget {
 
 Route? getRoute(RouteSettings settings) {
   switch (settings.name) {
-    case Routes.cart:{
-      return MaterialPageRoute(
+    case Routes.cart:
+      {
+        return MaterialPageRoute(
             builder: (context) => const CartPage(), settings: settings);
-    }
+      }
   }
   return null;
 }
