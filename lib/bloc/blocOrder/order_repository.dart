@@ -31,7 +31,7 @@ class OrderRepository {
 
   createOrder(
       Customer customer,
-      Voucher voucher,
+      Voucher? voucher,
       List<ProductCart> listProductCart,
       double total,
       double discount,
@@ -44,9 +44,10 @@ class OrderRepository {
     profit-=discount;
     await orders.add({
       "idCustomer": customer.idCustomer,
-      "idVoucher": voucher.idVoucher,
+      "idVoucher": voucher==null?"":voucher.idVoucher,
       "idUser": FirebaseAuth.instance.currentUser!.uid,
       "nameCustomer": customer.name,
+      "phone":customer.phone,
       "dateCreated": DateTime.now(),
       "status": "Pending",
       "price": total.toString(),
@@ -60,7 +61,9 @@ class OrderRepository {
       detailOrders.add({
         "idOrder": idOrder,
         "idProduct": element.product!.idProduct,
-        "amount": element.amount.toString()
+        "name":element.product!.name,
+        "amount": element.amount.toString(),
+        "price":(double.tryParse(element.product!.price.toString())!*element.amount!).toString()
       }).then((value) {
         detailOrders.doc(value.id).update({"idDetailOrder": value.id});
       });

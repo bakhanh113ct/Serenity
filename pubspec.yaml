@@ -46,7 +46,6 @@ dependencies:
   pdf: ^3.8.4
   path_provider: ^2.0.11
   printing: ^5.9.3
-  fl_chart: ^0.55.2
   image_picker: ^0.8.6
   dropdown_button2: ^1.9.1
   date_field: ^3.0.0
@@ -54,6 +53,7 @@ dependencies:
   slide_switcher: ^1.1.2
   infinite_scroll_tab_view: ^1.0.3
   dropdown_search: ^5.0.5
+  syncfusion_flutter_charts: ^20.4.43
   
 
 dev_dependencies:

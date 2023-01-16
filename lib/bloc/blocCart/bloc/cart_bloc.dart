@@ -7,6 +7,7 @@ import 'package:serenity/model/product.dart';
 import '../../../model/customer.dart';
 import '../../../model/product_cart.dart';
 import '../../../model/voucher.dart';
+import '../../../repository/report_repository.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';

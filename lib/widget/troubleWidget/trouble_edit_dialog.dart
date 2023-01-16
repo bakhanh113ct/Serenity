@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
-import 'package:serenity/model/customer.dart';
+import 'package:serenity/model/Customer.dart';
 import '../../bloc/blocTrouble/trouble_repository.dart';
 import '../../model/trouble.dart';
 import 'package:date_field/date_field.dart';

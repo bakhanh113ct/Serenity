@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:serenity/widget/customerWidget/customer_header.dart';
 import 'package:serenity/widget/custom_search.dart';
 
+import '../bloc/blocCustomer/customer_event.dart';
+import '../bloc/blocCustomer/customer_state.dart';
 import '../bloc/bloc_exports.dart';
 import '../common/color.dart';
 import '../widget/customerWidget/customer_datasource.dart';
-import '../model/customer.dart';
+import '../model/Customer.dart';
 import '../widget/customerWidget/customer_datagrid.dart';
 import '../widget/customerWidget/customer_list.dart';
 

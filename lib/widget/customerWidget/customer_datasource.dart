@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import 'customer_moreButton.dart';
 
 class CustomerDataSource extends DataGridSource {
@@ -61,7 +61,7 @@ class CustomerDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<String>(columnName: 'phone', value: e.phone),
-              DataGridCell<double>(columnName: 'purchased', value: double.tryParse(e.purchased!)),
+              DataGridCell<double>(columnName: 'purchased', value: double.tryParse(e.purchased.toString())),
               DataGridCell<String>(
                   columnName: 'dateOfBirth', value: DateFormat('dd/MM/yyyy').format(e.dateOfBirth!.toDate())),
               const DataGridCell<String>(columnName: 'more', value: 'edit'),
