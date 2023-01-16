@@ -38,8 +38,8 @@ class DeleteTrouble extends TroubleEvent {
   List<Object> get props => [trouble];
 }
 
-class GetData extends TroubleEvent {
-  const GetData();
+class GetTrouble extends TroubleEvent {
+  const GetTrouble();
 }
 
 class GetTroublesByFilter extends TroubleEvent {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';
-import 'package:serenity/bloc/bloc_exports.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../model/customer.dart';
@@ -40,7 +40,6 @@ class CustomerDataSource extends DataGridSource {
         child: dataGridCell.columnName == 'more'
             ? Center(child: CustomerMoreButton(idCustomer: idCustomer)) : Center(
                     child: Text(
-                      (dataGridCell.columnName == 'purchased' ? '\$' : '') +
                           dataGridCell.value.toString(),
                       style: const TextStyle(
                         fontSize: 20,
@@ -61,9 +60,9 @@ class CustomerDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<String>(columnName: 'phone', value: e.phone),
-              DataGridCell<double>(columnName: 'purchased', value: double.tryParse(e.purchased!)),
+              DataGridCell<String>(columnName: 'purchased', value: e.purchased!.toVND(unit: 'đ')),
               DataGridCell<String>(
-                  columnName: 'dateOfBirth', value: DateFormat('dd/MM/yyyy').format(e.dateOfBirth!.toDate())),
+                  columnName: 'dateOfBirth', value: DateFormat('dd-MM-yyyy').format(e.dateOfBirth!.toDate())),
               const DataGridCell<String>(columnName: 'more', value: 'edit'),
             ]))
         .toList(growable: false);

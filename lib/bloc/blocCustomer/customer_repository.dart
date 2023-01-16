@@ -49,4 +49,15 @@ class CustomerRepository {
       return '';
     }
   }
+
+  Future<Customer> getCustomer(String idCustomer) async {
+    Customer result = Customer();
+    await _fireCloud
+        .where('idCustomer', isEqualTo: idCustomer)
+        .get()
+        .then((value) {
+      result = Customer.fromJson(value.docs.first.data());
+    });
+    return result;
+  }
 }

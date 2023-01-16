@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/model/trouble.dart';
 
 import 'trouble_repository.dart';
@@ -12,7 +12,7 @@ part 'trouble_state.dart';
 
 class TroubleBloc extends Bloc<TroubleEvent, TroubleState> {
   TroubleBloc() : super(TroubleInitial()) {
-    on<GetData>(((event, emit) async {
+    on<GetTrouble>(((event, emit) async {
       emit(TroubleLoading());
       await Future.delayed(const Duration(seconds: 1));
       try {
@@ -24,20 +24,23 @@ class TroubleBloc extends Bloc<TroubleEvent, TroubleState> {
     }));
 
     on<GetTroublesByFilter>(((event, emit) async {
-      await Future.delayed(const Duration(seconds: 1));
       try {
-        final text = event.textSearch;
+        final text = event.textSearch.toLowerCase();
         List<Trouble> allTroubles = await TroubleRepository().get();
-        if (text.isEmpty || text == '') {
+        if (text.isEmpty) {
           allTroubles = await TroubleRepository().get();
+          emit(TroubleLoaded(allTroubles));
+          return;
         } else {
           allTroubles.retainWhere((data) {
-            return (data.idTrouble!.contains(text) ||
-                data.description!.contains(text) ||
-                data.nameCustomer!.contains(text) ||
-                data.idCustomer!.contains(text) ||
-                data.dateCreated!.toString().contains(text) ||
-                data.status!.contains(text));
+            return (data.idTrouble!.toLowerCase().contains(text) ||
+                data.description!.toLowerCase().contains(text) ||
+                data.nameCustomer!.toLowerCase().contains(text) ||
+                data.idCustomer!.toLowerCase().contains(text) ||
+                DateFormat('dd-MM-yyyy hh:ss:mm aa')
+                    .format(data.dateCreated!.toDate())
+                    .contains(text) ||
+                data.status!.toLowerCase().contains(text));
           });
           emit(TroubleLoaded(allTroubles));
         }

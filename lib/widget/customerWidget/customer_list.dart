@@ -10,7 +10,7 @@ class CustomerList extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void onChangeText(BuildContext context, String value){
+  void onSearch(BuildContext context, String value){
     context.read<CustomerBloc>().add(GetCustomersByFilter(textSearch: value));
   }
   @override
@@ -22,13 +22,18 @@ class CustomerList extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: CustomSearch(onChangeText: onChangeText,),
+            child: CustomSearch(onSearch: onSearch,),
           ),
           Expanded(
               flex: 7,
               child: BlocBuilder<CustomerBloc, CustomerState>(
                 builder: (context, state) {
-              if (state is CustomerLoaded) {
+              if (state is CustomerLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }   
+              else if (state is CustomerLoaded) {
                 CustomerDataSource customerDataSource =
                     CustomerDataSource(customers: state.myData, context: context);
                 return state.myData.isEmpty? const Center(child: Text('No value')):CustomerDataGrid(

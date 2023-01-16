@@ -34,13 +34,7 @@ class _CustomerPageState extends State<CustomerPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CustomerBloc, CustomerState>(
-            builder: (context, state) {
-              if(state is CustomerLoading){
-                return const Center(child: CircularProgressIndicator(),);
-              }
-              if (state is CustomerLoaded){
-                return Scaffold(
+    return  Scaffold(
                 backgroundColor: Theme.of(context).backgroundColor,
                 resizeToAvoidBottomInset: false,
                 body: Column(
@@ -108,13 +102,6 @@ class _CustomerPageState extends State<CustomerPage>
                   ],
                 ),
               );
-              }
-              else{
-                return Container();
-              }
-              
-            },
-          );
   }
 }
 

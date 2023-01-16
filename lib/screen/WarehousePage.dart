@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:serenity/widget/troubleWidget/report_trouble_list.dart';
-import '../bloc/bloc_exports.dart';
 import '../common/color.dart';
-import '../widget/troubleWidget/trouble_header.dart';
-import '../widget/troubleWidget/trouble_list.dart';
+import '../widget/WarehouseWidget/Warehouse_header.dart';
 
-class TroublePage extends StatefulWidget {
-  const TroublePage({Key? key}) : super(key: key);
-  static const routeName = '/Trouble';
+class WarehousePage extends StatefulWidget {
+  const WarehousePage({Key? key}) : super(key: key);
+  static const routeName = '/Warehouse';
   @override
-  State<TroublePage> createState() => _TroublePageState();
+  State<WarehousePage> createState() => _WarehousePageState();
 }
 
-class _TroublePageState extends State<TroublePage>
+class _WarehousePageState extends State<WarehousePage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-
   }
 
   @override
@@ -29,7 +25,7 @@ class _TroublePageState extends State<TroublePage>
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          const Expanded(flex: 1, child: TroubleHeader(title: 'Troubles')),
+          const Expanded(flex: 1, child: WarehouseHeader(title: 'Warehouse')),
           Expanded(
             flex: 6,
             child: Container(
@@ -54,7 +50,7 @@ class _TroublePageState extends State<TroublePage>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 400,
+                            width: 600,
                             padding: const EdgeInsets.all(20),
                             child: TabBar(
                                 controller: _tabController,
@@ -65,7 +61,7 @@ class _TroublePageState extends State<TroublePage>
                                     fontSize: 18, fontWeight: FontWeight.w500),
                                 tabs: const [
                                   Tab(
-                                    text: "All Troubles",
+                                    text: "Product Receipt Document",
                                   ),
                                   Tab(
                                     text: "Report List",
@@ -79,9 +75,9 @@ class _TroublePageState extends State<TroublePage>
                       flex: 8,
                       child: TabBarView(
                           controller: _tabController,
-                          children: const [
-                            TroubleList(),
-                            ReportTroubleList(),
+                          children:  [
+                            Container(),
+                            Container(),
                           ]),
                     )
                   ],

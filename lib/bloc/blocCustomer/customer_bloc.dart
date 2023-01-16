@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
 
 import '../../model/customer.dart';
@@ -64,18 +63,20 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       GetCustomersByFilter event, Emitter<CustomerState> emit) async {
     await Future.delayed(const Duration(seconds: 1));
     try {
-      final text = event.textSearch;
+      final text = event.textSearch.toLowerCase();
       List<Customer> allCustomers = await CustomerRepository().get();
       if (text.isEmpty || text == '') {
         allCustomers = await CustomerRepository().get();
       } else {
         allCustomers.retainWhere((cus) {
-          return (cus.idCustomer!.contains(text) ||
-              cus.name!.contains(text) ||
-              cus.address!.contains(text) ||
-              cus.phone!.contains(text) ||
-              cus.dateOfBirth!.toString().contains(text) ||
-              cus.email!.contains(text));
+          return (cus.idCustomer!.toLowerCase().contains(text) ||
+              cus.name!.toLowerCase().contains(text) ||
+              cus.address!.toLowerCase().contains(text) ||
+              cus.phone!.toLowerCase().contains(text) ||
+              DateFormat('dd-MM-yyyy hh:ss:mm aa')
+                  .format(cus.dateOfBirth!.toDate())
+                  .contains(text) ||
+              cus.email!.toLowerCase().contains(text));
         });
       }
       emit(CustomerLoaded(allCustomers));

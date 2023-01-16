@@ -29,7 +29,7 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
   var initValues = {
     'nameCustomer': '',
     'description': '',
-    'status': 'received',
+    'status': 'Received',
     'dateCreated': Timestamp.now(),
     'dateSolved': '',
     'idCustomer': '',
@@ -43,8 +43,11 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
       dateSolved: '',
       status: '');
   var listCustomers = <Customer>[];
+  var customer = Customer();
   final _form = GlobalKey<FormState>();
   var isLoading = true;
+
+
   void _saveForm(BuildContext context) async {
     if (!mounted) return;
     final isValid = _form.currentState!.validate();
@@ -86,9 +89,8 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
       return;
     }
     listCustomers = await CustomerRepository().get();
-    final listTroubles = await TroubleRepository().get();
-    editTrouble = listTroubles
-        .firstWhere((element) => element.idTrouble == widget.idTrouble);
+    editTrouble = await TroubleRepository().getTrouble(widget.idTrouble);
+    customer = await CustomerRepository().getCustomer(editTrouble.idCustomer!);
     initValues = {
       'nameCustomer': editTrouble.nameCustomer!,
       'description': editTrouble.description!,
@@ -181,7 +183,7 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
                               height: 30,
                             ),
                             DropdownSearch<Customer>(
-                              enabled: widget.title == 'Add Trouble' ? true : false,
+                              enabled: widget.title == 'View Trouble' ? false : true,
                               asyncItems: (filter) => getCustomer(filter),
                               compareFn: (i, s) {
                                 return i.name!
@@ -205,18 +207,16 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
                                       .fillColor,
                                 ),
                               ),
-                            
-                              onSaved: (value) async {
-                                final list = await CustomerRepository().get();
-                                value ??= list.firstWhere((element) => element.idCustomer == editTrouble.idCustomer);
+                              onChanged: ((value) => customer = value!),
+                              onSaved: (value) async {                               
                                 editTrouble = Trouble(
                                     idTrouble: editTrouble.idTrouble,
-                                    nameCustomer: value.name,
+                                    nameCustomer: customer.name,
                                     description: editTrouble.description,
                                     status: editTrouble.status,
                                     dateCreated: editTrouble.dateCreated,
                                     dateSolved: editTrouble.dateSolved,
-                                    idCustomer: value.idCustomer,);
+                                    idCustomer: customer.idCustomer,);
                               },
                               validator: ((value) {
                                 if(value == null && editTrouble.idCustomer!.isEmpty){

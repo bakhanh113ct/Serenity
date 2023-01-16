@@ -18,6 +18,14 @@ class UserRepository {
     });
     return user;
   }
+   getUserByIdUser(String idUser) async {
+    CustomUser.User? user;
+    await _users.where('idUser', isEqualTo: idUser).get().then((value) {
+      user = CustomUser.User.fromJson(value.docs.first.data());
+    });
+    return user;
+  }
+
 
   updateUser(CustomUser.User oldUser) async {
     CustomUser.User? user;

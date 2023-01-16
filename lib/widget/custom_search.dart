@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:serenity/bloc/bloc_exports.dart';
-
-import 'customerWidget/customer_datasource.dart';
+import '../common/color.dart';
 
 class CustomSearch extends StatefulWidget {
-  const CustomSearch({super.key, required this.onChangeText});
+  const CustomSearch({super.key, required this.onSearch});
   // final CustomerDataSource customerDataSource;
-  final Function onChangeText;
+  final Function onSearch;
   @override
   State<CustomSearch> createState() => _CustomSearchState();
 }
@@ -16,30 +14,48 @@ class _CustomSearchState extends State<CustomSearch> {
   @override
   Widget build(BuildContext context) {
     return Row(
-
       children: [
-        SizedBox(
-          height: 40,
-          
-          width: MediaQuery.of(context).size.width * 0.7,
-          child: TextFormField(
+        Expanded(
+          child: TextField(
+            // obscureText: true,
             controller: searchController,
-            decoration: const InputDecoration(
-                hintText: 'Search here...',
-                suffixIcon: Icon(Icons.search),
-                labelText: 'Search here',
-               contentPadding: EdgeInsets.only(left: 15, top: 10),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)))),
-            onChanged: (value) {
-              // context.read<CustomerBloc>().add(GetCustomersByFilter(textSearch: value));
-              widget.onChangeText(context, value);
-            },
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.text,
-  
+          
+            decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                suffixIcon:searchController.text.isEmpty ? null : IconButton(icon: const Icon(Icons.cancel), onPressed: () {
+                  setState(() {
+                     searchController.text = '';
+                  });
+                  widget.onSearch(context, searchController.text);
+                },), 
+                border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                hintText: 'Search here...'),
+                onChanged: ((value) => setState(() {
+                  
+                })),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
+        const SizedBox(width: 15),
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: CustomColor.second),
+          child: IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed:() => widget.onSearch(context, searchController.text),
+          ),
+        )
       ],
     );
   }

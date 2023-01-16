@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/bloc/blocReceiptDocument/receipt_document_bloc.dart';
 import 'package:serenity/routes/Routes.dart';
 import 'package:serenity/screen/LoginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,6 +37,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CheckoutBloc()),
         BlocProvider(create: (context) => CustomerBloc()),
         BlocProvider(create: (context) => TroubleBloc()),
+        BlocProvider(create: (context) => ReceiptDocumentBloc()),
+        BlocProvider(create: (context) => ReportTroubleBloc()),
         BlocProvider(
             create: (context) => ImportOrderBloc()..add(LoadImportOrder())),
         BlocProvider(create: (context) => EmployeeBloc()..add(LoadEmployee())),
@@ -46,14 +49,23 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: "Poppins",
             // canvasColor: Color(0xFF226B3F),
-            primaryColor: Color(0xFF226B3F),
+            primaryColor: const Color(0xFF226B3F),
+            backgroundColor: const Color(0xFFEBFDF2),
             colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: const Color(0xFF226B3F),
               secondary: const Color(0xFF226B3F),
             ),
+            textTheme: const TextTheme(
+              headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+              headline2: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF226B3F)),
+              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            ),
           ),
           home: Scaffold(
-            // resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: false,
             body: StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
