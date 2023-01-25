@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import '../../model/report_trouble.dart';
 import 'report_trouble_repository.dart';
 

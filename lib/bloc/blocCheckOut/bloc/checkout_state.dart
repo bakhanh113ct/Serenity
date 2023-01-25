@@ -21,5 +21,5 @@ class CheckoutLoaded extends CheckoutState {
   final double discount;
   final double total;
   @override
-  List<Object> get props => [discount,selectedCustomer!,selectedVoucher!];
+  List<Object> get props => [discount,selectedCustomer!];
 }

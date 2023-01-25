@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/widget/troubleWidget/report_trouble_moreButton.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import '../../model/report_trouble.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 

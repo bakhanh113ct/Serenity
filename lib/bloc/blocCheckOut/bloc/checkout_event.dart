@@ -29,8 +29,9 @@ class ChooseVoucher extends CheckoutEvent {
 }
 
 class Payment extends CheckoutEvent {
-  const Payment(this.listProductCart);
+  const Payment(this.listProductCart, this.methodpayment);
   final List<ProductCart> listProductCart;
+  final String methodpayment;
   @override
   List<Object> get props => [];
 }

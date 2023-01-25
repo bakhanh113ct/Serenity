@@ -3,7 +3,7 @@ import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import 'customer_moreButton.dart';
 
 class CustomerDataSource extends DataGridSource {

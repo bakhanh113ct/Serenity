@@ -23,7 +23,7 @@ class _CompletedOrderTabState extends State<CompletedOrderTab> {
           return Container();
         }
         else if(state is OrderLoaded){
-          final orders=OrderDataSource(orderData: state.listCompletedOrder!);
+          final orders=OrderDataSource(orderData: state.listCompletedOrder!,context: context);
           return Column( 
             children: [
               const SizedBox(

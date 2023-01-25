@@ -23,7 +23,7 @@ class _PendingOrderTabState extends State<PendingOrderTab> {
           return Container();
         }
         else if(state is OrderLoaded){
-          final orders=OrderDataSource(orderData: state.listPendingOrder!);
+          final orders=OrderDataSource(orderData: state.listPendingOrder!,context: context);
           return Column( 
             children: [
               const SizedBox(

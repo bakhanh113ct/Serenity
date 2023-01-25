@@ -32,7 +32,7 @@ class InputEmployee extends StatelessWidget {
             TextFormField(
               obscureText: text == 'Password',
               keyboardType:
-                  text == 'Salary' || text == 'Phone number' || text == 'Amount'
+                  text == 'Salary' || text == 'Phone number' || text == 'Amount'||text=='Price'||text=='Historical Cost'
                       ? TextInputType.number
                       : text == 'Email'
                           ? TextInputType.emailAddress
