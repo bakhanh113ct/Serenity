@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:serenity/bloc/blocDeliveryReceipt/delivery_receipt_bloc.dart';
 import 'package:serenity/bloc/blocReceiptDocument/receipt_document_bloc.dart';
 import 'package:serenity/routes/Routes.dart';
 import 'package:serenity/screen/LoginPage.dart';
@@ -10,6 +11,8 @@ import 'package:serenity/screen/cart_page.dart';
 
 import 'bloc/blocCart/bloc/cart_bloc.dart';
 import 'bloc/blocCheckOut/bloc/checkout_bloc.dart';
+import 'bloc/blocExportBook/export_book_bloc.dart';
+import 'bloc/blocImportBook/import_book_bloc.dart';
 import 'bloc/blocOrder/order_bloc.dart';
 import 'package:serenity/bloc/employee/employee_bloc.dart';
 import 'package:serenity/bloc/importOrder/import_order_bloc.dart';
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TroubleBloc()),
         BlocProvider(create: (context) => ReceiptDocumentBloc()),
         BlocProvider(create: (context) => ReportTroubleBloc()),
+        BlocProvider(create: (context) => ImportBookBloc()),
+        BlocProvider(create: (context) => ExportBookBloc()),
+        BlocProvider(create: (context) => DeliveryReceiptBloc()),
         BlocProvider(
             create: (context) => ImportOrderBloc()..add(LoadImportOrder())),
         BlocProvider(create: (context) => EmployeeBloc()..add(LoadEmployee())),
@@ -55,7 +61,11 @@ class MyApp extends StatelessWidget {
               secondary: const Color(0xFF226B3F),
             ),
             textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+              headline1: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 30,
+                            color: Color(0xFF226B3F),
+                            fontWeight: FontWeight.w600),
               headline2: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,

@@ -30,9 +30,9 @@ class ReceiptDocument {
     idStaff = json['idStaff'];
     nameSupplier = json['nameSupplier'];
     dateCreated = json['dateCreated'];
-   if (json['listProducts'] != null) {
+   if (json['listProduct'] != null) {
       listProducts = <ProductImportOrder>[];
-      json['listProducts'].forEach((v) {
+      json['listProduct'].forEach((v) {
         listProducts!.add(ProductImportOrder.fromJson(v));
       });
     }
@@ -47,7 +47,7 @@ class ReceiptDocument {
     data['idStaff'] = idStaff;
     data['nameSupplier'] = nameSupplier;
    if (listProducts != null) {
-      data['listProducts'] = listProducts!.map((v) => v.toJson()).toList();
+      data['listProduct'] = listProducts!.map((v) => v.toJson()).toList();
     }
     data['dateCreated'] = dateCreated;
     data['signStaff'] = signStaff;

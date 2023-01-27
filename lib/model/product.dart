@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
@@ -56,4 +57,26 @@ class Product extends Equatable {
         image,
         historicalCost
       ];
+
+  Product copyWith({
+    String? amount,
+    String? category,
+    String? content,
+    String? idProduct,
+    String? image,
+    String? name,
+    String? price,
+    String? historicalCost,
+  }) {
+    return Product(
+      amount: amount ?? this.amount,
+      category: category ?? this.category,
+      content: content ?? this.content,
+      idProduct: idProduct ?? this.idProduct,
+      image: image ?? this.image,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      historicalCost: historicalCost ?? this.historicalCost,
+    );
+  }
 }

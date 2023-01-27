@@ -74,7 +74,7 @@ class TroubleDataSource extends DataGridSource {
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFFEDB014),
               fontWeight: FontWeight.w500),
         ),
@@ -88,7 +88,7 @@ class TroubleDataSource extends DataGridSource {
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFF5CB16F),
               fontWeight: FontWeight.w500),
         ),

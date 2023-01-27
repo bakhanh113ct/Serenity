@@ -73,7 +73,7 @@ class ReportTroubleDataSource extends DataGridSource {
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFFEDB014),
               fontWeight: FontWeight.w500),
         ),
@@ -83,12 +83,13 @@ class ReportTroubleDataSource extends DataGridSource {
         decoration: const BoxDecoration(
             color: Color(0xFFDCFBD7),
             borderRadius: BorderRadius.all(Radius.circular(8))),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFF5CB16F),
+              overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w500),
         ),
       );

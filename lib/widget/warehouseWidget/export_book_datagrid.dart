@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import 'report_trouble_datasource.dart';
+import 'export_book_datasource.dart';
 
-
-class ReportTroubleDataGrid extends StatefulWidget {
-  const ReportTroubleDataGrid({
+class ExportBookDataGrid extends StatefulWidget {
+  const ExportBookDataGrid({
     Key? key,
-    required this.reportTroubleDataSource,
+    required this.exportBookDataSource,
   }) : super(key: key);
 
-  final ReportTroubleDataSource reportTroubleDataSource;
+  final ExportBookDataSource exportBookDataSource;
 
   @override
-  State<ReportTroubleDataGrid> createState() => _ReportTroubleDataGridState();
+  State<ExportBookDataGrid> createState() => _ExportBookDataGridState();
 }
 
-class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
+class _ExportBookDataGridState extends State<ExportBookDataGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +25,6 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
-            sortIcon: null,
             frozenPaneElevation: 7.0),
         child: Column(
           children: [
@@ -36,18 +34,8 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                 headerGridLinesVisibility: GridLinesVisibility.none,
                 rowHeight: 70,
                 columnWidthMode: ColumnWidthMode.fill,
-                source: widget.reportTroubleDataSource,           
+                source: widget.exportBookDataSource,
                 columns: <GridColumn>[
-                  GridColumn(
-                      visible: false,
-                      columnName: 'idReportTrouble',
-                      width: 70,
-                      label: Container(
-                          padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
-                          child: Text('id',
-                              style: Theme.of(context).textTheme.headline2,
-                              overflow: TextOverflow.ellipsis))),
                   GridColumn(
                       columnName: 'no',
                       width: 70,
@@ -58,43 +46,43 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
-                      columnName: 'nameCustomer',
+                      columnName: 'name',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
                           alignment: Alignment.center,
-                          child: Text('NameCustomer',
+                          child: Text('Name',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
-                      columnName: 'totalMoney',
+                      columnName: 'price',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
                           alignment: Alignment.center,
-                          child: Text('Total Money',
+                          child: Text('Total Price',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
-                      columnName: 'isCompensate',
+                      columnName: 'amount',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
                           alignment: Alignment.center,
-                          child: Text('IsCompensate',
+                          child: Text('Amount',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
-                      columnName: 'status',
+                      columnName: 'category',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
                           alignment: Alignment.center,
-                          child: Text('Status',
+                          child: Text('Category',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
-                      columnName: 'dateCreated',
+                      columnName: 'dateExport',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
                           alignment: Alignment.center,
-                          child: Text('DateCreated',
+                          child: Text('Date Export',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(

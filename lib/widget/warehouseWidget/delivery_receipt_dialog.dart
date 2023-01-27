@@ -4,57 +4,60 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:serenity/bloc/blocReceiptDocument/receipt_document_bloc.dart';
+import 'package:serenity/bloc/blocDeliveryReceipt/delivery_receipt_repository.dart';
+import 'package:serenity/bloc/blocImportBook/import_book_repository.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 import 'package:serenity/common/color.dart';
-import 'package:serenity/model/import_order.dart';
-import 'package:serenity/model/product_import_order.dart';
-import 'package:serenity/repository/import_order_repository.dart';
-import 'package:serenity/widget/warehouseWidget/import_product_list.dart';
-import '../../bloc/blocReceiptDocument/receipt_document_repository.dart';
+import 'package:serenity/model/product.dart';
+import 'package:serenity/repository/detail_order_repository.dart';
+import '../../bloc/blocDeliveryReceipt/delivery_receipt_bloc.dart';
 import '../../bloc/blocUser/user_repository.dart';
 import '../../model/User.dart';
-import '../../model/receipt_document.dart';
+import '../../model/delivery_receipt.dart';
+import '../../model/detailOrder.dart';
+import '../../model/order.dart';
+import 'export_product_list.dart';
 
 enum SignaturePerson { staff }
 
-class ReceiptDocumentEditDialog extends StatefulWidget {
-  const ReceiptDocumentEditDialog({
+class DeliveryReceiptEditDialog extends StatefulWidget {
+  const DeliveryReceiptEditDialog({
     Key? key,
-    required this.idReceiptDocument,
+    required this.idDeliveryReceipt,
     required this.title,
     required this.isEdit,
+    required this.order,
   }) : super(key: key);
-  final String idReceiptDocument;
+  final String idDeliveryReceipt;
   final String title;
   final bool isEdit;
+  final MyOrder order;
   @override
-  State<ReceiptDocumentEditDialog> createState() =>
-      _ReceiptDocumentEditDialogState();
+  State<DeliveryReceiptEditDialog> createState() =>
+      _DeliveryReceiptEditDialogState();
 }
 
-class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
-  var editReceiptDocument = ReceiptDocument(
-      idReceiptDocument: '',
+class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
+  var editDeliveryReceipt = DeliveryReceipt(
+      idDeliveryReceipt: '',
       idStaff: '',
       totalMoney: '',
-      idImportOrder: '',
+      idOrder: '',
       dateCreated: Timestamp.now(),
-      listProducts: <ProductImportOrder>[],
-      nameSupplier: '',
+      listProducts: <Product>[],
+      nameCustomer: '',
       signStaff: '');
   var user = User();
-  var receiptDocument = ReceiptDocument();
-  var importOrder = ImportOrder();
-  var listImportOrder = <ImportOrder>[];
+  var deliveryReceipt = DeliveryReceipt();
+  var listDetailOrder = <DetailOrder>[];
   XFile? signStaff;
   final _form = GlobalKey<FormState>();
   var isLoading = true;
-
+  var totalMoney = 0.0;
   // save the form
   void _saveForm(BuildContext context) async {
     final isValid = _form.currentState!.validate();
@@ -62,26 +65,32 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
       return;
     }
     _form.currentState!.save();
-    if (widget.idReceiptDocument == '') {
+    if (widget.idDeliveryReceipt == '') {
       if (signStaff == null) {
         return;
       }
-      var imageStaff =
-          await ReceiptDocumentRepository().uploadSignReceiptDocument(signStaff);
-      // add ReceiptDocument
-      editReceiptDocument = editReceiptDocument.copyWith(
-        idImportOrder: editReceiptDocument.idImportOrder,
+      var imageStaff = await DeliveryReceiptRepository()
+          .uploadSignDeliveryReceipt(signStaff);
+      var listProducts = <Product>[];
+      listDetailOrder.forEach((element)  async {
+        var product = await ImportBookRepository().getProductImportBook(element.idProduct!);
+        listProducts.add(product.copyWith(amount: element.amount));
+      });
+      // add DeliveryReceipt
+      editDeliveryReceipt = editDeliveryReceipt.copyWith(
+        idOrder: widget.order.idOrder,
         dateCreated: Timestamp.fromDate(DateTime.now()),
-        totalMoney: editReceiptDocument.totalMoney,
+        totalMoney: totalMoney.toString(),
         idStaff: user.idUser,
         signStaff: imageStaff,
-        idReceiptDocument: editReceiptDocument.idReceiptDocument,
-        nameSupplier: editReceiptDocument.nameSupplier,
-        listProducts: editReceiptDocument.listProducts,
+        idDeliveryReceipt: editDeliveryReceipt.idDeliveryReceipt,
+        nameCustomer: widget.order.nameCustomer,
+        listProducts: listProducts,
       );
       if (!mounted) return;
-      context.read<ReceiptDocumentBloc>()
-          .add(AddReceiptDocument(receiptDocument: editReceiptDocument));
+      context
+          .read<DeliveryReceiptBloc>()
+          .add(AddDeliveryReceipt(deliveryReceipt: editDeliveryReceipt));
       const snackBar = SnackBar(
         content: Text('Add Successfully'),
       );
@@ -89,27 +98,11 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
     } else {
       String? imageStaff;
       if (signStaff != null) {
-        imageStaff =
-            await ReceiptDocumentRepository().uploadSignReceiptDocument(signStaff);
+        imageStaff = await DeliveryReceiptRepository()
+            .uploadSignDeliveryReceipt(signStaff);
       }
-      // update ReceiptDocument
-      // editReceiptDocument = editReceiptDocument.copyWith(
-      //   idTrouble: widget.idTrouble,
-      //   idCustomer: customer.idCustomer,
-      //   dateCreated: Timestamp.fromDate(DateTime.now()),
-      //   dateSolved: '',
-      //   totalMoney: totalMoney.toString(),
-      //   isCompensate: compensation == 'compensate' ? true : false,
-      //   status: 'Pending',
-      //   idStaff: user.idUser,
-      //   signCus: imageCus ?? ReceiptDocument.signCus,
-      //   signStaff: imageStaff ?? ReceiptDocument.signStaff,
-      //   idReceiptDocument: ReceiptDocument.idReceiptDocument,
-      // );
+    
       if (!mounted) return;
-      // context
-      //     .read<ReceiptDocumentBloc>()
-      //     .add(UpdateReceiptDocument(ReceiptDocument: editReceiptDocument));
       const snackBar = SnackBar(
         content: Text('Update Successfully'),
       );
@@ -149,16 +142,23 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
   @override
   void didChangeDependencies() async {
     if (!mounted) return;
-    if(widget.idReceiptDocument.isNotEmpty) {
-      receiptDocument = await ReceiptDocumentRepository().getReceiptDocument(widget.idReceiptDocument);
-      importOrder = await ImportOrderRepository().getIO(receiptDocument.idImportOrder!);
-      user = await UserRepository().getUserByIdUser(receiptDocument.idStaff!);
-      editReceiptDocument = editReceiptDocument.copyWith(idImportOrder: receiptDocument.idImportOrder);
-      listImportOrder = await ImportOrderRepository().getListImportOrder();
-    }
-    else{
+    if (widget.idDeliveryReceipt.isNotEmpty) {
+      deliveryReceipt = await DeliveryReceiptRepository()
+          .getDeliveryReceipt(widget.idDeliveryReceipt);
+      user = await UserRepository().getUserByIdUser(deliveryReceipt.idStaff!);
+      editDeliveryReceipt =
+          editDeliveryReceipt.copyWith(idOrder: deliveryReceipt.idOrder);
+    } else {
       user = await UserRepository().getUser();
     }
+
+    listDetailOrder =
+        await DetailOrderRepository().getDetailOrder(widget.order.idOrder!);
+    
+    listDetailOrder.forEach(((element) {
+      totalMoney += double.parse(element.price!);
+    }));
+
     setState(() {
       isLoading = false;
     });
@@ -250,7 +250,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                       color: CustomColor.second,
                                     ),
                                     title: Text(
-                                      'Import Order',
+                                      'Order',
                                       style:
                                           Theme.of(context).textTheme.headline2,
                                     ))),
@@ -288,62 +288,66 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                     ))),
                             const SizedBox(
                               height: 10,
-                            ),
-                            importOrder.idImportOrder == null ? Container() : Container(
-                              margin: const EdgeInsets.only(
-                                  top: 5, left: 10, bottom: 20),
-                              height: 500,
-                              width: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.7),
-                                    spreadRadius: 5,
-                                    blurRadius: 5,
-                                    offset: const Offset(
-                                        0, 1), // changes position of shadow
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            '- Documents will confirm the import of goods into the warehouse from the company: ${importOrder.nameA}'),
-
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            '- Time confirmation: ${widget.idReceiptDocument.isNotEmpty ? DateFormat('dd-MM-yyyy').format(receiptDocument.dateCreated!.toDate()) : 'Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'}'),
-                                      ),
-                                      const Padding(
+                            ), Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 5, left: 10, bottom: 20),
+                                    width: MediaQuery.of(context).size.height,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          spreadRadius: 5,
+                                          blurRadius: 5,
+                                          offset: const Offset(0,
+                                              1), // changes position of shadow
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
                                               padding:
                                                   EdgeInsets.all(8.0),
                                               child: Text(
-                                                  '- List of products: '),
+                                                  '- Documents will confirm the export of goods from the warehouse for selling'),
                                             ),
-                                          Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ImportProductList( list: importOrder.listProduct!),
-                                            ),
-                                      Padding(
+                                            Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
-                                                  '- Total Price: ${importOrder.totalPrice!}'),
+                                                  '- Time confirmation: Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
                                             ),
-                                    ]),
-                              ),
-                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child:
+                                                  Text('- List of products: '),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: ExportProductList(
+                                                  list:
+                                                      listDetailOrder,),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Text(
+                                                    'Total Price: ${totalMoney.toInt().toString().toVND()}', style:  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                              ),
+                                            ),
+                                          ]),
+                                    ),
+                                  ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -390,8 +394,8 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                                         Radius.circular(10.0)),
                                               ),
                                               child: signStaff == null
-                                                  ? (receiptDocument
-                                                              .idReceiptDocument ==
+                                                  ? (deliveryReceipt
+                                                              .idDeliveryReceipt ==
                                                           null
                                                       ? const Center(
                                                           child: Text(
@@ -406,7 +410,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                                           child: Image(
                                                             fit: BoxFit.cover,
                                                             image: NetworkImage(
-                                                                receiptDocument
+                                                                deliveryReceipt
                                                                     .signStaff!),
                                                           )))
                                                   : ClipRRect(
@@ -452,7 +456,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                     ),
                                   ),
                                 ),
-                                 Expanded(child: Container())
+                                Expanded(child: Container())
                               ],
                             ),
                             const SizedBox(
@@ -468,137 +472,16 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
   }
 
   Widget _importOrderInfo() {
-    return DropdownSearch<ImportOrder>(
-      enabled: widget.title == 'View ReceiptDocument' ? false : true,
-      asyncItems: (filter) => getImportOrder(filter.toLowerCase()),
-      compareFn: (i, s) {
-        return i.idImportOrder!
-                .toLowerCase()
-                .compareTo(s.idImportOrder!.toLowerCase()) >
-            0;
-      },
-      dropdownBuilder: _importOrderDropDownBuilder,
-      popupProps: PopupPropsMultiSelection.dialog(
-        isFilterOnline: true,
-        showSelectedItems: true,
-        showSearchBox: true,
-        itemBuilder: _importOrderPopupItemBuilder,
-      ),
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
-          labelText: 'Choose Import Order',
-          filled: true,
-          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-        ),
-      ),
-      onChanged: ((value) {
-        setState(() {
-          importOrder = value!;
-        });
-      }),
-      onSaved: (value) async {
-        editReceiptDocument = ReceiptDocument(
-          idImportOrder: value!.idImportOrder,
-          nameSupplier: value.nameA,
-          idStaff: editReceiptDocument.idStaff,
-          idReceiptDocument: editReceiptDocument.idReceiptDocument,
-          dateCreated: editReceiptDocument.dateCreated,
-          listProducts: value.listProduct,
-          signStaff: editReceiptDocument.signStaff,
-          totalMoney: value.totalPrice,
-        );
-      },
-      validator: ((value) {
-        if (value == null && editReceiptDocument.idImportOrder!.isEmpty) {
-          return 'Please choose a import order';
-        }
-        return null;
-      }),
-    );
-  }
-
-  Future<List<ImportOrder>> getImportOrder(String text) async {
-    List<ImportOrder> allImportOrder =
-        await ImportOrderRepository().getListImportOrder();
-
-    List<ReceiptDocument> allReceiptDocument = await ReceiptDocumentRepository().get();
-    List<ImportOrder> list = List.from(allImportOrder);
-    for (var rc in allReceiptDocument) { 
-      for (var element in allImportOrder) {
-        var i = element;
-        if(element.idImportOrder == rc.idImportOrder){
-          list.remove(i);
-        }
-       }
-    }
-    allImportOrder = list;
-    
-    if (text.isEmpty || text == '') {
-      return allImportOrder;
-    } else {
-      allImportOrder.retainWhere((ip) {
-        return (ip.idImportOrder!.toLowerCase().contains(text) ||
-            ip.nameA!.toLowerCase().contains(text) ||
-            ip.nameB!.toLowerCase().contains(text) ||
-            ip.phoneA!.toLowerCase().contains(text) ||
-            ip.phoneB!.toLowerCase().contains(text) ||
-            ip.positionA!.toLowerCase().contains(text) ||
-            ip.positionB!.toLowerCase().contains(text) ||
-            ip.noAuthorizationA!.toLowerCase().contains(text) ||
-            ip.noAuthorizationB!.toLowerCase().contains(text) ||
-            ip.phoneA!.toLowerCase().contains(text));
-      });
-    }
-    return allImportOrder;
-  }
-
-  Widget _importOrderDropDownBuilder(
-      BuildContext context, ImportOrder? selectedItem) {
-    if (selectedItem == null) {
-      if (editReceiptDocument.idImportOrder!.isEmpty) {
-        return const Text('No value selected');
-      } else {
-        final ip = listImportOrder.firstWhere(((element) =>
-            element.idImportOrder == editReceiptDocument.idImportOrder));
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          child: ListTile(
-            title: Text(ip.nameA!),
-            subtitle: Text(
-                '${ip.totalPrice!}\n${DateFormat('dd-MM-yyyy hh:mm:ss aa').format(ip.dateCreated!.toDate())}'),
-            leading: const CircleAvatar(
-              child: Icon(Icons.document_scanner),
-            ),
-          ),
-        );
-      }
-    } else {
-      return Container(
+    var od = widget.order;
+    return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
         child: ListTile(
-          title: Text(selectedItem.nameA!),
-          subtitle: Text(
-              '${selectedItem.totalPrice!}\n${DateFormat('dd-MM-yyyy hh:mm:ss aa').format(selectedItem.dateCreated!.toDate())}'),
+          title: Text(od.nameCustomer!),
+          subtitle: Text(DateFormat('dd-MM-yyyy hh:mm:ss aa')
+              .format(od.dateCreated!.toDate())),
           leading: const CircleAvatar(
-            child: Icon(Icons.document_scanner),
+            child: Icon(Icons.dashboard_customize),
           ),
-        ),
-      );
-    }
-  }
-
-  Widget _importOrderPopupItemBuilder(
-      BuildContext context, ImportOrder item, bool isSelected) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: ListTile(
-        title: Text(item.nameA!),
-        subtitle: Text(
-            '${item.totalPrice!}\n${DateFormat('dd-MM-yyyy hh:mm:ss aa').format(item.dateCreated!.toDate())}'),
-        leading: const CircleAvatar(
-          child: Icon(Icons.document_scanner),
-        ),
-      ),
-    );
+        ));
   }
 }

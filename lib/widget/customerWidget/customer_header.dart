@@ -10,16 +10,12 @@ class CustomerHeader extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [ 
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.headline1,
@@ -27,16 +23,9 @@ class CustomerHeader extends StatelessWidget {
                   
                 ),
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
+
               Container(
-                margin: const EdgeInsets.only(right: 50),
+                margin: const EdgeInsets.only(right: 16),
                 height: 50,
                 width: 120,
                 child: ElevatedButton(
@@ -62,9 +51,6 @@ class CustomerHeader extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
       ],
     );
   }

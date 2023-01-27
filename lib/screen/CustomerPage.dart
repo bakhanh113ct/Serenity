@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/widget/customerWidget/customer_header.dart';
-import 'package:serenity/widget/custom_search.dart';
 
 import '../bloc/bloc_exports.dart';
 import '../common/color.dart';
-import '../widget/customerWidget/customer_datasource.dart';
 import '../model/customer.dart';
-import '../widget/customerWidget/customer_datagrid.dart';
 import '../widget/customerWidget/customer_list.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -44,19 +41,10 @@ class _CustomerPageState extends State<CustomerPage>
                     Expanded(
                       flex: 6,
                       child: Container(
-                          margin: const EdgeInsets.all(50),
+                          margin: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.7),
-                                spreadRadius: 5,
-                                blurRadius: 5,
-                                offset: const Offset(
-                                    0, 1), // changes position of shadow
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
                             children: [

@@ -36,7 +36,6 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                 rowHeight: 70,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.troubleDataSource,
-                allowSorting: true,
                 columns: <GridColumn>[
                   GridColumn(
                       visible: false,
