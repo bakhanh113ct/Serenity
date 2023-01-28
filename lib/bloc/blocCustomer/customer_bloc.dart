@@ -5,10 +5,11 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
+import 'customer_event.dart';
+import 'customer_state.dart';
 
-part 'customer_event.dart';
-part 'customer_state.dart';
+
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerBloc() : super(CustomerInitial()) {

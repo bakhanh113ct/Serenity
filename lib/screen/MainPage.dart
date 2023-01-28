@@ -75,11 +75,11 @@ class _MainPageState extends State<MainPage> {
                         case 5:
                           return TroublePage();
                         case 6:
-                          return EmployeePage();
+                          return WarehousePage();
                         case 7:
-                          return ProfilePage();
+                          return EmployeePage();
                         default:
-                          return DashBoardPage();
+                          return ProfilePage();
                       }
                     },
                   )) // Your app screen body

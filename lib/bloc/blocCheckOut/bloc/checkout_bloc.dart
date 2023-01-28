@@ -39,7 +39,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     });
     on<Payment>((event, emit)async{
        final state=this.state as CheckoutLoaded;
-       await OrderRepository().createOrder(state.selectedCustomer!, state.selectedVoucher!, event.listProductCart, state.total,state.discount,state.totalItem);
+       await OrderRepository().createOrder(state.selectedCustomer!, state.selectedVoucher, event.listProductCart, state.total,state.discount,state.totalItem);
        emit(CheckoutLoaded(state.listCustomer,state.selectedCustomer,state.listVoucher,state.selectedVoucher,state.totalItem,state.discount,state.total));
     });
   }

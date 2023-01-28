@@ -16,13 +16,17 @@ class ReportTroubleList extends StatefulWidget {
 
 class _ReportTroubleListState extends State<ReportTroubleList> {
   void onSearch(BuildContext context, String value) {
-    context.read<ReportTroubleBloc>().add(GetReportTroublesByFilter(textSearch: value));
+    context
+        .read<ReportTroubleBloc>()
+        .add(GetReportTroublesByFilter(textSearch: value));
   }
+
   @override
   void initState() {
     super.initState();
-     context.read<ReportTroubleBloc>().add(const GetReportTrouble());
+    context.read<ReportTroubleBloc>().add(const GetReportTrouble());
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,12 +43,14 @@ class _ReportTroubleListState extends State<ReportTroubleList> {
             flex: 7,
             child: BlocBuilder<ReportTroubleBloc, ReportTroubleState>(
                 builder: (context, state) {
-              if(state is ReportTroubleLoading){
-                 return const Center(child: CircularProgressIndicator());
-              }
-              else if (state is ReportTroubleLoaded) {
+              if (state is ReportTroubleLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ReportTroubleLoaded) {
                 ReportTroubleDataSource reportTroubleDataSource =
-                    ReportTroubleDataSource(reportTroubles: state.myData,  customers: state.myCustomers,context: context);
+                    ReportTroubleDataSource(
+                        reportTroubles: state.myData,
+                        customers: state.myCustomers,
+                        context: context);
                 return state.myData.isEmpty
                     ? const Center(child: Text('No value'))
                     : ReportTroubleDataGrid(

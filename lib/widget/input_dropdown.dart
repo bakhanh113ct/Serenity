@@ -28,7 +28,7 @@ class _InputDropdownState extends State<InputDropdown> {
             widget.text,
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Container(

@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/common/color.dart';
 import 'package:serenity/model/category.dart';
-import 'package:serenity/model/product.dart';
 import 'package:serenity/widget/item_cart.dart';
 import 'package:serenity/widget/item_product_menu.dart';
 

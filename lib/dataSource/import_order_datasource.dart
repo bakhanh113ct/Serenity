@@ -154,40 +154,8 @@ class ImportOrderDataSource extends DataGridSource {
                                   value: item,
                                   child: MenuItems.buildItem(item),
                                 )),
-
-                      // if (isChecked)
-                      //   ...List<double>.filled(MenuItems.checked.length, 48),
-                      // if (isCompleted)
-                      //   ...List<double>.filled(MenuItems.completed.length, 48),
-                      // if (isCanceled)
-                      //   ...List<double>.filled(MenuItems.canceled.length, 48),
-                      // ...MenuItems.firstItems.map(
-                      //   (item) => DropdownMenuItem<MenuItem>(
-                      //     value: item,
-                      //     child: MenuItems.buildItem(item),
-                      //   ),
-                      // ),
-                      // if (!(isCanceled || isCompleted))
-                      //   const DropdownMenuItem<Divider>(
-                      //       enabled: false, child: Divider()),
-                      // // if (!isCanceled)
-                      // DropdownMenuItem<MenuItem>(
-                      //   value: MenuItems.paymentVoucher,
-                      //   child: MenuItems.buildItem(MenuItems.paymentVoucher),
-                      // ),
-                      // if (!(isCanceled || isCompleted))
-                      //   ...MenuItems.secondItems.map(
-                      //     (item) => DropdownMenuItem<MenuItem>(
-                      //       value: item,
-                      //       child: MenuItems.buildItem(item),
-                      //     ),
-                      //   ),
                     ],
                     onChanged: (value) {
-                      // print(importOrders
-                      //     .where((element) =>
-                      //         element.idImportOrder == e.value.idImportOrder)
-                      //     .first);
                       MenuItems.onChanged(
                         context!,
                         value as MenuItem,
@@ -299,10 +267,6 @@ class MenuItems {
             ));
         break;
       case MenuItems.check:
-        // List<ProductImportOrder> productImportOrder = importOrders
-        //     .where((element) => element.idImportOrder == order.idImportOrder)
-        //     .first
-        //     .listProduct!;
         Navigator.push(
             context,
             MaterialPageRoute(

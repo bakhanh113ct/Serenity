@@ -11,12 +11,12 @@ class OrderDataSource extends DataGridSource {
   OrderDataSource({required List<MyOrder> orderData}) {
     _orderData = orderData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'idOrder', value: e.idOrder!.substring(0,12)),
+              DataGridCell<String>(columnName: 'idOrder', value: e.idOrder!),
               DataGridCell<String>(columnName: 'dateCreated', value: e.dateCreated!.toDate().toString()),
               DataGridCell<String>(columnName: 'nameCustomer', value: e.nameCustomer),
               DataGridCell<String>(columnName: 'status', value: e.status),
               DataGridCell<String>(columnName: 'price', value: e.price),
-              DataGridCell<String>(columnName: 'button', value: ''),
+              DataGridCell<String>(columnName: 'phone', value: e.phone),
             ]))
         .toList();
   }
@@ -41,7 +41,9 @@ class OrderDataSource extends DataGridSource {
                   child: IconButton(
                     splashRadius: 20,
                     icon: const Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      print(e.value.toString());
+                    },
                   ),
                 )
               : e.columnName == 'status'

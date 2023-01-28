@@ -4,13 +4,15 @@ import 'package:serenity/model/product.dart';
 class ProductImportOrder extends Equatable {
   int? amount;
   String? note;
+  String? trouble;
   Product? product;
 
-  ProductImportOrder({this.amount, this.note, this.product});
+  ProductImportOrder({this.amount, this.note, this.product, this.trouble = ''});
 
   ProductImportOrder.fromJson(Map<String, dynamic> json) {
     amount = json['amount'];
     note = json['note'];
+    trouble = json['trouble'] ?? '';
     product =
         json['product'] != null ? Product.fromJson(json['product']) : null;
   }
@@ -19,6 +21,7 @@ class ProductImportOrder extends Equatable {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['amount'] = this.amount;
     data['note'] = this.note;
+    data['trouble'] = this.trouble;
     if (this.product != null) {
       data['product'] = this.product!.toJson();
     }
@@ -26,9 +29,5 @@ class ProductImportOrder extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        amount,
-        note,
-        product,
-      ];
+  List<Object?> get props => [amount, note, product, trouble];
 }

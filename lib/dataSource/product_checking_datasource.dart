@@ -15,7 +15,7 @@ class ProductCheckingDataSource extends DataGridSource {
   Function onChoose;
   BuildContext context;
   List<ProductImportOrder> productData;
-  List<bool> importOrder;
+  List<bool> listChoose;
 
   /// Creates the employee data source class with required details.
   ProductCheckingDataSource({
@@ -23,7 +23,7 @@ class ProductCheckingDataSource extends DataGridSource {
     required this.onChoose,
     required this.context,
     required this.productData,
-    required this.importOrder,
+    required this.listChoose,
   }) {
     _employeeData = productData
         .map<DataGridRow>((e) => DataGridRow(cells: [
@@ -50,7 +50,7 @@ class ProductCheckingDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       int index = 0;
-      if (e.columnName == 'check') {
+      if (e.columnName == 'check' || e.columnName == 'button') {
         index = productData.indexWhere((element) => element == e.value);
       }
       return Container(
@@ -60,17 +60,19 @@ class ProductCheckingDataSource extends DataGridSource {
           child: e.columnName == 'button'
               ? IconButton(
                   onPressed: () {
-                    onPress();
+                    onPress(index);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.flag,
-                    // color: Color(0xFFFD2B2B),
+                    color: e.value.trouble != ''
+                        ? const Color(0xFFFD2B2B)
+                        : Colors.black,
                   ))
               : e.columnName == 'check'
                   ? CustomCheckbox(
                       onPress: onChoose,
                       index: index,
-                      isChecked: importOrder[index],
+                      isChecked: listChoose[index],
                     )
                   : Text(
                       e.columnName == 'STT'

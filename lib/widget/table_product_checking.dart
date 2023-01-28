@@ -32,7 +32,7 @@ class _TableProductCheckingState extends State<TableProductChecking> {
     print(_listChoose);
     int i = 0;
     productDataSource = ProductCheckingDataSource(
-        importOrder: _listChoose!,
+        listChoose: _listChoose!,
         productData: widget.importOrder.listProduct!,
         onPress: widget.onOpenReport,
         onChoose: (int index, value) {
@@ -172,47 +172,48 @@ class _TableProductCheckingState extends State<TableProductChecking> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  if (_listChoose!.any((element) => element == false)) {
-                    ImportOrderBloc().add(UpdateStateImportOrder(
-                        idImportOrder: widget.importOrder.idImportOrder!,
-                        state: 'pending',
-                        listCheck: _listChoose!));
-                    // Flushbar(
-                    //   flushbarPosition: FlushbarPosition.TOP,
-                    //   margin: const EdgeInsets.symmetric(
-                    //       horizontal: 300, vertical: 16),
-                    //   borderRadius: BorderRadius.circular(8),
-                    //   flushbarStyle: FlushbarStyle.FLOATING,
-                    //   title: 'Notification',
-                    //   message: 'Please check full',
-                    //   duration: const Duration(seconds: 3),
-                    // ).show(context);
-                  } else {
-                    BlocProvider.of<ImportOrderBloc>(context).add(
-                        UpdateStateImportOrder(
-                            idImportOrder: widget.importOrder.idImportOrder!,
-                            state: 'checked',
-                            listCheck: _listChoose!));
-                    Navigator.pop(context);
+              onPressed: () {
+                if (_listChoose!.any((element) => element == false)) {
+                  ImportOrderBloc().add(UpdateStateImportOrder(
+                      idImportOrder: widget.importOrder.idImportOrder!,
+                      state: 'pending',
+                      listCheck: _listChoose!));
+                } else {
+                  BlocProvider.of<ImportOrderBloc>(context).add(
+                      UpdateStateImportOrder(
+                          idImportOrder: widget.importOrder.idImportOrder!,
+                          state: 'checked',
+                          listCheck: _listChoose!));
+                  Navigator.pop(context);
 
-                    Flushbar(
-                      flushbarPosition: FlushbarPosition.TOP,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 300, vertical: 16),
-                      borderRadius: BorderRadius.circular(8),
-                      flushbarStyle: FlushbarStyle.FLOATING,
-                      title: 'Notification',
-                      message: 'Successful',
-                      duration: const Duration(seconds: 3),
-                    ).show(context);
-                  }
-                  // ImportOrderBloc().add(UpdateStateImportOrder(
-                  //     idImportOrder: widget.importOrder.idImportOrder!,
-                  //     state: 'checked',
-                  //     listCheck: _listChoose!));
-                },
-                child: const Text('Save'))
+                  Flushbar(
+                    flushbarPosition: FlushbarPosition.TOP,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 300, vertical: 16),
+                    borderRadius: BorderRadius.circular(8),
+                    flushbarStyle: FlushbarStyle.FLOATING,
+                    title: 'Notification',
+                    message: 'Successful',
+                    duration: const Duration(seconds: 3),
+                  ).show(context);
+                }
+                // ImportOrderBloc().add(UpdateStateImportOrder(
+                //     idImportOrder: widget.importOrder.idImportOrder!,
+                //     state: 'checked',
+                //     listCheck: _listChoose!));
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(fontSize: 20),
+              ),
+              style: ButtonStyle(
+                  // maximumSize:
+                  //     MaterialStateProperty.all(const Size(110, 60)),
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 32)),
+                  backgroundColor:
+                      MaterialStateProperty.all(const Color(0xFF226B3F))),
+            )
           ],
         ),
       ),

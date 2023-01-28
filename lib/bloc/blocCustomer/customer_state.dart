@@ -1,4 +1,7 @@
-part of 'customer_bloc.dart';
+
+import 'package:equatable/equatable.dart';
+
+import '../../model/Customer.dart';
 
 class CustomerState extends Equatable {
   const CustomerState();

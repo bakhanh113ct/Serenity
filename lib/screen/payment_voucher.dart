@@ -95,7 +95,7 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
             ),
           ),
           title: const Text(
-            'Check Order',
+            'Payment Voucher',
             style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 30,
@@ -363,25 +363,28 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                   CollectionReference doc = FirebaseFirestore
                                       .instance
                                       .collection('PaymentVoucher');
-                                  doc.add({
-                                    "idUser":
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    "idImportOrder":
-                                        widget.importOrder.idImportOrder,
-                                    "date": DateTime.now(),
-                                    "receiver": receiverNameController.text,
-                                    "receiverAddress":
-                                        receiverAddressController.text,
-                                    "totalAmount": totalController.text,
-                                    "inWord": inWordsController.text,
-                                    "description": descriptionController.text,
-                                    "chiefAccountant":
-                                        chiefAccountantController.text,
-                                    "cashier": cashierController.text,
-                                    "voteMaker": voteMakerController.text,
-                                  }).then((value) => doc
-                                      .doc(value.id)
-                                      .update({"idPaymentVoucher": value.id}));
+                                  if (widget.paymentVoucher == null) {
+                                    doc.add({
+                                      "idUser": FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      "idImportOrder":
+                                          widget.importOrder.idImportOrder,
+                                      "date": DateTime.now(),
+                                      "receiver": receiverNameController.text,
+                                      "receiverAddress":
+                                          receiverAddressController.text,
+                                      "totalAmount": totalController.text,
+                                      "inWord": inWordsController.text,
+                                      "description": descriptionController.text,
+                                      "chiefAccountant":
+                                          chiefAccountantController.text,
+                                      "cashier": cashierController.text,
+                                      "voteMaker": voteMakerController.text,
+                                    }).then((value) => doc.doc(value.id).update(
+                                        {"idPaymentVoucher": value.id}));
+                                  } else {
+                                    print('ipdate');
+                                  }
                                 }
                               },
                               style: ButtonStyle(
