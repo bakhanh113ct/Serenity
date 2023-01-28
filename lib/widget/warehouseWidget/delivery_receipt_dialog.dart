@@ -319,11 +319,10 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
                                                   '- Documents will confirm the export of goods from the warehouse for selling'),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                  '- Time confirmation: Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
-                                            ),
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            '- Time confirmation: ${widget.idDeliveryReceipt.isNotEmpty ? DateFormat('dd-MM-yyyy').format(deliveryReceipt.dateCreated!.toDate()) : 'Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'}'),
+                                      ),
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child:

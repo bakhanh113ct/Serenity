@@ -28,19 +28,15 @@ class ExportBookDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(16.0),
         child: dataGridCell.columnName == 'more'
-            ? Center(
-                child: ExportBookMoreButton(
+            ? ExportBookMoreButton(
                 exportBook: dataGridCell.value,
-              ))
-            : Center(
-                child: Text(dataGridCell.value.toString(),
+              )
+            :  Text(dataGridCell.value.toString(),
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                     overflow: TextOverflow.ellipsis),
-              ),
       );
     }).toList());
   }

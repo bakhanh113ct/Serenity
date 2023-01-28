@@ -28,20 +28,14 @@ class ReceiptDocumentDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: (dataGridCell.columnName == 'id' ||
-                dataGridCell.columnName == 'purchased')
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
-        padding: const EdgeInsets.all(16.0),
+        alignment: Alignment.center,
         child: dataGridCell.columnName == 'more'
-            ? Center(child: ReceiptDocumentMoreButton(receiptDocument: dataGridCell.value,))
-            : Center(
-                child: Text(dataGridCell.value.toString(),
+            ? ReceiptDocumentMoreButton(receiptDocument: dataGridCell.value,)
+            : Text(dataGridCell.value.toString(),
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                     overflow: TextOverflow.ellipsis),
-              ),
       );
     }).toList());
   }

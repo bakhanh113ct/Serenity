@@ -174,7 +174,6 @@ class _ReceiptDocumentMoreButtonState extends State<ReceiptDocumentMoreButton> {
     return isLoading
         ? const CircularProgressIndicator()
         : Container(
-            alignment: Alignment.center,
             child: PopupMenuButton<ActionOptions>(
                 onSelected: (ActionOptions value) {
                   if (value == ActionOptions.view) {

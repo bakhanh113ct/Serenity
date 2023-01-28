@@ -40,16 +40,14 @@ class ImportBookDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       return Container(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: e.columnName == 'more'
               ? ImportBookMoreButton(importBook: e.value)
-                      : Center(
-                child: Text(e.value.toString(),
+                      :  Text(e.value.toString(),
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                     overflow: TextOverflow.ellipsis),
-              ),
       );
     }).toList());
   }

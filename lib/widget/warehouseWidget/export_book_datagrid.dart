@@ -19,9 +19,7 @@ class ExportBookDataGrid extends StatefulWidget {
 class _ExportBookDataGridState extends State<ExportBookDataGrid> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SfDataGridTheme(
+    return  SfDataGridTheme(
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
@@ -100,7 +98,6 @@ class _ExportBookDataGridState extends State<ExportBookDataGrid> {
             ),
           ],
         ),
-      ),
     );
   }
 }

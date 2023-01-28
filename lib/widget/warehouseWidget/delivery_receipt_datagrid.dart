@@ -3,7 +3,6 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'delivery_receipt_datasoure.dart';
-import 'receipt_document_datasource.dart';
 
 class DeliveryReceiptDataGrid extends StatefulWidget {
   const DeliveryReceiptDataGrid({
@@ -21,9 +20,7 @@ class DeliveryReceiptDataGrid extends StatefulWidget {
 class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SfDataGridTheme(
+    return  SfDataGridTheme(
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
@@ -94,7 +91,6 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
             ),
           ],
         ),
-      ),
     );
   }
 }

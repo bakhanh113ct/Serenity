@@ -20,9 +20,7 @@ class ReportTroubleDataGrid extends StatefulWidget {
 class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SfDataGridTheme(
+    return SfDataGridTheme(
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
@@ -112,7 +110,6 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
             ),
           ],
         ),
-      ),
     );
   }
 }

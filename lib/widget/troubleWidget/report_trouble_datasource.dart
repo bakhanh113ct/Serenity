@@ -36,7 +36,6 @@ class ReportTroubleDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.all(16.0),
           child: getChildWidget(dataGridCell, idReportTrouble));
     }).toList());
   }
