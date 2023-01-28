@@ -35,7 +35,7 @@ class ReportTroubleDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: getChildWidget(dataGridCell, idReportTrouble));
     }).toList());
   }
@@ -65,31 +65,39 @@ class ReportTroubleDataSource extends DataGridSource {
   Widget statusText(String status) {
     if (status == 'Pending') {
       return Container(
+        height: 45,
+        width: 135,
         decoration: const BoxDecoration(
             color: Color(0xFFFEFFCB),
             borderRadius: BorderRadius.all(Radius.circular(8))),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        child: Text(
-          status,
-          style: const TextStyle(
-              fontSize: 20,
-              color: Color(0xFFEDB014),
-              fontWeight: FontWeight.w500),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Center(
+          child: Text(
+            status,
+            style: const TextStyle(
+                fontSize: 20,
+                color: Color(0xFFEDB014),
+                fontWeight: FontWeight.w500),
+          ),
         ),
       );
     } else {
       return Container(
+        height: 45,
+        width: 135,
         decoration: const BoxDecoration(
             color: Color(0xFFDCFBD7),
             borderRadius: BorderRadius.all(Radius.circular(8))),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        child: Text(
-          status,
-          style: const TextStyle(
-              fontSize: 20,
-              color: Color(0xFF5CB16F),
-              overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.w500),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Center(
+          child: Text(
+            status,
+            style: const TextStyle(
+                fontSize: 20,
+                color: Color(0xFF5CB16F),
+                overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.w500),
+          ),
         ),
       );
     }
@@ -97,25 +105,21 @@ class ReportTroubleDataSource extends DataGridSource {
 
   Widget getChildWidget(DataGridCell dataGridCell, String idReportTrouble) {
     if (dataGridCell.columnName == 'more') {
-      return Center(
-          child: ReportTroubleMoreButton(idReportTrouble: idReportTrouble));
+      return  ReportTroubleMoreButton(idReportTrouble: idReportTrouble);
     } else if (dataGridCell.columnName == 'isCompensate') {
-      return Center(
-          child: Checkbox(
+      return  Checkbox(
               value: dataGridCell.value as bool,
               onChanged: ((value) {
                 return;
-              })));
+              }));
     } else if (dataGridCell.columnName == 'status') {
-      return Center(child: statusText(dataGridCell.value.toString()));
+      return statusText(dataGridCell.value.toString());
     } else {
-      return Center(
-        child: Text(dataGridCell.value.toString(),
+      return Text(dataGridCell.value.toString(),
             style: const TextStyle(
               fontSize: 20,
             ),
-            overflow: TextOverflow.ellipsis),
-      );
+            overflow: TextOverflow.ellipsis);
     }
   }
 }

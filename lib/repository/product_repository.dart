@@ -20,4 +20,15 @@ class ProductRepository{
     });
     return temp;
   }
+
+  Future<Product> getProductByName(String name) async {
+    var result = Product();
+    await products
+        .where('name', isEqualTo: name)
+        .get()
+        .then((value) {
+      result = Product.fromJson(value.docs.first.data());
+    });
+    return result;
+  }
 }

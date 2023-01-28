@@ -8,11 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocImportBook/import_book_repository.dart';
 import 'package:serenity/bloc/blocOrder/order_repository.dart';
 import 'package:serenity/common/color.dart';
-import 'package:serenity/model/detailOrder.dart';
+
 import 'package:serenity/model/order.dart';
 import 'package:serenity/model/product.dart';
 import 'package:serenity/repository/detail_order_repository.dart';
 import 'package:serenity/widget/warehouseWidget/delivery_receipt_dialog.dart';
+
+import '../../model/detail_order.dart';
 
 enum SignaturePerson { staff }
 
@@ -370,7 +372,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
       onChanged: ((value) async {
         if (value!.idOrder == null) return;
         listDetailOrder =
-            await DetailOrderRepository().getDetailOrder(value.idOrder!);
+            await DetailOrderRepository().getListDetailOrder(value.idOrder!);
         setState(() {
           myOrder = value;
         });
@@ -386,7 +388,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
 
   Future<List<MyOrder>> getMyOrder(String text) async {
     List<MyOrder> allOrder = (await OrderRepository().getOrder() as List<MyOrder>)
-            .where((element) => element.status == 'Pending' && element.idOrder != null)
+            .where((element) => element.status == 'Completed' && element.idOrder != null)
             .toList();
 
     if (text.isEmpty || text == '') {

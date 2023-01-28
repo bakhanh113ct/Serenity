@@ -30,7 +30,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight: 60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.receiptDocumentDataSource,
                 columns: <GridColumn>[
@@ -39,7 +39,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -47,7 +47,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       columnName: 'nameSupplier',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NameSupplier',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -55,7 +55,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       columnName: 'amount',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Num of Order',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -63,7 +63,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       columnName: 'totalPrice',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Total Price',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -71,7 +71,7 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       columnName: 'dateCreated',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('DateCreated',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -79,9 +79,10 @@ class _ReceiptDocumentDataGridState extends State<ReceiptDocumentDataGrid> {
                       columnName: 'more',
                       allowFiltering: false,
                       allowSorting: false,
+                      width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('More',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),

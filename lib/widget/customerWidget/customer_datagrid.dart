@@ -30,7 +30,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight: 60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.customerDataSource,
 
@@ -41,7 +41,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('id',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),   
@@ -50,7 +50,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),   
@@ -59,7 +59,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                      
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Name',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),    
@@ -68,7 +68,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                      
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'Email',
                             style: Theme.of(context).textTheme.headline2,
@@ -79,7 +79,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                      
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'Phone',
                             style: Theme.of(context).textTheme.headline2,
@@ -90,7 +90,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                      
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'Purchased',
                             style: Theme.of(context).textTheme.headline2,
@@ -101,7 +101,7 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                      
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'DateOfBirth',
                             style: Theme.of(context).textTheme.headline2,
@@ -111,9 +111,10 @@ class _CustomerDataGridState extends State<CustomerDataGrid> {
                       columnName: 'more',                    
                       allowFiltering: false,
                       allowSorting: false,
+                      width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'More',
                             style: Theme.of(context).textTheme.headline2,
