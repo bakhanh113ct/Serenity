@@ -14,7 +14,6 @@ class TroubleBloc extends Bloc<TroubleEvent, TroubleState> {
   TroubleBloc() : super(TroubleInitial()) {
     on<GetTrouble>(((event, emit) async {
       emit(TroubleLoading());
-      await Future.delayed(const Duration(seconds: 1));
       try {
         final allTroubles = await TroubleRepository().get();
         emit(TroubleLoaded(allTroubles));
@@ -51,7 +50,6 @@ class TroubleBloc extends Bloc<TroubleEvent, TroubleState> {
 
     on<AddTrouble>((event, emit) async {
       var trouble = event.trouble;
-      await Future.delayed(const Duration(seconds: 1));
       try {
         await TroubleRepository().addTrouble(trouble);
         final allTroubles = await TroubleRepository().get();
@@ -63,7 +61,6 @@ class TroubleBloc extends Bloc<TroubleEvent, TroubleState> {
 
     on<UpdateTrouble>((event, emit) async {
       var trouble = event.trouble;
-      await Future.delayed(const Duration(seconds: 1));
       try {
         await TroubleRepository().updateTrouble(trouble);
         final allTroubles = await TroubleRepository().get();

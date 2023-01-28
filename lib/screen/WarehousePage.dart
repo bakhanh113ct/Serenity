@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:serenity/widget/warehouseWidget/receipt_document_list.dart';
 import '../common/color.dart';
 import '../widget/WarehouseWidget/Warehouse_header.dart';
+import '../widget/warehouseWidget/delivery_receipt_list.dart';
+import '../widget/warehouseWidget/export_book_list.dart';
+import '../widget/warehouseWidget/import_book_list.dart';
 
 class WarehousePage extends StatefulWidget {
   const WarehousePage({Key? key}) : super(key: key);
@@ -15,7 +19,7 @@ class _WarehousePageState extends State<WarehousePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -29,18 +33,11 @@ class _WarehousePageState extends State<WarehousePage>
           Expanded(
             flex: 6,
             child: Container(
-                margin: const EdgeInsets.all(50),
+                margin: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
-                      spreadRadius: 5,
-                      blurRadius: 5,
-                      offset: const Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(30),
+                
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [
@@ -50,7 +47,7 @@ class _WarehousePageState extends State<WarehousePage>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 600,
+                            width: MediaQuery.of(context).size.width * 0.7,
                             padding: const EdgeInsets.all(20),
                             child: TabBar(
                                 controller: _tabController,
@@ -61,10 +58,16 @@ class _WarehousePageState extends State<WarehousePage>
                                     fontSize: 18, fontWeight: FontWeight.w500),
                                 tabs: const [
                                   Tab(
-                                    text: "Product Receipt Document",
+                                    text: "Receipt Document",
                                   ),
                                   Tab(
-                                    text: "Report List",
+                                    text: "Product Import",
+                                  ),
+                                  Tab(
+                                    text: "Delivery Receipt",
+                                  ),
+                                  Tab(
+                                    text: "Product Export",
                                   ),
                                 ]),
                           ),
@@ -75,9 +78,11 @@ class _WarehousePageState extends State<WarehousePage>
                       flex: 8,
                       child: TabBarView(
                           controller: _tabController,
-                          children:  [
-                            Container(),
-                            Container(),
+                          children:  const [
+                            ReceiptDocumentList(),
+                            ImportBookList(),
+                            DeliveryReceiptList(),
+                            ExportBookList(),
                           ]),
                     )
                   ],

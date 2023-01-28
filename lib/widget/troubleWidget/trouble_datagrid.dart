@@ -20,9 +20,7 @@ class TroubleDataGrid extends StatefulWidget {
 class _TroubleDataGridState extends State<TroubleDataGrid> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SfDataGridTheme(
+    return SfDataGridTheme(
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
@@ -36,7 +34,6 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                 rowHeight: 70,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.troubleDataSource,
-                allowSorting: true,
                 columns: <GridColumn>[
                   GridColumn(
                       visible: false,
@@ -105,7 +102,6 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
             ),
           ],
         ),
-      ),
     );
   }
 }

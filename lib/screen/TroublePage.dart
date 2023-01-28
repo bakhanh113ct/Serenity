@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/widget/troubleWidget/report_trouble_list.dart';
-import '../bloc/bloc_exports.dart';
 import '../common/color.dart';
 import '../widget/troubleWidget/trouble_header.dart';
 import '../widget/troubleWidget/trouble_list.dart';
@@ -33,18 +32,10 @@ class _TroublePageState extends State<TroublePage>
           Expanded(
             flex: 6,
             child: Container(
-                margin: const EdgeInsets.all(50),
+                margin: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
-                      spreadRadius: 5,
-                      blurRadius: 5,
-                      offset: const Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [

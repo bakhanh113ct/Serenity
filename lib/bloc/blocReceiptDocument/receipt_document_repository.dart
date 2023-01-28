@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:serenity/bloc/blocImportBook/import_book_repository.dart';
+import 'package:serenity/model/product.dart';
 
 import '../../model/receipt_document.dart';
 
@@ -25,6 +27,28 @@ class ReceiptDocumentRepository {
       rc.idReceiptDocument= value.id;
       updateReceiptDocument(rc);
     });
+      rc.listProducts!.forEach((element) async { 
+      var product = await ImportBookRepository().getProductImportBook(element.product!.idProduct!);
+      await ImportBookRepository().updateImportBook(
+          product.copyWith(amount: (int.parse(product.amount!) + element.amount!).toString()));
+    });
+  }
+  
+  Future<Object> checkProductExist(Product rc) async {
+    bool check = false;
+    Product importBook = Product();
+    List<Product> allImportBook= await ImportBookRepository().get();
+
+    allImportBook.forEach((element) { 
+        if(rc.idProduct == element.idProduct){
+          check = true;
+          importBook = element;
+        }
+      });
+    return {
+      'check': check,
+      'importBook': importBook,
+    };
   }
 
   Future<void> updateReceiptDocument(ReceiptDocument rc) async {

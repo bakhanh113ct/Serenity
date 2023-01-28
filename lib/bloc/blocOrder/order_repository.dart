@@ -70,6 +70,22 @@ class OrderRepository {
     });
   }
 
+   Future<void> updateOrder(MyOrder id) async {
+    await orders.doc(id.idOrder).update(id.toJson());
+  }
+
+Future<MyOrder> getOrderById(String idOrder) async {
+    MyOrder result = MyOrder();
+    await orders
+        .where('idOrder', isEqualTo: idOrder)
+        .get()
+        .then((value) {
+      result = MyOrder.fromJson(value.docs.first.data());
+    });
+    return result;
+  }
+
+
   Future<void> createPdf(List<ProductCart> listProductCart, double item,
       double discount, double total, String idOrder) async {
     final pdf = pw.Document();

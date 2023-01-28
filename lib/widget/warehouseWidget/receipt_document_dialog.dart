@@ -14,7 +14,7 @@ import 'package:serenity/common/color.dart';
 import 'package:serenity/model/import_order.dart';
 import 'package:serenity/model/product_import_order.dart';
 import 'package:serenity/repository/import_order_repository.dart';
-import 'package:serenity/widget/warehouseWidget/product_list.dart';
+import 'package:serenity/widget/warehouseWidget/import_product_list.dart';
 import '../../bloc/blocReceiptDocument/receipt_document_repository.dart';
 import '../../bloc/blocUser/user_repository.dart';
 import '../../model/User.dart';
@@ -153,6 +153,8 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
       receiptDocument = await ReceiptDocumentRepository().getReceiptDocument(widget.idReceiptDocument);
       importOrder = await ImportOrderRepository().getIO(receiptDocument.idImportOrder!);
       user = await UserRepository().getUserByIdUser(receiptDocument.idStaff!);
+      editReceiptDocument = editReceiptDocument.copyWith(idImportOrder: receiptDocument.idImportOrder);
+      listImportOrder = await ImportOrderRepository().getListImportOrder();
     }
     else{
       user = await UserRepository().getUser();
@@ -320,7 +322,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                            '- Time confirmation: Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
+                                            '- Time confirmation: ${widget.idReceiptDocument.isNotEmpty ? DateFormat('dd-MM-yyyy').format(receiptDocument.dateCreated!.toDate()) : 'Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'}'),
                                       ),
                                       const Padding(
                                               padding:
@@ -331,7 +333,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
                                           Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: ProductList( list: importOrder.listProduct!),
+                                              child: ImportProductList( list: importOrder.listProduct!),
                                             ),
                                       Padding(
                                               padding:
@@ -467,7 +469,7 @@ class _ReceiptDocumentEditDialogState extends State<ReceiptDocumentEditDialog> {
 
   Widget _importOrderInfo() {
     return DropdownSearch<ImportOrder>(
-      enabled: widget.title == 'View Receipt Document' ? false : true,
+      enabled: widget.title == 'View ReceiptDocument' ? false : true,
       asyncItems: (filter) => getImportOrder(filter.toLowerCase()),
       compareFn: (i, s) {
         return i.idImportOrder!

@@ -29,18 +29,15 @@ class TroubleDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(16.0),
         child: dataGridCell.columnName == 'more'
-            ? Center(child: TroubleMoreButton(idTrouble: idTrouble))
-            : Center(
-                child: dataGridCell.columnName == 'status'
+            ? TroubleMoreButton(idTrouble: idTrouble)
+            :  dataGridCell.columnName == 'status'
                     ? statusText(dataGridCell.value.toString())
                     : Text(dataGridCell.value.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
                         overflow: TextOverflow.ellipsis),
-              ),
       );
     }).toList());
   }
@@ -74,7 +71,7 @@ class TroubleDataSource extends DataGridSource {
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFFEDB014),
               fontWeight: FontWeight.w500),
         ),
@@ -88,7 +85,7 @@ class TroubleDataSource extends DataGridSource {
         child: Text(
           status,
           style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               color: Color(0xFF5CB16F),
               fontWeight: FontWeight.w500),
         ),

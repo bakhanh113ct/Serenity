@@ -14,7 +14,6 @@ class ReportTroubleBloc extends Bloc<ReportTroubleEvent, ReportTroubleState> {
   ReportTroubleBloc() : super(ReportTroubleInitial()) {
     on<GetReportTrouble>((event, emit) async {
       emit(ReportTroubleLoading());
-      await Future.delayed(const Duration(milliseconds: 1));
       try {
         final allReportTroubles = await ReportTroubleRepository().get();
         final allListCustomers = await CustomerRepository().get();
@@ -27,7 +26,6 @@ class ReportTroubleBloc extends Bloc<ReportTroubleEvent, ReportTroubleState> {
     on<AddReportTrouble>(
       (event, emit) async {
         var reportTrouble = event.reportTrouble;
-        await Future.delayed(const Duration(milliseconds: 1));
         try {
           await ReportTroubleRepository().addReportTrouble(reportTrouble);
           final allReportTroubles = await ReportTroubleRepository().get();
@@ -42,7 +40,6 @@ class ReportTroubleBloc extends Bloc<ReportTroubleEvent, ReportTroubleState> {
       (event, emit) async {
         emit(ReportTroubleLoading());
         var reportTrouble = event.reportTrouble;
-        await Future.delayed(const Duration(milliseconds: 1));
         try {
           await ReportTroubleRepository().updateReportTrouble(reportTrouble);
           final allReportTroubles = await ReportTroubleRepository().get();
