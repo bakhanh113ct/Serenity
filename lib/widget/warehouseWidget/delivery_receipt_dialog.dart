@@ -72,8 +72,9 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
       var imageStaff = await DeliveryReceiptRepository()
           .uploadSignDeliveryReceipt(signStaff);
       var listProducts = <Product>[];
-      listDetailOrder.forEach((element)  async {
-        var product = await ImportBookRepository().getProductImportBook(element.idProduct!);
+      listDetailOrder.forEach((element) async {
+        var product = await ImportBookRepository()
+            .getProductImportBook(element.idProduct!);
         listProducts.add(product.copyWith(amount: element.amount));
       });
       // add DeliveryReceipt
@@ -101,7 +102,7 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
         imageStaff = await DeliveryReceiptRepository()
             .uploadSignDeliveryReceipt(signStaff);
       }
-    
+
       if (!mounted) return;
       const snackBar = SnackBar(
         content: Text('Update Successfully'),
@@ -152,9 +153,10 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
       user = await UserRepository().getUser();
     }
 
-    listDetailOrder =
-        await DetailOrderRepository().getDetailOrder(widget.order.idOrder!);
-    
+    listDetailOrder = (await DetailOrderRepository()
+            .getListDetailOrder(widget.order.idOrder!))
+        .cast<DetailOrder>();
+
     listDetailOrder.forEach(((element) {
       totalMoney += double.parse(element.price!);
     }));
@@ -288,65 +290,65 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
                                     ))),
                             const SizedBox(
                               height: 10,
-                            ), Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 5, left: 10, bottom: 20),
-                                    width: MediaQuery.of(context).size.height,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 5,
-                                          blurRadius: 5,
-                                          offset: const Offset(0,
-                                              1), // changes position of shadow
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.all(8.0),
-                                              child: Text(
-                                                  '- Documents will confirm the export of goods from the warehouse for selling'),
-                                            ),
-                                            Padding(
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  top: 5, left: 10, bottom: 20),
+                              width: MediaQuery.of(context).size.height,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    spreadRadius: 5,
+                                    blurRadius: 5,
+                                    offset: const Offset(
+                                        0, 1), // changes position of shadow
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                            '- Documents will confirm the export of goods from the warehouse for selling'),
+                                      ),
+                                      Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                             '- Time confirmation: ${widget.idDeliveryReceipt.isNotEmpty ? DateFormat('dd-MM-yyyy').format(deliveryReceipt.dateCreated!.toDate()) : 'Today, ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'}'),
                                       ),
-                                            const Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child:
-                                                  Text('- List of products: '),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ExportProductList(
-                                                  list:
-                                                      listDetailOrder,),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Text(
-                                                    'Total Price: ${totalMoney.toInt().toString().toVND()}', style:  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                              ),
-                                            ),
-                                          ]),
-                                    ),
-                                  ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text('- List of products: '),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ExportProductList(
+                                          list: listDetailOrder,
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            'Total Price: ${totalMoney.toInt().toString().toVND()}',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                            ),
                             const SizedBox(
                               height: 10,
                             ),

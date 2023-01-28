@@ -19,112 +19,136 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TabController _tabController = TabController(length: 4, vsync: this);
-    return Container(
-        color: CustomColor.customBackground,
+    return Scaffold(
+      backgroundColor: CustomColor.customBackground,
+      body: Container(
         height: double.infinity,
         width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Order",
-                      style: TextStyle(
-                          color: CustomColor.second,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w600),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    height: 50,
-                    width: 120,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.cart);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Create",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Icon(Icons.add)
-                          ],
-                        )),
-                  ),
+          color: CustomColor.customBackground,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 30),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Order",
+                            style: TextStyle(
+                                color: CustomColor.second,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
+                                
+                          ),
+                          ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.cart);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Create",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Icon(Icons.add)
+                            ],
+                          )),
+                        ],
+                      )),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Container(
-                    height: size.height * 0.7,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              width: 500,
-                              color: Colors.white,
-                              child: TabBar(
-                                  controller: _tabController,
-                                  labelColor: CustomColor.second,
-                                  unselectedLabelColor: Colors.grey,
-                                  indicatorColor: CustomColor.second,
-                                  labelStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                  tabs: const [
-                                    Tab(
-                                      text: "All orders",
-                                    ),
-                                    Tab(
-                                      text: "Completed",
-                                    ),
-                                    Tab(
-                                      text: "Pending",
-                                    ),
-                                    Tab(
-                                      text: "Cancelled",
-                                    )
-                                  ]),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 16),
+                //   child: Align(
+                //     alignment: Alignment.centerRight,
+                //     child: SizedBox(
+                //       height: 50,
+                //       width: 120,
+                //       child: ElevatedButton(
+                //           onPressed: () {
+                //             Navigator.pushNamed(context, Routes.cart);
+                //           },
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Text(
+                //                 "Create",
+                //                 style: TextStyle(fontSize: 18),
+                //               ),
+                //               Icon(Icons.add)
+                //             ],
+                //           )),
+                //     ),
+                //   ),
+                // ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                  child: Container(
+                      // height: size.height * 0.7,
+                      height: 600,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                width: 500,
+                                color: Colors.white,
+                                child: TabBar(
+                                    controller: _tabController,
+                                    labelColor: CustomColor.second,
+                                    unselectedLabelColor: Colors.grey,
+                                    indicatorColor: CustomColor.second,
+                                    labelStyle: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                    tabs: const [
+                                      Tab(
+                                        text: "All orders",
+                                      ),
+                                      Tab(
+                                        text: "Completed",
+                                      ),
+                                      Tab(
+                                        text: "Pending",
+                                      ),
+                                      Tab(
+                                        text: "Cancelled",
+                                      )
+                                    ]),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: double.maxFinite,
-                          height: 500,
-                          child: TabBarView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              controller: _tabController,
-                              children: const [
-                                AllOrderTab(),
-                                CompletedOrderTab(),
-                                PendingOrderTab(),
-                                CancelledOrderTab()
-                              ]),
-                        )
-                      ],
-                    )),
-              )
-            ],
-          ),
-        ));
+                          Container(
+                            width: double.maxFinite,
+                            height: 500,
+                            child: TabBarView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                controller: _tabController,
+                                children: const [
+                                  AllOrderTab(),
+                                  CompletedOrderTab(),
+                                  PendingOrderTab(),
+                                  CancelledOrderTab()
+                                ]),
+                          )
+                        ],
+                      )),
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   _showDialogCreateOrder() {

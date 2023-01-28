@@ -21,5 +21,9 @@ class DetailOrderBloc extends Bloc<DetailOrderEvent, DetailOrderState> {
       final state=this.state as DetailOrderLoaded;
       await DetailOrderRepository().cancelDetailOrder(state.order!.idOrder!);
     });
+    on<CompleteDetailOrder>((event, emit) async {
+      final state=this.state as DetailOrderLoaded;
+      await DetailOrderRepository().completeDetailOrder(state.order!.idOrder!);
+    });
   }
 }

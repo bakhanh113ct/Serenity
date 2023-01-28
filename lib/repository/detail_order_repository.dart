@@ -51,4 +51,8 @@ class DetailOrderRepository {
       throw Exception(e.toString());
     }
   }
+
+  completeDetailOrder(String idOrder) async {
+    await orders.doc(idOrder).update({"status": "Completed"});
+  }
 }

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:serenity/bloc/blocCart/bloc/cart_repository.dart';
 import 'package:serenity/bloc/blocOrder/order_repository.dart';
 import 'package:serenity/model/product_cart.dart';
+import 'package:serenity/repository/payment.dart';
 
 import '../../../model/customer.dart';
 import '../../../model/voucher.dart';
@@ -39,7 +40,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     });
     on<Payment>((event, emit)async{
        final state=this.state as CheckoutLoaded;
-       await OrderRepository().createOrder(state.selectedCustomer!, state.selectedVoucher, event.listProductCart, state.total,state.discount,state.totalItem);
+       await OrderRepository().createOrder(state.selectedCustomer!, state.selectedVoucher, event.listProductCart, state.total,state.discount,state.totalItem,event.methodpayment);
        emit(CheckoutLoaded(state.listCustomer,state.selectedCustomer,state.listVoucher,state.selectedVoucher,state.totalItem,state.discount,state.total));
     });
   }

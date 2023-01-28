@@ -42,9 +42,9 @@ class _TableOrderState extends State<TableOrder> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(onPressed: (){
-              print(_dataGridController.selectedRow!.getCells()[0].value);
-              _showDetail(_dataGridController.selectedRow!.getCells()[0].value);}, child: Text("in")),
+            // ElevatedButton(onPressed: (){
+            //   print(_dataGridController.selectedRow!.getCells()[0].value);
+            //   _showDetail(_dataGridController.selectedRow!.getCells()[0].value);}, child: Text("in")),
             Container(
               // color: Colors.black,
               // height: 400,
@@ -146,13 +146,13 @@ class _TableOrderState extends State<TableOrder> {
                                         color: Color(0xFF226B3F)),
                                   ))),
                           GridColumn(
-                              columnName: 'Phone',
+                              columnName: 'button',
                               // width: columnWidths['button']!,
                               label: Container(
                                   padding: EdgeInsets.all(8.0),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Phone',
+                                    'More',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,

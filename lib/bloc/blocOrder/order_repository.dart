@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/customer.dart';
 import '../../model/order.dart';
@@ -16,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 
 import 'package:pdf/widgets.dart' as pw;
+
+import '../../repository/payment.dart';
 
 class OrderRepository {
   final orders = FirebaseFirestore.instance.collection("Order");
@@ -35,7 +38,7 @@ class OrderRepository {
       List<ProductCart> listProductCart,
       double total,
       double discount,
-      double item) async {
+      double item, String methodPayment) async {
     String idOrder = "";
     double profit=0;
     listProductCart.forEach((element) { 
@@ -68,6 +71,13 @@ class OrderRepository {
         detailOrders.doc(value.id).update({"idDetailOrder": value.id});
       });
     });
+    if(methodPayment=="ZaloPay"){
+      final createOrderResponse= await createOrderZaloPay(total);
+    if(await canLaunchUrl(Uri.parse(createOrderResponse!.orderurl))){
+      await launchUrl(Uri.parse(createOrderResponse.orderurl));
+    }
+    }
+    
   }
 
    Future<void> updateOrder(MyOrder id) async {
@@ -106,37 +116,44 @@ Future<MyOrder> getOrderById(String idOrder) async {
             Text(DateFormat('dd-MM-yyyy').format(DateTime.now())),
             Text(DateFormat('Hm').format(DateTime.now())),
           ]),
+          pw.SizedBox(height: 8),
           buildInvoice(listProductCart, ttf),
           pw.Divider(height: 1),
+          pw.SizedBox(height: 4),
           pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text("Items"),
             Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(item)),
           ]),
+          pw.SizedBox(height: 4),
           pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text("Discount"),
             Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(discount)),
           ]),
+          pw.SizedBox(height: 4),
           pw.Divider(height: 1),
-          pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          pw.Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+          child: pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text("Total"),
             Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(total)),
-          ]),
-          pw.Divider(height: 1),
-          pw.Row( children: [
-            Text("idOrder:"),
-            Text(idOrder),
-          ]),
+          ]),),
+      
         ]),
       ),
     );
 
-    final output = await getExternalStorageDirectory();
+    // final output = await getExternalStorageDirectory();
     // final file = File("${output!.path}/example.pdf");
     // print(output.path);
     // await file.writeAsBytes(await pdf.save());
     // await Printing.layoutPdf(
     //     onLayout: (PdfPageFormat format) async => pdf.save());
-        await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
+        // await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
+        // final output = await getTemporaryDirectory();
+   
+    // final file = File('${output.path}/example.pdf');
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
   }
 
   pw.Table buildInvoice(List<ProductCart> listProductCart, Font ttf) {

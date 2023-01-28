@@ -28,7 +28,7 @@ class _AllOrderTabState extends State<AllOrderTab> {
         if (state is OrderLoading) {
           return Container();
         } else if (state is OrderLoaded) {
-          final orders = OrderDataSource(orderData: state.listAllOrder!);
+          final orders = OrderDataSource(orderData: state.listAllOrder!,context: context);
           return Column(
             children: [
               const SizedBox(

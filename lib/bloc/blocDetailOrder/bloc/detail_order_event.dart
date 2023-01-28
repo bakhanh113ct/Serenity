@@ -19,3 +19,9 @@ class CancelDetailOrder extends DetailOrderEvent {
   @override
   List<Object> get props => [];
 }
+
+class CompleteDetailOrder extends DetailOrderEvent {
+  const CompleteDetailOrder();
+  @override
+  List<Object> get props => [];
+}

@@ -32,7 +32,7 @@ class CustomerDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment:  Alignment.center,
+        alignment: Alignment.center,
         child: dataGridCell.columnName == 'more'
             ? Center(child: CustomerMoreButton(idCustomer: idCustomer))
             : Center(
@@ -56,6 +56,9 @@ class CustomerDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'name', value: e.name),
               DataGridCell<String>(columnName: 'email', value: e.email),
               DataGridCell<String>(columnName: 'phone', value: e.phone),
+              // DataGridCell<String>(
+              //     columnName: 'purchased',
+              //     value: e.purchased!.toVND(unit: 'đ')),
               DataGridCell<String>(
                   columnName: 'purchased',
                   value: e.purchased!.toVND(unit: 'đ')),
