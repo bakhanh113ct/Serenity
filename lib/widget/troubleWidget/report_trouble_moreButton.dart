@@ -94,7 +94,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle:
                           TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
@@ -147,7 +146,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle: TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
                 ),
@@ -186,7 +184,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       Navigator.of(context).pop();
                     },
                     text: 'Cancel',
-                    iconData: Icons.cancel_outlined,
                     textStyle:  TextStyle(color: CustomColor.second , fontSize: 15),
                     iconColor: Colors.grey,
                   ),
@@ -206,7 +203,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     text: 'Payment',
-                    iconData: Icons.payment,
                     color: CustomColor.second,
                     textStyle: const TextStyle(color: Colors.white, fontSize: 15),
                     iconColor: Colors.white,
@@ -247,7 +243,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle:
                           TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
