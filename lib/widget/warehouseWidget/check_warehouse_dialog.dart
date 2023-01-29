@@ -45,7 +45,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
             idDeliveryReceipt: '',
             isEdit: true,
             order: myOrder,
-            title: 'Make delivery receipt',
+            title: 'Make Delivery Receipt',
           );
         });
   }
@@ -364,7 +364,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
       ),
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
-          labelText: 'Choose Import Order',
+          labelText: 'Choose Order',
           filled: true,
           fillColor: Theme.of(context).inputDecorationTheme.fillColor,
         ),
