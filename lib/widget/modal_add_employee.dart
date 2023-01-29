@@ -93,7 +93,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 600,
+          height: 630,
           width: 600,
           child: Column(
             children: [
@@ -155,56 +155,70 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                       const SizedBox(
                         height: 14,
                       ),
-                      InputEmployee(
-                        text: 'Phone number',
-                        controller: phoneController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Phone number',
+                          controller: phoneController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
-                      InputEmployee(
-                        text: 'Date of birth',
-                        controller: dobController,
-                        icon: Icons.calendar_month,
-                        onPress: () {
-                          _selectDate(context);
-                        },
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Date of birth',
+                          controller: dobController,
+                          icon: Icons.calendar_month,
+                          onPress: () {
+                            _selectDate(context);
+                          },
+                        ),
                       ),
-                      InputEmployee(
-                        text: 'Salary',
-                        controller: salaryController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Salary',
+                          controller: salaryController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
                     ],
                   )),
                   Expanded(
                       child: Column(
                     children: [
-                      InputEmployee(
-                        text: 'Name',
-                        controller: nameController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Name',
+                          controller: nameController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
-                      InputEmployee(
-                        text: 'Email',
-                        controller: emailController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Email',
+                          controller: emailController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
-                      InputEmployee(
-                        text: 'Address',
-                        controller: addressController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Address',
+                          controller: addressController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
-                      InputEmployee(
-                        text: 'Password',
-                        controller: passwordController,
-                        icon: Icons.abc,
-                        onPress: () {},
+                      Flexible(
+                        child: InputEmployee(
+                          text: 'Password',
+                          controller: passwordController,
+                          icon: Icons.abc,
+                          onPress: () {},
+                        ),
                       ),
-                      combobox(),
+                      Flexible(child: combobox()),
                     ],
                   )),
                 ]),
@@ -215,21 +229,30 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, 'Cancel');
-                    },
-                    style: ButtonStyle(
-                        maximumSize:
-                            MaterialStateProperty.all(const Size(110, 60)),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .primaryColor, // red as border color
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Cancel');
+                      },
+                      style: ButtonStyle(
+                        // maximumSize:
+                        //     MaterialStateProperty.all(Size(110, 60)),
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 15)),
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xFF226B3F))),
-                    child: const Text(
-                      'Cancel ',
-                      style: TextStyle(fontSize: 20),
+                        // backgroundColor: MaterialStateProperty.all(
+                        //     const Color(0xFF226B3F)),
+                      ),
+                      child: const Text(
+                        'Cancle ',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
                   const SizedBox(

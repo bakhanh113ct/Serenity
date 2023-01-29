@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:serenity/model/import_order.dart';
+import 'package:serenity/model/product_import_order.dart';
 
 class ImportOrderRepository {
   final _importOrder = FirebaseFirestore.instance.collection('ImportOrder');
@@ -45,10 +46,18 @@ class ImportOrderRepository {
     return result;
   }
 
-  void updateStateImportOrder(String id, String state, List<bool> listCheck) {
+  void updateStateImportOrder(String id, String state, List<bool> listCheck,
+      List<ProductImportOrder> products) {
     _importOrder.doc(id).update({
       'status': state,
       'listCheck': listCheck,
+      'listProduct': products.map((e) => e.toJson()).toList(),
+    });
+  }
+
+  void completeImportOrder(id, state) {
+    _importOrder.doc(id).update({
+      'status': state,
     });
   }
 }
