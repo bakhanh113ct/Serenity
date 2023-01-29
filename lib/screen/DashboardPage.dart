@@ -41,7 +41,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
         child: BlocBuilder<ReportBloc, ReportState>(
           builder: (context, state) {
             if(state is ReportLoading){
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
             else if(state is ReportLoaded){
               return Container(
