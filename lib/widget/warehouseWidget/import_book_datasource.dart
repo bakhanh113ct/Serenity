@@ -40,7 +40,7 @@ class ImportBookDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       return Container(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: e.columnName == 'more'
               ? ImportBookMoreButton(importBook: e.value)
                       :  Text(e.value.toString(),

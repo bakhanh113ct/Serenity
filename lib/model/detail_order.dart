@@ -33,4 +33,21 @@ class DetailOrder {
     data['price'] = this.price;
     return data;
   }
+  DetailOrder copyWith({
+    String? idDetailOrder,
+    String? idOrder,
+    String? idProduct,
+    String? amount,
+    String? name,
+    String? price,
+  }) {
+    return DetailOrder(
+      idDetailOrder: idDetailOrder ?? this.idDetailOrder,
+      idOrder: idOrder ?? this.idOrder,
+      idProduct: idProduct ?? this.idProduct,
+      amount: amount ?? this.amount,
+      name: name ?? this.name,
+      price: price ?? this.price,
+    );
+  }
 }

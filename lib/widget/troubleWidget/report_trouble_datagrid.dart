@@ -32,7 +32,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight:60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.reportTroubleDataSource,           
                 columns: <GridColumn>[
@@ -42,7 +42,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('id',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -51,7 +51,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -59,7 +59,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       columnName: 'nameCustomer',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NameCustomer',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -67,7 +67,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       columnName: 'totalMoney',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Total Money',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -75,7 +75,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       columnName: 'isCompensate',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('IsCompensate',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -83,7 +83,7 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       columnName: 'status',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Status',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -91,17 +91,18 @@ class _ReportTroubleDataGridState extends State<ReportTroubleDataGrid> {
                       columnName: 'dateCreated',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('DateCreated',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
                   GridColumn(
                       columnName: 'more',
                       allowFiltering: false,
+                      width: 70,
                       allowSorting: false,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('More',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),

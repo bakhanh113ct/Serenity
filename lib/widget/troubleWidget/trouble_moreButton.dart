@@ -93,7 +93,7 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
   @override
   Widget build(BuildContext context)  {
     return isLoading ? const CircularProgressIndicator() : Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       child: PopupMenuButton<ActionOptions>(
           onSelected: (ActionOptions value) {
             if (value == ActionOptions.view) {
@@ -126,14 +126,14 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
                 const PopupMenuItem(
                   value: ActionOptions.view,
                   child: ListTile(
-                    trailing: Icon(Icons.view_comfortable, color: Colors.black),
+                    leading: Icon(Icons.view_comfortable, color: Colors.black),
                     title: Text('View'),
                   ),
                 ),
                 const PopupMenuItem(
                   value: ActionOptions.edit,
                   child: ListTile(
-                    trailing: Icon(
+                    leading: Icon(
                       Icons.edit,
                       color: Colors.black,
                     ),
@@ -143,7 +143,7 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
                  trouble.status == 'Received' ? const PopupMenuItem(
                   value: ActionOptions.report,
                   child: ListTile(
-                    trailing: Icon(
+                    leading: Icon(
                       Icons.report,
                       color: Colors.black,
                     ),
@@ -152,7 +152,7 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
                 ) : const PopupMenuItem(
                               value: ActionOptions.viewReport,
                               child: ListTile(
-                                trailing: Icon(
+                                leading: Icon(
                                   Icons.view_comfy_alt_rounded,
                                   color: Colors.black,
                                 ),
@@ -163,7 +163,7 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
                 const PopupMenuItem(
                   value: ActionOptions.close,
                   child: ListTile(
-                    trailing: Icon(Icons.close_rounded, color: Colors.black),
+                    leading: Icon(Icons.close_rounded, color: Colors.black),
                     title: Text('Close'),
                   ),
                 ),

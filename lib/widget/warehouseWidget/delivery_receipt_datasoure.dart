@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:serenity/widget/warehouseWidget/receipt_document_moreButton.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../model/delivery_receipt.dart';
-import '../../model/receipt_document.dart';
 import 'delivery_receipt_moreButton.dart';
 
 class DeliveryReceiptDataSource extends DataGridSource {
@@ -29,7 +27,7 @@ class DeliveryReceiptDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
             ?  DeliveryReceiptMoreButton(
                 deliveryReceipt: dataGridCell.value,

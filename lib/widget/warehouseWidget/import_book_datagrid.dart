@@ -31,7 +31,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight: 60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.importBookDataSource,
                 columns: <GridColumn>[
@@ -40,7 +40,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -48,7 +48,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'name',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Name',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -56,7 +56,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'price',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Total Price',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -64,7 +64,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'amount',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Amount',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -72,7 +72,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'category',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Category',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -80,7 +80,7 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'content',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Content',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -89,9 +89,10 @@ class _ImportBookDataGridState extends State<ImportBookDataGrid> {
                       columnName: 'more',
                       allowFiltering: false,
                       allowSorting: false,
+                      width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('More',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),

@@ -31,7 +31,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight: 60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.deliveryReceiptDataSource,
                 columns: <GridColumn>[
@@ -40,7 +40,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -48,7 +48,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       columnName: 'nameCustomer',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Customer',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -56,7 +56,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       columnName: 'amount',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Num of Order',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -64,7 +64,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       columnName: 'totalPrice',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Total Price',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -72,7 +72,7 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       columnName: 'dateCreated',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('DateCreated',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -80,9 +80,10 @@ class _DeliveryReceiptDataGridState extends State<DeliveryReceiptDataGrid> {
                       columnName: 'more',
                       allowFiltering: false,
                       allowSorting: false,
+                      width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('More',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),

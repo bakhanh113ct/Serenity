@@ -31,7 +31,7 @@ class _DeliveryReceiptListState extends State<DeliveryReceiptList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
       child: Column(
         children: [
           Expanded(
