@@ -24,12 +24,23 @@ class UpdateStateImportOrder extends ImportOrderEvent {
   final String idImportOrder;
   final String state;
   final List<bool> listCheck;
+  final List<ProductImportOrder> products;
 
   const UpdateStateImportOrder({
+    required this.products,
     required this.idImportOrder,
     required this.state,
     required this.listCheck,
   });
   @override
-  List<Object> get props => [idImportOrder, state];
+  List<Object> get props => [idImportOrder, state, products, listCheck];
+}
+
+class CompleteImportOrder extends ImportOrderEvent {
+  final String state;
+  final String id;
+
+  const CompleteImportOrder({required this.id, required this.state});
+  @override
+  List<Object> get props => [state, id];
 }

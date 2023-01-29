@@ -5,20 +5,34 @@ import 'package:serenity/model/import_order.dart';
 import 'package:serenity/widget/input_employee.dart';
 
 class ModalChooseTrouble extends StatefulWidget {
-  const ModalChooseTrouble({super.key, required this.importOrder});
+  const ModalChooseTrouble(
+      {super.key, required this.importOrder, required this.trouble});
   final ImportOrder importOrder;
+  final String trouble;
   @override
   State<ModalChooseTrouble> createState() => _ModalChooseTroubleState();
 }
 
 class _ModalChooseTroubleState extends State<ModalChooseTrouble> {
-  String troubleValue = 'aaa';
-  final List<String> troubles = ['aaa', 'bbb'];
+  String troubleValue = '';
+  final List<String> troubles = [
+    'Missing goods',
+    'Item is not as described',
+    'Other'
+  ];
+  bool isOther = false;
   TextEditingController otherController = TextEditingController();
+
+  @override
+  void initState() {
+    troubleValue = widget.trouble;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: !isOther ? 220 : 320,
       width: 300,
       color: Colors.white,
       child: Column(children: [
@@ -31,11 +45,12 @@ class _ModalChooseTroubleState extends State<ModalChooseTrouble> {
               fontWeight: FontWeight.w600),
         ),
         comboBox('Trouble'),
-        InputEmployee(
-            text: 'Other',
-            controller: otherController,
-            icon: Icons.edit,
-            onPress: () {}),
+        if (isOther)
+          InputEmployee(
+              text: 'Other',
+              controller: otherController,
+              icon: Icons.edit,
+              onPress: () {}),
         ElevatedButton(
           onPressed: () async {
             ImportOrder newImportOrder = widget.importOrder;
@@ -100,7 +115,7 @@ class _ModalChooseTroubleState extends State<ModalChooseTrouble> {
                   Icons.arrow_drop_down,
                   color: Colors.black45,
                 ),
-                value: troubleValue,
+                value: troubleValue.isEmpty ? null : troubleValue,
                 iconSize: 30,
                 buttonHeight: 60,
                 buttonPadding: const EdgeInsets.only(left: 0, right: 10),
@@ -113,7 +128,7 @@ class _ModalChooseTroubleState extends State<ModalChooseTrouble> {
                           child: Text(
                             item,
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 17,
                             ),
                           ),
                         ))
@@ -126,6 +141,15 @@ class _ModalChooseTroubleState extends State<ModalChooseTrouble> {
                 onChanged: (value) {
                   //Do something when changing the item if you want.
                   troubleValue = value!;
+                  if (value == 'Other') {
+                    setState(() {
+                      isOther = true;
+                    });
+                  } else {
+                    setState(() {
+                      isOther = false;
+                    });
+                  }
                 },
                 onSaved: (value) {
                   troubleValue = value!;

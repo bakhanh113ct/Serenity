@@ -29,19 +29,41 @@ class _CheckImportOrderState extends State<CheckImportOrder> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color(0xFFEBFDF2),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          title: const Text(
+            'Check Order',
+            style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 30,
+                color: Color(0xFF226B3F),
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal),
+          ),
+          centerTitle: true,
+          backgroundColor: const Color(0xFFEBFDF2),
+          elevation: 0,
+        ),
         body: Column(
           children: [
-            const SizedBox(
-              height: 16,
-            ),
-            const Text(
-              'Check Order',
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 30,
-                  color: Color(0xFF226B3F),
-                  fontWeight: FontWeight.w600),
-            ),
+            // const SizedBox(
+            //   height: 16,
+            // ),
+            // const Text(
+            //   'Check Order',
+            //   style: TextStyle(
+            //       fontFamily: 'Poppins',
+            //       fontSize: 30,
+            //       color: Color(0xFF226B3F),
+            //       fontWeight: FontWeight.w600),
+            // ),
             const SizedBox(
               height: 16,
             ),
@@ -67,26 +89,37 @@ class _CheckImportOrderState extends State<CheckImportOrder> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: TableProductChecking(
-                  importOrder: widget.importOrder,
-                  onOpenReport: (index) async {
-                    var result = await showDialog<String>(
-                      // barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        content: ModalChooseTrouble(
-                          importOrder: widget.importOrder,
+                child: Container(
+                  // height: MediaQuery.of(context).size.height * 0.6,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 16),
+                  color: Colors.white,
+                  child: TableProductChecking(
+                    listTrouble: listTrouble,
+                    importOrder: widget.importOrder,
+                    onOpenReport: (index, trouble) async {
+                      // print(trouble);
+                      var result = await showDialog<String>(
+                        // barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          content: ModalChooseTrouble(
+                              importOrder: widget.importOrder,
+                              trouble: trouble),
                         ),
-                      ),
-                    );
-                    if (result != null) {
-                      listTrouble[index] = result;
-                    }
-                    ;
-                  },
+                      );
+                      print(result);
+                      if (result != null && result != '') {
+                        listTrouble[index] = result;
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
+            const SizedBox(
+              height: 32,
+            )
           ],
         ),
       ),
