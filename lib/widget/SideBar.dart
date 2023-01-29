@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serenity/repository/AuthRepository.dart';
 
 import 'package:sidebarx/sidebarx.dart';
 
+import '../bloc/blocUser/user_bloc.dart';
+import '../bloc/blocUser/user_state.dart';
 import '../model/User.dart';
 
 class SideBar extends StatelessWidget {
@@ -36,18 +39,27 @@ class SideBar extends StatelessWidget {
           child: SizedBox(
             height: 120,
             width: 120,
-            child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                    radius: (52),
-                    backgroundColor: Colors.transparent,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.network(
-                        user.image.toString(),
-                        fit: BoxFit.cover,
-                      ),
-                    ))),
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserLoading) {
+                  return Container();
+                } else if (state is UserLoaded) {
+                  return Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                          radius: (52),
+                          backgroundColor: Colors.transparent,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              state.user.image!,
+                              fit: BoxFit.cover,
+                            ),
+                          )));
+                } else
+                  return Container();
+              },
+            ),
           ),
         );
       },
@@ -60,6 +72,7 @@ class SideBar extends StatelessWidget {
         SidebarXItem(icon: Icons.person, label: 'Customer'),
         SidebarXItem(icon: Icons.local_shipping, label: 'Import'),
         SidebarXItem(icon: Icons.error, label: 'Trouble'),
+        SidebarXItem(icon: Icons.warehouse, label: 'Warehouse'),
         SidebarXItem(icon: Icons.support_agent, label: 'Employee'),
         SidebarXItem(icon: Icons.manage_accounts, label: 'Profile'),
       ],

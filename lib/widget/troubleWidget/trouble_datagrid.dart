@@ -20,9 +20,7 @@ class TroubleDataGrid extends StatefulWidget {
 class _TroubleDataGridState extends State<TroubleDataGrid> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SfDataGridTheme(
+    return SfDataGridTheme(
         data: SfDataGridThemeData(
             columnResizeIndicatorColor: Theme.of(context).primaryColor,
             columnResizeIndicatorStrokeWidth: 2.0,
@@ -33,10 +31,9 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: 70,
+                rowHeight: 60,
                 columnWidthMode: ColumnWidthMode.fill,
                 source: widget.troubleDataSource,
-                allowSorting: true,
                 columns: <GridColumn>[
                   GridColumn(
                       visible: false,
@@ -44,7 +41,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('id',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -53,7 +50,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NO',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -61,7 +58,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       columnName: 'nameCustomer',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('NameCustomer',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -69,7 +66,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       columnName: 'description',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Description',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -77,7 +74,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       columnName: 'status',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('Status',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),   
@@ -86,7 +83,7 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       columnName: 'dateCreated',
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('DateCreated',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -94,9 +91,10 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
                       columnName: 'more',
                       allowFiltering: false,
                       allowSorting: false,
+                      width: 70,
                       label: Container(
                           padding: const EdgeInsets.all(0.0),
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text('More',
                               style: Theme.of(context).textTheme.headline2,
                               overflow: TextOverflow.ellipsis))),
@@ -105,7 +103,6 @@ class _TroubleDataGridState extends State<TroubleDataGrid> {
             ),
           ],
         ),
-      ),
     );
   }
 }

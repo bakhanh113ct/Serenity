@@ -48,7 +48,7 @@ class _CustomerMoreButtonState extends State<CustomerMoreButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       child: PopupMenuButton<ActionOptions>(
           onSelected: (ActionOptions value) {
             if (value == ActionOptions.view) {
@@ -73,14 +73,14 @@ class _CustomerMoreButtonState extends State<CustomerMoreButton> {
             const PopupMenuItem(
                   value: ActionOptions.view,
                   child: ListTile(
-                    trailing: Icon(Icons.view_comfortable, color: Colors.black),
+                    leading: Icon(Icons.view_comfortable, color: Colors.black),
                     title: Text('View'),
                   ),
                 ),
                 const PopupMenuItem(
                   value: ActionOptions.edit,
                   child: ListTile(
-                    trailing: Icon(Icons.edit, color: Colors.black,),
+                    leading: Icon(Icons.edit, color: Colors.black,),
                     title: Text('Edit'),
                   ),
                 ),      
@@ -88,7 +88,7 @@ class _CustomerMoreButtonState extends State<CustomerMoreButton> {
                 const PopupMenuItem(
                   value: ActionOptions.close,
                   child: ListTile(
-                    trailing:
+                    leading:
                         Icon(Icons.close_rounded, color: Colors.black),
                     title: Text('Close'),
                   ),

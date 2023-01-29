@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 
 class CustomerRepository {
   //get list customers from firebase
@@ -48,5 +48,16 @@ class CustomerRepository {
     } catch (error) {
       return '';
     }
+  }
+
+  Future<Customer> getCustomer(String idCustomer) async {
+    Customer result = Customer();
+    await _fireCloud
+        .where('idCustomer', isEqualTo: idCustomer)
+        .get()
+        .then((value) {
+      result = Customer.fromJson(value.docs.first.data());
+    });
+    return result;
   }
 }

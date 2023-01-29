@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class User {
+class User extends Equatable {
   String? idUser;
   String? fullName;
   String? phone;
@@ -10,6 +11,7 @@ class User {
   String? image;
   String? position;
   String? address;
+  String? state;
 
   User(
       {this.idUser,
@@ -20,7 +22,8 @@ class User {
       this.salary,
       this.image,
       this.position,
-      this.address});
+      this.address,
+      this.state});
 
   User.fromJson(Map<String, dynamic> json) {
     idUser = json['idUser'];
@@ -32,6 +35,7 @@ class User {
     image = json['image'];
     position = json['position'];
     address = json['address'];
+    state = json['state'];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +49,21 @@ class User {
     data['image'] = this.image;
     data['position'] = this.position;
     data['address'] = this.address;
+    data['state'] = this.state;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        idUser,
+        fullName,
+        phone,
+        email,
+        dateOfBirth,
+        salary,
+        image,
+        position,
+        address,
+        state
+      ];
 }

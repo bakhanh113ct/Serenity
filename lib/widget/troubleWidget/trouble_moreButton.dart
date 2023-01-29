@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:serenity/bloc/blocReportTrouble/report_trouble_repository.dart';
+import 'package:serenity/bloc/blocTrouble/trouble_repository.dart';
 
+import '../../model/trouble.dart';
 import 'report_trouble_edit_dialog.dart';
 import 'trouble_edit_dialog.dart';
 
 
-enum ActionOptions { view, edit, close, report }
+enum ActionOptions { view, edit, close, report , viewReport}
 
 class TroubleMoreButton extends StatefulWidget {
   const TroubleMoreButton({Key? key, required this.idTrouble})
@@ -15,6 +18,27 @@ class TroubleMoreButton extends StatefulWidget {
 }
 
 class _TroubleMoreButtonState extends State<TroubleMoreButton> {
+ Trouble trouble = Trouble();
+ bool isLoading = true;
+ @override
+ void initState(){
+   super.initState();
+ }
+ @override
+ void didChangeDependencies() async {
+  super.didChangeDependencies();
+
+  if (!mounted) return;
+
+  trouble = await TroubleRepository().getTrouble(widget.idTrouble);
+  if(mounted){
+    setState(() {
+        isLoading = false;
+      });
+  }
+ }
+   
+
   onView() {
     showDialog(
       context: context,
@@ -44,19 +68,32 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
       context: context,
       builder: (context) {
         return ReportTroubleEditDialog(
-            idTrouble: widget.idTrouble, title: 'Create Trouble Report', isEdit: true);
+            idReportTrouble: '',idTrouble: widget.idTrouble, title: 'Create Trouble Report', isEdit: true);
+      },
+    );
+  }
+  onViewReport() async {
+    var rpTrouble = await ReportTroubleRepository().getReportTroubleByIdTrouble(widget.idTrouble);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ReportTroubleEditDialog(
+            idReportTrouble: rpTrouble.idReportTrouble!,
+            idTrouble: widget.idTrouble,
+            title: 'View Trouble Report',
+            isEdit: false);
       },
     );
   }
 
   onClose() {
-    Navigator.of(context).pop();
+    return;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
+  Widget build(BuildContext context)  {
+    return isLoading ? const CircularProgressIndicator() : Container(
+      alignment: Alignment.centerLeft,
       child: PopupMenuButton<ActionOptions>(
           onSelected: (ActionOptions value) {
             if (value == ActionOptions.view) {
@@ -69,6 +106,11 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
             }
             if (value == ActionOptions.report) {
               onReport();
+              return;
+            }
+            if (value == ActionOptions.viewReport) {
+              onViewReport();
+
               return;
             }
             if (value == ActionOptions.close) {
@@ -84,35 +126,44 @@ class _TroubleMoreButtonState extends State<TroubleMoreButton> {
                 const PopupMenuItem(
                   value: ActionOptions.view,
                   child: ListTile(
-                    trailing: Icon(Icons.view_comfortable, color: Colors.black),
+                    leading: Icon(Icons.view_comfortable, color: Colors.black),
                     title: Text('View'),
                   ),
                 ),
                 const PopupMenuItem(
                   value: ActionOptions.edit,
                   child: ListTile(
-                    trailing: Icon(
+                    leading: Icon(
                       Icons.edit,
                       color: Colors.black,
                     ),
                     title: Text('Edit'),
                   ),
                 ),
-                 const PopupMenuItem(
+                 trouble.status == 'Received' ? const PopupMenuItem(
                   value: ActionOptions.report,
                   child: ListTile(
-                    trailing: Icon(
+                    leading: Icon(
                       Icons.report,
                       color: Colors.black,
                     ),
-                    title: Text('Make a report'),
+                    title:  Text('Make a report'),
                   ),
-                ),
+                ) : const PopupMenuItem(
+                              value: ActionOptions.viewReport,
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.view_comfy_alt_rounded,
+                                  color: Colors.black,
+                                ),
+                                title: Text('View a report'),
+                              ),
+                            ),
                 const PopupMenuDivider(),
                 const PopupMenuItem(
                   value: ActionOptions.close,
                   child: ListTile(
-                    trailing: Icon(Icons.close_rounded, color: Colors.black),
+                    leading: Icon(Icons.close_rounded, color: Colors.black),
                     title: Text('Close'),
                   ),
                 ),

@@ -7,22 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
+import 'package:serenity/bloc/blocReportTrouble/report_trouble_repository.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 import 'package:serenity/common/color.dart';
-import 'package:serenity/model/customer.dart';
+import 'package:serenity/model/Customer.dart';
 import '../../bloc/blocTrouble/trouble_repository.dart';
 import '../../bloc/blocUser/user_repository.dart';
 import '../../model/User.dart';
+import '../../model/report_trouble.dart';
 import '../../model/trouble.dart';
 
-enum SignaturePerson {customer , staff}
+enum SignaturePerson { customer, staff }
+
 class ReportTroubleEditDialog extends StatefulWidget {
   const ReportTroubleEditDialog({
     Key? key,
+    required this.idReportTrouble,
     required this.idTrouble,
     required this.title,
     required this.isEdit,
   }) : super(key: key);
+  final String idReportTrouble;
   final String idTrouble;
   final String title;
   final bool isEdit;
@@ -32,25 +37,23 @@ class ReportTroubleEditDialog extends StatefulWidget {
 }
 
 class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
-  var initValues = {
-    'nameCustomer': '',
-    'description': '',
-    'status': 'received',
-    'dateCreated': Timestamp.now(),
-    'dateSolved': '',
-    'idCustomer': '',
-  };
-  var editTrouble = Trouble(
+  var editReportTrouble = ReportTrouble(
       idTrouble: '',
-      nameCustomer: '',
-      description: '',
+      idReportTrouble: '',
+      idStaff: '',
       idCustomer: '',
       dateCreated: Timestamp.now(),
       dateSolved: '',
-      status: '');
+      totalMoney: '',
+      isCompensate: false,
+      status: '',
+      signCus: '',
+      signStaff: '');
   var listCustomers = <Customer>[];
   var user = User();
+  var customer = Customer();
   var trouble = Trouble();
+  var reportTrouble = ReportTrouble();
   String compensation = 'compensate';
   bool isAgreeCompensation = false;
   XFile? signCus;
@@ -58,68 +61,120 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
   int totalMoney = 0;
   final _form = GlobalKey<FormState>();
   var isLoading = true;
+
+  // save the form
   void _saveForm(BuildContext context) async {
-    if (!mounted) return;
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
+    if (!isAgreeCompensation) {
+      return;
+    }
     _form.currentState!.save();
-
-    if (editTrouble.idTrouble == '') {
-      //add Trouble
-      context.read<TroubleBloc>().add(AddTrouble(trouble: editTrouble));
+    if (widget.idReportTrouble == '') {
+      if (signCus == null || signStaff == null) {
+        return;
+      }
+      var imageCus =
+          await ReportTroubleRepository().uploadAndGetSignature(signCus);
+      var imageStaff =
+          await ReportTroubleRepository().uploadAndGetSignature(signStaff);
+      //add ReportTrouble
+      editReportTrouble = editReportTrouble.copyWith(
+        idTrouble: widget.idTrouble,
+        idCustomer: customer.idCustomer,
+        dateCreated: Timestamp.fromDate(DateTime.now()),
+        dateSolved: '',
+        totalMoney: totalMoney.toString(),
+        isCompensate: compensation == 'compensate' ? true : false,
+        status: 'Pending',
+        idStaff: user.idUser,
+        signCus: imageCus,
+        signStaff: imageStaff,
+      );
+      if (!mounted) return;
+      context
+          .read<TroubleBloc>()
+          .add(UpdateTrouble(trouble: trouble.copyWith(status: 'Reported', dateSolved: DateFormat('dd-MM-yyyy hh:mm:ss aa').format(DateTime.now()))));
+      context
+          .read<ReportTroubleBloc>()
+          .add(AddReportTrouble(reportTrouble: editReportTrouble));
       const snackBar = SnackBar(
         content: Text('Add Successfully'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      // update Trouble
-      context.read<TroubleBloc>().add(UpdateTrouble(trouble: editTrouble));
+      String? imageCus, imageStaff;
+      if(signCus != null) {
+        imageCus =
+            await ReportTroubleRepository().uploadAndGetSignature(signCus);
+      }
+      if (signStaff != null) {
+        imageStaff =
+            await ReportTroubleRepository().uploadAndGetSignature(signStaff);
+      }
+      // update ReportTrouble
+      editReportTrouble = editReportTrouble.copyWith(
+        idTrouble: widget.idTrouble,
+        idCustomer: customer.idCustomer,
+        dateCreated: Timestamp.fromDate(DateTime.now()),
+        dateSolved: '',
+        totalMoney: totalMoney.toString(),
+        isCompensate: compensation == 'compensate' ? true : false,
+        status: 'Pending',
+        idStaff: user.idUser,
+        signCus: imageCus ?? reportTrouble.signCus,
+        signStaff: imageStaff ?? reportTrouble.signStaff,
+        idReportTrouble: reportTrouble.idReportTrouble,
+      );
+      if (!mounted) return;
+      context
+          .read<ReportTroubleBloc>()
+          .add(UpdateReportTrouble(reportTrouble: editReportTrouble));
       const snackBar = SnackBar(
         content: Text('Update Successfully'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
+
   void pickImageFromDevice(SignaturePerson signature) async {
     if (!widget.isEdit) return;
-    if(signature == SignaturePerson.customer){
+    if (signature == SignaturePerson.customer) {
       final ImagePicker picker = ImagePicker();
       final img = await picker.pickImage(source: ImageSource.gallery);
       setState(() {
         signCus = img;
       });
-    }
-    else if (signature == SignaturePerson.staff) {
+    } else if (signature == SignaturePerson.staff) {
       final ImagePicker picker = ImagePicker();
       final img = await picker.pickImage(source: ImageSource.gallery);
       setState(() {
         signStaff = img;
       });
     }
-    
   }
 
   void pickImageFromCamera(SignaturePerson signature) async {
     if (!widget.isEdit) return;
-    if(signature == SignaturePerson.customer ){
+    if (signature == SignaturePerson.customer) {
       final ImagePicker picker = ImagePicker();
       final img = await picker.pickImage(source: ImageSource.camera);
       setState(() {
         signCus = img;
       });
-    }
-    else if (signature == SignaturePerson.staff) {
+    } else if (signature == SignaturePerson.staff) {
       final ImagePicker picker = ImagePicker();
       final img = await picker.pickImage(source: ImageSource.camera);
       setState(() {
         signStaff = img;
       });
     }
-    
   }
+
   @override
   void initState() {
     super.initState();
@@ -127,21 +182,21 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
 
   @override
   void didChangeDependencies() async {
-    if (!mounted) return;
     listCustomers = await CustomerRepository().get();
-    user = await UserRepository().getUser();
     trouble = await TroubleRepository().getTrouble(widget.idTrouble);
-    final listTroubles = await TroubleRepository().get();
-    editTrouble = listTroubles
-        .firstWhere((element) => element.idTrouble == widget.idTrouble);
-    initValues = {
-      'nameCustomer': editTrouble.nameCustomer!,
-      'description': editTrouble.description!,
-      'status': editTrouble.status!,
-      'dateCreated': editTrouble.dateCreated!,
-      'idCustomer': editTrouble.idCustomer!,
-      'dateSolved': editTrouble.dateSolved!,
-    };
+    if (widget.idReportTrouble == '') {
+      user = await UserRepository().getUser();
+    } else {
+      reportTrouble = await ReportTroubleRepository()
+          .getReportTrouble(widget.idReportTrouble);
+      user = await UserRepository().getUserByIdUser(reportTrouble.idStaff!);
+      compensation =
+          reportTrouble.isCompensate! ? 'compensate' : 'beCompensated';
+      totalMoney = int.parse(reportTrouble.totalMoney!);
+      isAgreeCompensation = true;
+    }
+    customer = await CustomerRepository().getCustomer(trouble.idCustomer!);
+  if (!mounted) return;
     setState(() {
       isLoading = false;
     });
@@ -300,7 +355,8 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                               child: SingleChildScrollView(
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -329,10 +385,12 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                                         .height *
                                                     0.3,
                                                 child: RadioListTile(
-                                                  title: const Text("Compensate"),
+                                                  title:
+                                                      const Text("Compensate"),
                                                   value: "compensate",
                                                   groupValue: compensation,
                                                   onChanged: (value) {
+                                                    if (!widget.isEdit) return;
                                                     setState(() {
                                                       compensation =
                                                           value.toString();
@@ -346,11 +404,12 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                                         .height *
                                                     0.3,
                                                 child: RadioListTile(
-                                                  title:
-                                                      const Text("Be Compensated"),
+                                                  title: const Text(
+                                                      "Be Compensated"),
                                                   value: "beCompensated",
                                                   groupValue: compensation,
                                                   onChanged: (value) {
+                                                    if (!widget.isEdit) return;
                                                     setState(() {
                                                       compensation =
                                                           value.toString();
@@ -379,68 +438,98 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                               child: ListTile(
                                                 trailing: const Text('VND'),
                                                 title: TextFormField(
-                                                  autovalidateMode: AutovalidateMode.always,
-                                                  initialValue: 0.toString(),
-                                                  decoration: const InputDecoration(
-                                                      labelText: 'Total Money',
-                                                      border: OutlineInputBorder()),
-                                                  textInputAction:
-                                                      TextInputAction.done,
-                                                  keyboardType: TextInputType.number,
-                                                  validator: (value) {
-                                                    if (value!.isEmpty) {
-                                                      return 'Please provide a total.';
-                                                    }
-                                                    if(int.tryParse(value) == null){
-                                                      return 'Please provide a total money.';
-                                                    }
-                                                      if (int.parse(value) <= 0 ) {
+                                                    readOnly: !widget.isEdit,
+                                                   
+                                                    autovalidateMode:
+                                                        AutovalidateMode.always,
+                                                    initialValue:
+                                                        totalMoney.toString(),
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            labelText:
+                                                                'Total Money',
+                                                            border:
+                                                                OutlineInputBorder()),
+                                                    textInputAction:
+                                                        TextInputAction.done,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    validator: (value) {
+                                                      if (value!.isEmpty) {
+                                                        return 'Please provide a total.';
+                                                      }
+                                                      if (int.tryParse(value) ==
+                                                          null) {
+                                                        return 'Please provide a total money.';
+                                                      }
+                                                      if (int.parse(value) <=
+                                                          0) {
                                                         return 'Please provide a total money > 0.';
                                                       }
-                                                    return null;
-                                                  },
-                                                  onChanged: (value) {
-                                                    if (int.tryParse(value) ==
+                                                      return null;
+                                                    },
+                                                    onChanged: (value) {
+                                                      if (int.tryParse(value) ==
                                                           null) {
-                                                        return ;
+                                                        return;
                                                       }
-                                                    setState(() {
-                                                      totalMoney = int.parse(value);
-                                                    });
-                                                  }
-                              
-                                                ),
+                                                      setState(() {
+                                                        totalMoney =
+                                                            int.parse(value);
+                                                      });
+                                                    }),
                                               ),
                                             )
                                           ],
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
+                                        padding: const EdgeInsets.only(
+                                            left: 8, top: 8),
+                                        child: Column(
                                           children: [
-                                            SizedBox(
-                                              
-                                              child: 
-                                                Checkbox(value: isAgreeCompensation, 
-                                                onChanged: ((value) {
-                                                  setState(() {
-                                                    isAgreeCompensation = value!;
-                                                  });
-                                                })
-                                            ),),
-                                            SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.7,
-                                                child: const Text(
-                                                    'Tick the check box if the customer agrees with the compensation solution')),
-                                            
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  child: Checkbox(
+                                                      value:
+                                                          isAgreeCompensation,
+                                                      onChanged: ((value) {
+                                                        if(!widget.isEdit) return;
+                                                        setState(() {
+                                                          isAgreeCompensation =
+                                                              value!;
+                                                        });
+                                                      })),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.7,
+                                                    child: const Text(
+                                                        'Tick the check box if the customer agrees with the compensation solution')),
+                                              ],
+                                            ),
+                                            (!isAgreeCompensation
+                                                ? const Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12),
+                                                      child: Text(
+                                                        'Tick here to confirm',
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .redAccent),
+                                                      ),
+                                                    ))
+                                                : const Text(''))
                                           ],
                                         ),
                                       ),
-                                      
                                     ]),
                               ),
                             ),
@@ -462,17 +551,18 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                             const SizedBox(
                               height: 10,
                             ),
-                             Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Expanded(
                                   flex: 1,
                                   child: Center(
                                     child: Column(
-                                
-                                      children:   [
+                                      children: [
                                         const Text('Customer'),
-                                        const SizedBox(height: 20,),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -481,39 +571,63 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                               height: 100,
                                               width: 150,
                                               decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.grey, width: 2),
-                                                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                                                border: Border.all(
+                                                    color: Colors.grey,
+                                                    width: 2),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10.0)),
                                               ),
-                                              child:signCus == null
-                                                ? const Center(child: Text('Upload Signature'))
-                                                : ClipRRect(
-                                                   borderRadius:
-                                                          const BorderRadius.all(
+                                              child: signCus == null
+                                                  ? (reportTrouble
+                                                          .idReportTrouble == null
+                                                      ? const Center(
+                                                          child: Text(
+                                                              'Upload Signature'))
+                                                      : ClipRRect(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10.0)),
+                                                          child: Image(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                reportTrouble
+                                                                    .signCus!),
+                                                          )))
+                                                  : ClipRRect(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
                                                               Radius.circular(
                                                                   10.0)),
-                                                  child: Image(
-                                                      fit: BoxFit.cover,
-                                                      
-                                                      image: FileImage(
-                                                          File(signCus!.path)),
+                                                      child: Image(
+                                                        fit: BoxFit.cover,
+                                                        image: FileImage(File(
+                                                            signCus!.path)),
                                                       ),
-                                                ) ,
+                                                    ),
                                             ),
-                                            
                                             Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   IconButton(
-                                                      onPressed:
-                                                          () => pickImageFromDevice(SignaturePerson.customer),
+                                                      onPressed: () =>
+                                                          pickImageFromDevice(
+                                                              SignaturePerson
+                                                                  .customer),
                                                       icon: const Icon(
                                                         Icons.image,
                                                         size: 30,
                                                       )),
                                                   IconButton(
-                                                      onPressed:
-                                                          () => pickImageFromCamera(SignaturePerson.customer),
+                                                      onPressed: () =>
+                                                          pickImageFromCamera(
+                                                              SignaturePerson
+                                                                  .customer),
                                                       icon: const Icon(
                                                         Icons
                                                             .camera_enhance_rounded,
@@ -551,9 +665,25 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                                         Radius.circular(10.0)),
                                               ),
                                               child: signStaff == null
-                                                  ? const Center(
-                                                      child: Text(
-                                                          'Upload Signature'))
+                                                  ? (reportTrouble
+                                                              .idReportTrouble ==
+                                                          null
+                                                      ? const Center(
+                                                          child: Text(
+                                                              'Upload Signature'))
+                                                      : ClipRRect(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10.0)),
+                                                          child: Image(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                reportTrouble
+                                                                    .signStaff!),
+                                                          )))
                                                   : ClipRRect(
                                                       borderRadius:
                                                           const BorderRadius
@@ -572,8 +702,7 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   IconButton(
-                                                      onPressed:
-                                                          () =>
+                                                      onPressed: () =>
                                                           pickImageFromDevice(
                                                               SignaturePerson
                                                                   .staff),
@@ -582,8 +711,7 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                                         size: 30,
                                                       )),
                                                   IconButton(
-                                                      onPressed:
-                                                          () =>
+                                                      onPressed: () =>
                                                           pickImageFromCamera(
                                                               SignaturePerson
                                                                   .staff),
@@ -601,8 +729,10 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 20,)
                           ],
                         ),
+
                       ),
                     )),
               ],
@@ -628,8 +758,6 @@ class _ReportTroubleEditDialogState extends State<ReportTroubleEditDialog> {
   }
 
   Widget _customerInfo() {
-    final customer = listCustomers
-        .firstWhere((element) => element.idCustomer == editTrouble.idCustomer);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
