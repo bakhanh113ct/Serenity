@@ -77,6 +77,8 @@ class _MainPageState extends State<MainPage> {
                         case 6:
                           return const EmployeePage();
                         case 7:
+                          return const ProfilePage();
+                        case 8:
                           return const DashBoardPage();
                         default:
                           return const ProfilePage();
