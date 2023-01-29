@@ -21,15 +21,15 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
     TabController _tabController = TabController(length: 4, vsync: this);
     return Scaffold(
       backgroundColor: CustomColor.customBackground,
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-          color: CustomColor.customBackground,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 30),
+      body: SingleChildScrollView(
+        child: Container(
+          height: size.height,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Row(
@@ -47,49 +47,56 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.cart);
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Create",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Icon(Icons.add)
-                            ],
+                          child: Container(
+                            height: 50,
+                            width: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Create",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Icon(Icons.add)
+                              ],
+                            ),
                           )),
                         ],
                       )),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 16),
-                //   child: Align(
-                //     alignment: Alignment.centerRight,
-                //     child: SizedBox(
-                //       height: 50,
-                //       width: 120,
-                //       child: ElevatedButton(
-                //           onPressed: () {
-                //             Navigator.pushNamed(context, Routes.cart);
-                //           },
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               Text(
-                //                 "Create",
-                //                 style: TextStyle(fontSize: 18),
-                //               ),
-                //               Icon(Icons.add)
-                //             ],
-                //           )),
-                //     ),
-                //   ),
-                // ),
-                Padding(
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 16),
+              //   child: Align(
+              //     alignment: Alignment.centerRight,
+              //     child: SizedBox(
+              //       height: 50,
+              //       width: 120,
+              //       child: ElevatedButton(
+              //           onPressed: () {
+              //             Navigator.pushNamed(context, Routes.cart);
+              //           },
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Text(
+              //                 "Create",
+              //                 style: TextStyle(fontSize: 18),
+              //               ),
+              //               Icon(Icons.add)
+              //             ],
+              //           )),
+              //     ),
+              //   ),
+              // ),
+              Expanded(
+                flex: 8,
+                child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                      const EdgeInsets.only(left: 16,right: 16, bottom: 20),
                   child: Container(
                       // height: size.height * 0.7,
-                      height: 600,
+                      // height: 600,
                       width: size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -129,25 +136,29 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          Container(
-                            width: double.maxFinite,
-                            height: 500,
-                            child: TabBarView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                controller: _tabController,
-                                children: const [
-                                  AllOrderTab(),
-                                  CompletedOrderTab(),
-                                  PendingOrderTab(),
-                                  CancelledOrderTab()
-                                ]),
-                          )
+                          Expanded(
+                            // child: Container(
+                            //   // width: double.maxFinite,
+                            //   // height: double.infinity,
+                              child: TabBarView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  controller: _tabController,
+                                  children: const [
+                                    AllOrderTab(),
+                                    CompletedOrderTab(),
+                                    PendingOrderTab(),
+                                    CancelledOrderTab()
+                                  ]),
+                            ),
+                          // )
                         ],
                       )),
-                )
-              ],
-            ),
-          )),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
