@@ -155,70 +155,56 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                       const SizedBox(
                         height: 14,
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Phone number',
-                          controller: phoneController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Phone number',
+                        controller: phoneController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Date of birth',
-                          controller: dobController,
-                          icon: Icons.calendar_month,
-                          onPress: () {
-                            _selectDate(context);
-                          },
-                        ),
+                      InputEmployee(
+                        text: 'Date of birth',
+                        controller: dobController,
+                        icon: Icons.calendar_month,
+                        onPress: () {
+                          _selectDate(context);
+                        },
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Salary',
-                          controller: salaryController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Salary',
+                        controller: salaryController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
                     ],
                   )),
                   Expanded(
                       child: Column(
                     children: [
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Name',
-                          controller: nameController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Name',
+                        controller: nameController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Email',
-                          controller: emailController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Email',
+                        controller: emailController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Address',
-                          controller: addressController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Address',
+                        controller: addressController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Password',
-                          controller: passwordController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Password',
+                        controller: passwordController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(child: combobox()),
+                      combobox(),
                     ],
                   )),
                 ]),
@@ -250,7 +236,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                         //     const Color(0xFF226B3F)),
                       ),
                       child: const Text(
-                        'Cancle ',
+                        'Cancel ',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -319,7 +305,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                 phone: phoneController.text,
                                 position: selectedValue,
                                 salary: int.tryParse(
-                                    salaryController.text.toString()),
+                                    salaryController.text.replaceAll(".", "")),
                                 state: 'active');
                             context.read<EmployeeBloc>().add(AddEmployee(
                                 user: user, password: passwordController.text));
@@ -329,16 +315,16 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             //   print(value);
                             // });
 
-                            // Flushbar(
-                            //   flushbarPosition: FlushbarPosition.TOP,
-                            //   margin: const EdgeInsets.symmetric(
-                            //       horizontal: 300, vertical: 16),
-                            //   borderRadius: BorderRadius.circular(8),
-                            //   flushbarStyle: FlushbarStyle.FLOATING,
-                            //   title: 'Notification',
-                            //   message: 'Create user successful',
-                            //   duration: const Duration(seconds: 3),
-                            // ).show(context);
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 300, vertical: 16),
+                              borderRadius: BorderRadius.circular(8),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              title: 'Notification',
+                              message: 'Create user successful',
+                              duration: const Duration(seconds: 3),
+                            ).show(context);
                           } else {
                             debugPrint('Điền đầy đủ thông tin');
                           }

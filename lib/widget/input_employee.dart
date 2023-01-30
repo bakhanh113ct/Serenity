@@ -34,7 +34,7 @@ class InputEmployee extends StatelessWidget {
               obscureText: text == 'Password',
               onChanged: (value) {
                 if (value.isNotEmpty) {
-                  if (text == 'Salary') {
+                  if (text == 'Salary'||text=="Price"||text=="Historical Cost") {
                     // controller.text = value;
                     final format = NumberFormat("###,###.###", "tr_TR");
                     controller.text =

@@ -135,28 +135,28 @@ class OrderDataSource extends DataGridSource {
                                                     color: Colors.black))
                     ],),
                     SizedBox(height: 20,),
-                    state.order!.status=="Pending"?ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: CustomColor.second,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(30),
-                                                ),
-                                              ),
-                                              minimumSize:
-                                                  Size(double.infinity, 60),
-                                            ),
-                                            onPressed: () {
-                                              BlocProvider.of<DetailOrderBloc>(context).add(CompleteDetailOrder());
-                                              BlocProvider.of<OrderBloc>(context).add(LoadOrder());
-                                            },
-                                            child: Text(
-                                              "Complete",
-                                              style: TextStyle(fontSize: 18),
-                                            )):Container(),
-                                            SizedBox(height: 20,),
-                    SizedBox(height: 10,),
+                    // state.order!.status=="Pending"?ElevatedButton(
+                    //                         style: ElevatedButton.styleFrom(
+                    //                           backgroundColor: CustomColor.second,
+                    //                           shape:
+                    //                               const RoundedRectangleBorder(
+                    //                             borderRadius: BorderRadius.all(
+                    //                               Radius.circular(30),
+                    //                             ),
+                    //                           ),
+                    //                           minimumSize:
+                    //                               Size(double.infinity, 60),
+                    //                         ),
+                    //                         onPressed: () {
+                    //                           BlocProvider.of<DetailOrderBloc>(context).add(CompleteDetailOrder());
+                    //                           BlocProvider.of<OrderBloc>(context).add(LoadOrder());
+                    //                         },
+                    //                         child: Text(
+                    //                           "Complete",
+                    //                           style: TextStyle(fontSize: 18),
+                    //                         )):Container(),
+                    //                         SizedBox(height: 20,),
+                    // SizedBox(height: 10,),
                     state.order!.status=="Pending"?ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Color.fromARGB(255, 239, 75, 75),
@@ -227,47 +227,53 @@ class OrderDataSource extends DataGridSource {
 Widget _StatusText(String e){
   if(e=="Completed"){
     return Container(
+      height: 45,
+      width: 130,
                       decoration: const BoxDecoration(
                           color: Color(0xFFDCFBD7),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       padding:const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      child:Text(
+                      child:Center(child: Text(
                         e,
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF5CB16F),
                             fontWeight: FontWeight.w500),
-                      ),
+                      ),)
                     );
   }
   else if (e=="Pending"){
     return Container(
+      height: 45,
+      width: 130,
                       decoration: const BoxDecoration(
                           color: Color(0xFFFEFFCB),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       padding:const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      child:Text(
+                      child:Center(child: Text(
                         e,
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFFEDB014),
                             fontWeight: FontWeight.w500),
-                      ),
+                      ),)
                     );
   }
   else{
     return Container(
+      height: 45,
+      width: 130,
                       decoration: const BoxDecoration(
                           color: Color(0xFFFFEFEF),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       padding:const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      child:Text(
+                      child:Center(child: Text(
                         e,
                         style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFFFD2B2B),
                             fontWeight: FontWeight.w500),
-                      ),
+                      ),)
                     );
   }
 }
