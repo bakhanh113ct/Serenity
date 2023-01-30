@@ -1,24 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:serenity/common/color.dart';
 import 'package:serenity/repository/AuthRepository.dart';
-import 'package:serenity/screen/ForgotPassScreen.dart';
 import 'package:serenity/widget/CustomButton.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ForgotPassPage extends StatefulWidget {
+  const ForgotPassPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgotPassPage> createState() => _ForgotPassPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgotPassPageState extends State<ForgotPassPage> {
   final _emailController= TextEditingController();
   final _passController= TextEditingController();
-  bool? _passwordVisible;
-  @override
-  void initState() {
-    _passwordVisible = false;
-  }
   @override
   Widget build(BuildContext context) {
     Size size=MediaQuery.of(context).size;
@@ -64,19 +59,19 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               const SizedBox(height: 130,),
                               Text(
-                                "Welcome back",
+                                "Forgot Password",
                                 style: TextStyle(
                                     fontSize: 36,
                                     color: CustomColor.second,
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w500),
                               ),
-                              Text("Please enter your detail",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: CustomColor.second,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400)),
+                              // Text("Please enter your detail",
+                              //     style: TextStyle(
+                              //         fontSize: 18,
+                              //         color: CustomColor.second,
+                              //         fontFamily: 'Poppins',
+                              //         fontWeight: FontWeight.w400)),
                               const SizedBox(
                                 height: 40,
                               ),
@@ -96,53 +91,30 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                 ),
                                   ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
-                                  child: TextField(
-                                    obscureText: !_passwordVisible!,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
-                                    obscuringCharacter: '●',
-                                    controller: _passController,
-                                    decoration: InputDecoration(
-                                      label: const Text('Password'),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15)
-                                      ),
-                                      
-                                      hintText: 'Enter your password',
-                                      suffixIcon: IconButton(
-            icon: Icon(
-              // Based on passwordVisible state choose the icon
-               _passwordVisible!
-               ? Icons.visibility
-               : Icons.visibility_off,
-              //  color: Theme.of(context).primaryColorDark,
-               ),
-            onPressed: () {
-               // Update the state i.e. toogle the state of passwordVisible variable
-               setState(() {
-                   _passwordVisible = !_passwordVisible!;
-               });
-             },
-          ),
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassPage(),));
-                                    },
-                                    child: Text("Forgot Password?", style: TextStyle(color: CustomColor.second,fontWeight: FontWeight.w600,fontSize: 16))))
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(vertical: 10),
+                                //   child: TextField(
+                                //     controller: _passController,
+                                //     decoration: InputDecoration(
+                                //       label: const Text('Password'),
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.circular(15)
+                                //       ),
+                                //       hintText: 'Enter your password',
+                                //     ),
+                                //   ),
+                                // ),
+                                // Align(
+                                //   alignment: Alignment.centerRight,
+                                //   child: Text("Forgot Password?", style: TextStyle(color: CustomColor.second,fontWeight: FontWeight.w600,fontSize: 16)))
                                 ],),
                               ),
                               const SizedBox(height: 30,),
-                              CustomButton(onTap: () {
-                                AuthRepository().SignIn(_emailController.text, _passController.text);
+                              CustomButton(onTap: () async{
+                                // AuthRepository().SignIn(_emailController.text, _passController.text);
+                                await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
                               },
-                              child: const Text("Login"),)
+                              child: const Text("Reset"),)
                             ],
                           ),
                         )

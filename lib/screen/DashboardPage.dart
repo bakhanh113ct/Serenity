@@ -52,7 +52,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 30),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Analysis", style: TextStyle(color: CustomColor.second,fontSize: 30, fontWeight: FontWeight.bold),)),
+                      child: Text("Report", style: TextStyle(color: CustomColor.second,fontSize: 30, fontWeight: FontWeight.bold),)),
                   ),
                   Row(
                     children: [
