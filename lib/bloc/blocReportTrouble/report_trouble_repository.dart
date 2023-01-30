@@ -61,7 +61,7 @@ class ReportTroubleRepository {
     });
     return result;
   }
-
+  
   Future<String> uploadAndGetSignature(file) async {
     String imageUrl = '';
     String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();

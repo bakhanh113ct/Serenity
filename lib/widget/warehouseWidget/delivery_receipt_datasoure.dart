@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -51,7 +52,7 @@ class DeliveryReceiptDataSource extends DataGridSource {
               DataGridCell<int>(
                   columnName: 'amount', value: e.listProducts!.length),
               DataGridCell<String>(
-                  columnName: 'totalPrice', value: e.totalMoney!),
+                  columnName: 'totalPrice', value: double.parse(e.totalMoney!).round().toString().toVND()),
               DataGridCell<String>(
                   columnName: 'dateCreated',
                   value:
