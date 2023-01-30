@@ -5,7 +5,7 @@ import '../bloc/blocCustomer/customer_event.dart';
 import '../bloc/blocCustomer/customer_state.dart';
 import '../bloc/bloc_exports.dart';
 import '../common/color.dart';
-import '../model/customer.dart';
+import '../model/Customer.dart';
 import '../widget/customerWidget/customer_list.dart';
 
 class CustomerPage extends StatefulWidget {

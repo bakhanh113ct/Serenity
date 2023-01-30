@@ -27,7 +27,7 @@ class ExportBookDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
             ? ExportBookMoreButton(
                 exportBook: dataGridCell.value,

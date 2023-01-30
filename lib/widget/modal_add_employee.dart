@@ -93,7 +93,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 630,
+          height: 610,
           width: 600,
           child: Column(
             children: [
@@ -111,7 +111,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                         image == null
                             ? Container(
                                 // margin: EdgeInsets.only(top: 50),
-                                height: 170,
+                                height: 180,
                                 width: 170,
                                 child: const CircleAvatar(
                                   backgroundColor: Colors.white,
@@ -155,70 +155,56 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                       const SizedBox(
                         height: 14,
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Phone number',
-                          controller: phoneController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Phone number',
+                        controller: phoneController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Date of birth',
-                          controller: dobController,
-                          icon: Icons.calendar_month,
-                          onPress: () {
-                            _selectDate(context);
-                          },
-                        ),
+                      InputEmployee(
+                        text: 'Date of birth',
+                        controller: dobController,
+                        icon: Icons.calendar_month,
+                        onPress: () {
+                          _selectDate(context);
+                        },
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Salary',
-                          controller: salaryController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Salary',
+                        controller: salaryController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
                     ],
                   )),
                   Expanded(
                       child: Column(
                     children: [
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Name',
-                          controller: nameController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Name',
+                        controller: nameController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Email',
-                          controller: emailController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Email',
+                        controller: emailController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Address',
-                          controller: addressController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Address',
+                        controller: addressController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(
-                        child: InputEmployee(
-                          text: 'Password',
-                          controller: passwordController,
-                          icon: Icons.abc,
-                          onPress: () {},
-                        ),
+                      InputEmployee(
+                        text: 'Password',
+                        controller: passwordController,
+                        icon: Icons.abc,
+                        onPress: () {},
                       ),
-                      Flexible(child: combobox()),
+                      combobox(),
                     ],
                   )),
                 ]),
@@ -319,7 +305,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                 phone: phoneController.text,
                                 position: selectedValue,
                                 salary: int.tryParse(
-                                    salaryController.text.toString()),
+                                    salaryController.text.replaceAll('.', '')),
                                 state: 'active');
                             context.read<EmployeeBloc>().add(AddEmployee(
                                 user: user, password: passwordController.text));

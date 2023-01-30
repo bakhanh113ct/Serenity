@@ -63,21 +63,23 @@ class _MainPageState extends State<MainPage> {
                       // final pageTitle = _getTitleByIndex(controller.selectedIndex);
                       switch (controller.selectedIndex) {
                         case 0:
-                          return const DashBoardPage();
+                          return const ProductPage();
                         case 1:
                           return const OrderPage();
                         case 2:
-                          return const ProductPage();
-                        case 3:
                           return const CustomerPage();
-                        case 4:
+                        case 3:
                           return const ImportPage();
-                        case 5:
+                        case 4:
                           return const TroublePage();
-                        case 6:
+                        case 5:
                           return const WarehousePage();
-                        case 7:
+                        case 6:
                           return const EmployeePage();
+                        case 7:
+                          return const ProfilePage();
+                        case 8:
+                          return const DashBoardPage();
                         default:
                           return const ProfilePage();
                       }

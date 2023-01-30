@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:serenity/bloc/blocImportBook/import_book_repository.dart';
-import 'package:serenity/model/detailOrder.dart';
 
+import '../../model/detail_order.dart';
 import '../../model/product.dart';
 
 class ExportProductList extends StatelessWidget {

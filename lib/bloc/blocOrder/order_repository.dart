@@ -9,7 +9,7 @@ import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import '../../model/order.dart';
 import '../../model/product_cart.dart';
 import '../../model/voucher.dart';
@@ -38,23 +38,26 @@ class OrderRepository {
       List<ProductCart> listProductCart,
       double total,
       double discount,
-      double item, String methodPayment) async {
+      double item,
+      String methodPayment) async {
     String idOrder = "";
-    double profit=0;
-    listProductCart.forEach((element) { 
-      profit+=(double.parse(element.product!.price!)-double.parse(element.product!.historicalCost!))*element.amount!;
+    double profit = 0;
+    listProductCart.forEach((element) {
+      profit += (double.parse(element.product!.price!) -
+              double.parse(element.product!.historicalCost!)) *
+          element.amount!;
     });
-    profit-=discount;
+    profit -= discount;
     await orders.add({
       "idCustomer": customer.idCustomer,
-      "idVoucher": voucher==null?"":voucher.idVoucher,
+      "idVoucher": voucher == null ? "" : voucher.idVoucher,
       "idUser": FirebaseAuth.instance.currentUser!.uid,
       "nameCustomer": customer.name,
-      "phone":customer.phone,
+      "phone": customer.phone,
       "dateCreated": DateTime.now(),
       "status": "Pending",
       "price": total.toString(),
-      "profit":profit.toString()
+      "profit": profit.toString()
     }).then((value) {
       orders.doc(value.id).update({"idOrder": value.id});
       idOrder = value.id;
@@ -64,37 +67,34 @@ class OrderRepository {
       detailOrders.add({
         "idOrder": idOrder,
         "idProduct": element.product!.idProduct,
-        "name":element.product!.name,
+        "name": element.product!.name,
         "amount": element.amount.toString(),
-        "price":(double.tryParse(element.product!.price.toString())!*element.amount!).toString()
+        "price": (double.tryParse(element.product!.price.toString())! *
+                element.amount!)
+            .toString()
       }).then((value) {
         detailOrders.doc(value.id).update({"idDetailOrder": value.id});
       });
     });
-    if(methodPayment=="ZaloPay"){
-      final createOrderResponse= await createOrderZaloPay(total);
-    if(await canLaunchUrl(Uri.parse(createOrderResponse!.orderurl))){
-      await launchUrl(Uri.parse(createOrderResponse.orderurl));
+    if (methodPayment == "ZaloPay") {
+      final createOrderResponse = await createOrderZaloPay(total);
+      if (await canLaunchUrl(Uri.parse(createOrderResponse!.orderurl))) {
+        await launchUrl(Uri.parse(createOrderResponse.orderurl));
+      }
     }
-    }
-    
   }
 
-   Future<void> updateOrder(MyOrder id) async {
+  Future<void> updateOrder(MyOrder id) async {
     await orders.doc(id.idOrder).update(id.toJson());
   }
 
-Future<MyOrder> getOrderById(String idOrder) async {
+  Future<MyOrder> getOrderById(String idOrder) async {
     MyOrder result = MyOrder();
-    await orders
-        .where('idOrder', isEqualTo: idOrder)
-        .get()
-        .then((value) {
+    await orders.where('idOrder', isEqualTo: idOrder).get().then((value) {
       result = MyOrder.fromJson(value.docs.first.data());
     });
     return result;
   }
-
 
   Future<void> createPdf(List<ProductCart> listProductCart, double item,
       double discount, double total, String idOrder) async {
@@ -122,22 +122,27 @@ Future<MyOrder> getOrderById(String idOrder) async {
           pw.SizedBox(height: 4),
           pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text("Items"),
-            Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(item)),
+            Text(NumberFormat.currency(locale: "vi-VN", symbol: "")
+                .format(item)),
           ]),
           pw.SizedBox(height: 4),
           pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text("Discount"),
-            Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(discount)),
+            Text(NumberFormat.currency(locale: "vi-VN", symbol: "")
+                .format(discount)),
           ]),
           pw.SizedBox(height: 4),
           pw.Divider(height: 1),
           pw.Padding(
             padding: EdgeInsets.symmetric(vertical: 4),
-          child: pw.Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text("Total"),
-            Text(NumberFormat.currency(locale: "vi-VN", symbol: "").format(total)),
-          ]),),
-      
+            child: pw.Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Total"),
+                  Text(NumberFormat.currency(locale: "vi-VN", symbol: "")
+                      .format(total)),
+                ]),
+          ),
         ]),
       ),
     );
@@ -148,9 +153,9 @@ Future<MyOrder> getOrderById(String idOrder) async {
     // await file.writeAsBytes(await pdf.save());
     // await Printing.layoutPdf(
     //     onLayout: (PdfPageFormat format) async => pdf.save());
-        // await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
-        // final output = await getTemporaryDirectory();
-   
+    // await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
+    // final output = await getTemporaryDirectory();
+
     // final file = File('${output.path}/example.pdf');
     await Printing.layoutPdf(
         onLayout: (PdfPageFormat format) async => pdf.save());

@@ -13,7 +13,7 @@ import 'package:serenity/widget/item_product_menu.dart';
 
 import '../bloc/blocCart/bloc/cart_bloc.dart';
 import '../bloc/blocCheckOut/bloc/checkout_bloc.dart';
-import '../model/customer.dart';
+import '../model/Customer.dart';
 import '../model/product_cart.dart';
 import '../model/voucher.dart';
 
@@ -26,7 +26,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final _queryController = TextEditingController();
-  String methodPayment="";
+  String methodPayment = "";
   @override
   void initState() {
     BlocProvider.of<CartBloc>(context).add(LoadCart());
@@ -287,11 +287,13 @@ class _CartPageState extends State<CartPage> {
                                                   Size(double.infinity, 60),
                                             ),
                                             onPressed: () {
-                                              if(state.listProductCart.length==0){
+                                              if (state
+                                                      .listProductCart.length ==
+                                                  0) {
                                                 errorCart();
-                                              }
-                                              else{
-                                                _showCheckOut(state.listProductCart);
+                                              } else {
+                                                _showCheckOut(
+                                                    state.listProductCart);
                                               }
                                             },
                                             child: Text(
@@ -325,339 +327,386 @@ class _CartPageState extends State<CartPage> {
       builder: (context) {
         return BlocBuilder<CheckoutBloc, CheckoutState>(
           builder: (context, state) {
-            if(state is CheckoutLoading){
+            if (state is CheckoutLoading) {
               return Container();
-            }
-            else if(state is CheckoutLoaded){
+            } else if (state is CheckoutLoaded) {
               return Dialog(
-              child: Container(
-                height: 700,
-                width: 500,
-          
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(children: [
-                    SizedBox(height: 20,),
-                    Text("Checkout",style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),),
-                    SizedBox(height: 20,),
-                    DropdownSearch<Customer>(
-                      // itemAsString: (Customer u) => u.name.toString(),
-                      popupProps: PopupProps.menu(
-                        // showSelectedItems: true,
+                child: Container(
+                  height: 700,
+                  width: 500,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Checkout",
+                        style: TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      DropdownSearch<Customer>(
+                        // itemAsString: (Customer u) => u.name.toString(),
+                        popupProps: PopupProps.menu(
+                          // showSelectedItems: true,
 
-                        itemBuilder: (context, item, isSelected) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Container(
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    item.name.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    item.phone.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
+                          itemBuilder: (context, item, isSelected) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      item.name.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      item.phone.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        showSearchBox: true,
-                      ),
-                      items: state.listCustomer,
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                            labelText: "Customer",
-                            hintText: "Choose customer",
-                            labelStyle: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                            hintStyle: TextStyle(
-                              fontSize: 20,
-                            ),
-                            border: InputBorder.none),
-                      ),
-                      dropdownBuilder: (context, selectedItem) {
-                        return selectedItem == null
-                            ? Container(
-                                child: Text("Choose customer",style: TextStyle(
-                              fontSize: 20,
-                            ),),
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    selectedItem.name.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    selectedItem.phone.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              );
-                      },
-                      onChanged: (value) {
-                        BlocProvider.of<CheckoutBloc>(context).add(ChooseCustomer(value!));
-                      },
-                      selectedItem: null,
-                    ),
-                    DropdownSearch<Voucher>(
-                      // itemAsString: (Customer u) => u.name.toString(),
-                      popupProps: PopupProps.menu(
-                        // showSelectedItems: true,
-
-                        itemBuilder: (context, item, isSelected) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Container(
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    item.name.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    item.content.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      items: state.listVoucher,
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                            labelText: "Voucher",
-                            hintText: "Choose voucher",
-                            labelStyle: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                            hintStyle: TextStyle(
-                              fontSize: 20,
-                            ),
-                            border: InputBorder.none),
-                      ),
-                      dropdownBuilder: (context, selectedItem) {
-                        return selectedItem == null
-                            ? Container(
-                                child: Text("Choose voucher",style: TextStyle(
-                              fontSize: 20,
-                            ),),
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    selectedItem.name.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    selectedItem.content.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              );
-                      },
-                      onChanged: (value) {
-                        BlocProvider.of<CheckoutBloc>(context).add(ChooseVoucher(value!));
-                      },
-                      selectedItem: null,
-                    ),
-                    DropdownSearch<String>(
-                      // itemAsString: (Customer u) => u.name.toString(),
-                      popupProps: PopupProps.menu(
-                        // showSelectedItems: true,
-
-                        itemBuilder: (context, item, isSelected) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Container(
-                              height: 50,
-                              child: Text(
-                                item,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      items: ["Cash","ZaloPay"],
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                            labelText: "Method Payment",
-                            hintText: "Choose method",
-                            labelStyle: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                            hintStyle: TextStyle(
-                              fontSize: 20,
-                            ),
-                            border: InputBorder.none),
-                      ),
-                      dropdownBuilder: (context, selectedItem) {
-                        return selectedItem == null
-                            ? Container(
-                                child: Text("Choose method",style: TextStyle(
-                              fontSize: 20,
-                            ),),
-                              )
-                            : Text(
-                              selectedItem,
-                              style: TextStyle(fontSize: 18),
                             );
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          methodPayment=value!;
-                        });
-                      },
-                      selectedItem: null,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("List items",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),)),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: listProductCart.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                            Text(listProductCart[index].product!.name!+"  x"+listProductCart[index].amount.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400),),
-                            Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: "vi-VN",
-                                                        decimalDigits: 0)
-                                                    .format(int.parse(listProductCart[index].product!.price!)*listProductCart[index].amount!),
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                   
-                                                    ))
-                          ],);
-                      },),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      Text("Items",style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFA5A6A8)),),
-                      Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: "vi-VN",
-                                                        decimalDigits: 0)
-                                                    .format(state.totalItem),
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromARGB(255, 55, 170, 103)))
-                    ],),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      Text("Discount",style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFA5A6A8)),),
-                      Text("-"+
-                                                NumberFormat.simpleCurrency(
-                                                        locale: "vi-VN",
-                                                        decimalDigits: 0)
-                                                    .format(state.discount),
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromARGB(255, 225, 86, 86)))
-                    ],),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      Text("Total",style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFA5A6A8)),),
-                      Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: "vi-VN",
-                                                        decimalDigits: 0)
-                                                    .format(state.total),
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromARGB(255, 55, 170, 103)))
-                    ],),
-                    SizedBox(height: 20,),
-                    ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(30),
-                                                ),
-                                              ),
-                                              minimumSize:
-                                                  Size(double.infinity, 60),
-                                            ),
-                                            onPressed: () {
-                                              if(state.selectedCustomer==null){
-                                                errorCustomer();
-                                              }
-                                              else if(methodPayment==""){
-                                                errorMethodPayment();
-                                              }
-                                              else{
-                                                BlocProvider.of<CheckoutBloc>(context).add(Payment(listProductCart,methodPayment));
-                                                BlocProvider.of<CartBloc>(context).add(LoadCart());
-                                                Navigator.pop(context);
-                                              }
-                                              
-                                            },
-                                            child: Text(
-                                              "Payment",
-                                              style: TextStyle(fontSize: 18),
-                                            )),
-                                            SizedBox(height: 10,),
-                                            ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(30),
-                                                ),
-                                              ),
-                                              minimumSize:
-                                                  Size(double.infinity, 60),
-                                                  backgroundColor: Colors.grey
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(fontSize: 18),
-                                            )),
-                                            SizedBox(height: 10,)
-                  ]),
+                          },
+                          showSearchBox: true,
+                        ),
+                        items: state.listCustomer,
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                              labelText: "Customer",
+                              hintText: "Choose customer",
+                              labelStyle: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                              hintStyle: TextStyle(
+                                fontSize: 20,
+                              ),
+                              border: InputBorder.none),
+                        ),
+                        dropdownBuilder: (context, selectedItem) {
+                          return selectedItem == null
+                              ? Container(
+                                  child: Text(
+                                    "Choose customer",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      selectedItem.name.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      selectedItem.phone.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                );
+                        },
+                        onChanged: (value) {
+                          BlocProvider.of<CheckoutBloc>(context)
+                              .add(ChooseCustomer(value!));
+                        },
+                        selectedItem: null,
+                      ),
+                      DropdownSearch<Voucher>(
+                        // itemAsString: (Customer u) => u.name.toString(),
+                        popupProps: PopupProps.menu(
+                          // showSelectedItems: true,
+
+                          itemBuilder: (context, item, isSelected) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      item.name.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      item.content.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        items: state.listVoucher,
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                              labelText: "Voucher",
+                              hintText: "Choose voucher",
+                              labelStyle: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                              hintStyle: TextStyle(
+                                fontSize: 20,
+                              ),
+                              border: InputBorder.none),
+                        ),
+                        dropdownBuilder: (context, selectedItem) {
+                          return selectedItem == null
+                              ? Container(
+                                  child: Text(
+                                    "Choose voucher",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      selectedItem.name.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      selectedItem.content.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                );
+                        },
+                        onChanged: (value) {
+                          BlocProvider.of<CheckoutBloc>(context)
+                              .add(ChooseVoucher(value!));
+                        },
+                        selectedItem: null,
+                      ),
+                      DropdownSearch<String>(
+                        // itemAsString: (Customer u) => u.name.toString(),
+                        popupProps: PopupProps.menu(
+                          // showSelectedItems: true,
+
+                          itemBuilder: (context, item, isSelected) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                height: 50,
+                                child: Text(
+                                  item,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        items: ["Cash", "ZaloPay"],
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                              labelText: "Method Payment",
+                              hintText: "Choose method",
+                              labelStyle: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                              hintStyle: TextStyle(
+                                fontSize: 20,
+                              ),
+                              border: InputBorder.none),
+                        ),
+                        dropdownBuilder: (context, selectedItem) {
+                          return selectedItem == null
+                              ? Container(
+                                  child: Text(
+                                    "Choose method",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  selectedItem,
+                                  style: TextStyle(fontSize: 18),
+                                );
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            methodPayment = value!;
+                          });
+                        },
+                        selectedItem: null,
+                      ),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "List items",
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.w600),
+                          )),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: listProductCart.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  listProductCart[index].product!.name! +
+                                      "  x" +
+                                      listProductCart[index].amount.toString(),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Text(
+                                    NumberFormat.simpleCurrency(
+                                            locale: "vi-VN", decimalDigits: 0)
+                                        .format(int.parse(listProductCart[index]
+                                                .product!
+                                                .price!) *
+                                            listProductCart[index].amount!),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ))
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Items",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFA5A6A8)),
+                          ),
+                          Text(
+                              NumberFormat.simpleCurrency(
+                                      locale: "vi-VN", decimalDigits: 0)
+                                  .format(state.totalItem),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color.fromARGB(255, 55, 170, 103)))
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Discount",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFA5A6A8)),
+                          ),
+                          Text(
+                              "-" +
+                                  NumberFormat.simpleCurrency(
+                                          locale: "vi-VN", decimalDigits: 0)
+                                      .format(state.discount),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color.fromARGB(255, 225, 86, 86)))
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFA5A6A8)),
+                          ),
+                          Text(
+                              NumberFormat.simpleCurrency(
+                                      locale: "vi-VN", decimalDigits: 0)
+                                  .format(state.total),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color.fromARGB(255, 55, 170, 103)))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
+                            ),
+                            minimumSize: Size(double.infinity, 60),
+                          ),
+                          onPressed: () {
+                            if (state.selectedCustomer == null) {
+                              errorCustomer();
+                            } else if (methodPayment == "") {
+                              errorMethodPayment();
+                            } else {
+                              BlocProvider.of<CheckoutBloc>(context)
+                                  .add(Payment(listProductCart, methodPayment));
+                              BlocProvider.of<CartBloc>(context)
+                                  .add(LoadCart());
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Text(
+                            "Payment",
+                            style: TextStyle(fontSize: 18),
+                          )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(30),
+                                ),
+                              ),
+                              minimumSize: Size(double.infinity, 60),
+                              backgroundColor: Colors.grey),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(fontSize: 18),
+                          )),
+                      SizedBox(
+                        height: 10,
+                      )
+                    ]),
+                  ),
                 ),
-              ),
-            );
-            }
-            else{
+              );
+            } else {
               return Container();
             }
           },
@@ -665,44 +714,44 @@ class _CartPageState extends State<CartPage> {
       },
     );
   }
-  void errorCustomer(){
+
+  void errorCustomer() {
     Flushbar(
       backgroundColor: Colors.red,
-                                flushbarPosition: FlushbarPosition.TOP,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 300, vertical: 16),
-                                borderRadius: BorderRadius.circular(10),
-                                flushbarStyle: FlushbarStyle.FLOATING,
-                                title: 'Error',
-                                message: 'Please choose customer!',
-                                duration: const Duration(seconds: 3),
-                              ).show(context);
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+      borderRadius: BorderRadius.circular(10),
+      flushbarStyle: FlushbarStyle.FLOATING,
+      title: 'Error',
+      message: 'Please choose customer!',
+      duration: const Duration(seconds: 3),
+    ).show(context);
   }
-  void errorCart(){
+
+  void errorCart() {
     Flushbar(
       backgroundColor: Colors.red,
-                                flushbarPosition: FlushbarPosition.TOP,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 300, vertical: 16),
-                                borderRadius: BorderRadius.circular(10),
-                                flushbarStyle: FlushbarStyle.FLOATING,
-                                title: 'Error',
-                                message: 'Please add product!',
-                                duration: const Duration(seconds: 3),
-                              ).show(context);
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+      borderRadius: BorderRadius.circular(10),
+      flushbarStyle: FlushbarStyle.FLOATING,
+      title: 'Error',
+      message: 'Please add product!',
+      duration: const Duration(seconds: 3),
+    ).show(context);
   }
-  void errorMethodPayment(){
+
+  void errorMethodPayment() {
     Flushbar(
       backgroundColor: Colors.red,
-                                flushbarPosition: FlushbarPosition.TOP,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 300, vertical: 16),
-                                borderRadius: BorderRadius.circular(10),
-                                flushbarStyle: FlushbarStyle.FLOATING,
-                                title: 'Error',
-                                message: 'Please choose method payment!',
-                                duration: const Duration(seconds: 3),
-                              ).show(context);
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+      borderRadius: BorderRadius.circular(10),
+      flushbarStyle: FlushbarStyle.FLOATING,
+      title: 'Error',
+      message: 'Please choose method payment!',
+      duration: const Duration(seconds: 3),
+    ).show(context);
   }
 }
 

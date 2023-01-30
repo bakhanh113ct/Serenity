@@ -32,16 +32,14 @@ class CustomerDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
-            ? Center(child: CustomerMoreButton(idCustomer: idCustomer))
-            : Center(
-                child: Text(dataGridCell.value.toString(),
+            ? CustomerMoreButton(idCustomer: idCustomer)
+            : Text(dataGridCell.value.toString(),
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                     overflow: TextOverflow.ellipsis),
-              ),
       );
     }).toList());
   }

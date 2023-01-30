@@ -28,7 +28,7 @@ class TroubleDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
             ? TroubleMoreButton(idTrouble: idTrouble)
             :  dataGridCell.columnName == 'status'
@@ -64,30 +64,38 @@ class TroubleDataSource extends DataGridSource {
   Widget statusText(String status) {
     if (status == 'Received') {
       return Container(
+        height: 45,
+        width: 135,
         decoration: const BoxDecoration(
             color: Color(0xFFFEFFCB),
             borderRadius: BorderRadius.all(Radius.circular(8))),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        child: Text(
-          status,
-          style: const TextStyle(
-              fontSize: 20,
-              color: Color(0xFFEDB014),
-              fontWeight: FontWeight.w500),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Center(
+          child: Text(
+            status,
+            style: const TextStyle(
+                fontSize: 20,
+                color: Color(0xFFEDB014),
+                fontWeight: FontWeight.w500),
+          ),
         ),
       );
     } else {
        return Container(
+        height: 45,
+        width: 135,
         decoration: const BoxDecoration(
             color: Color(0xFFDCFBD7),
             borderRadius: BorderRadius.all(Radius.circular(8))),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        child: Text(
-          status,
-          style: const TextStyle(
-              fontSize: 20,
-              color: Color(0xFF5CB16F),
-              fontWeight: FontWeight.w500),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Center(
+          child: Text(
+            status,
+            style: const TextStyle(
+                fontSize: 20,
+                color: Color(0xFF5CB16F),
+                fontWeight: FontWeight.w500),
+          ),
         ),
       );
     }
