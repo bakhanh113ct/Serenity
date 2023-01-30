@@ -217,7 +217,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
       // backgroundColor: Colors.white,
       plotAreaBorderWidth: 0,
       title: ChartTitle(
-          text: true ? '' : 'Population growth of various countries'),
+          text: true ? 'Revenue Chart' : 'Population growth of various countries'),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
       ),
@@ -295,7 +295,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   // }
   SfCircularChart _buildDefaultPieChart(List<ChartSampleData1> data) {
     return SfCircularChart(
-      title: ChartTitle(text: true ? '' : 'Sales by sales person'),
+      title: ChartTitle(text: true ? 'Top 3 Customer' : 'Sales by sales person'),
       legend: Legend(isVisible: !true),
       series: _getDefaultPieSeries(data),
     );

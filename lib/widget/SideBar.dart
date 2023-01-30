@@ -27,7 +27,6 @@ class SideBar extends StatelessWidget {
             SidebarXItem(icon: Icons.local_shipping, label: 'Import'),
             SidebarXItem(icon: Icons.error, label: 'Trouble'),
             SidebarXItem(icon: Icons.warehouse, label: 'Warehouse'),
-            SidebarXItem(icon: Icons.support_agent, label: 'Employee'),
             SidebarXItem(icon: Icons.manage_accounts, label: 'Profile'),
           ];
   @override
