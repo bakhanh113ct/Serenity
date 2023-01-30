@@ -315,16 +315,16 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             //   print(value);
                             // });
 
-                            // Flushbar(
-                            //   flushbarPosition: FlushbarPosition.TOP,
-                            //   margin: const EdgeInsets.symmetric(
-                            //       horizontal: 300, vertical: 16),
-                            //   borderRadius: BorderRadius.circular(8),
-                            //   flushbarStyle: FlushbarStyle.FLOATING,
-                            //   title: 'Notification',
-                            //   message: 'Create user successful',
-                            //   duration: const Duration(seconds: 3),
-                            // ).show(context);
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 300, vertical: 16),
+                              borderRadius: BorderRadius.circular(8),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              title: 'Notification',
+                              message: 'Create user successful',
+                              duration: const Duration(seconds: 3),
+                            ).show(context);
                           } else {
                             debugPrint('Điền đầy đủ thông tin');
                           }
