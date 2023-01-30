@@ -202,7 +202,7 @@ class _TableImportOrderState extends State<TableImportOrder> {
                                           vertical: 8.0),
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
-                                        'STT',
+                                        'ID',
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600,

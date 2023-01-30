@@ -53,7 +53,7 @@ class DeliveryReceiptRepository {
 
       // update status of order
       var order = await OrderRepository().getOrderById(rc.idOrder!);
-      await OrderRepository().updateOrder(order.copyWith(status: 'Exported'));
+      await OrderRepository().updateOrder(order.copyWith(status: 'Completed'));
     });
   }
 

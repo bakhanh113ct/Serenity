@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/model/product.dart';
 
 import '../bloc/blocProduct/bloc/product_bloc.dart';
@@ -35,10 +36,13 @@ class _ModalUpdateProductPageState extends State<ModalUpdateProductPage> {
   @override
   void initState() {
     nameController.text=widget.product.name!;
-    priceController.text=widget.product.price!;
-    historicalCostController.text=widget.product.historicalCost!;
+    // priceController.text=widget.product.price!;
+    // historicalCostController.text=widget.product.historicalCost!;
     decriptionController.text=widget.product.content!;
     category=widget.product.category!;
+    final format = NumberFormat("###,###.###", "tr_TR");
+    historicalCostController.text = format.format(int.tryParse(widget.product.historicalCost!)).toString();
+    priceController.text = format.format(int.tryParse(widget.product.price!)).toString();
     super.initState();
   }
   Future _getImageCamera() async {
@@ -222,8 +226,8 @@ class _ModalUpdateProductPageState extends State<ModalUpdateProductPage> {
                         await products.doc(widget.product.idProduct).update({
                         "name":nameController.text.trim(),
                         "category":category,
-                        "price":priceController.text.trim(),
-                        "historicalCost":historicalCostController.text.trim(),
+                        "price":priceController.text.replaceAll(".", "").trim(),
+                        "historicalCost":historicalCostController.text.replaceAll(".", "").trim(),
                         "content":decriptionController.text.trim(),
                         "amount":widget.product.amount,
                       });

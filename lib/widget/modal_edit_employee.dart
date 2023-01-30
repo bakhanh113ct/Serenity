@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/model/User.dart' as model_user;
 import 'package:serenity/widget/input_employee.dart';
 
@@ -51,8 +52,9 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       ..text =
           '${widget.user.dateOfBirth!.toDate().day}/${widget.user.dateOfBirth!.toDate().month}/${widget.user.dateOfBirth!.toDate().year}/';
     // passwordController = TextEditingController()..text = '';
+    final format = NumberFormat("###,###.###", "tr_TR");
     salaryController = TextEditingController()
-      ..text = widget.user.salary.toString();
+      ..text = format.format(widget.user.salary).toString();
 
     listController = [
       nameController,

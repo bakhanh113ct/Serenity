@@ -204,8 +204,8 @@ class _ModalAddProductPageState extends State<ModalAddProductPage> {
                       await products.add({
                         "name":nameController.text.trim(),
                         "category":category,
-                        "price":priceController.text.trim(),
-                        "historicalCost":historicalCostController.text.trim(),
+                        "price":priceController.text.replaceAll(".", "").trim(),
+                        "historicalCost":historicalCostController.text.replaceAll(".", "").trim(),
                         "content":decriptionController.text.trim(),
                         "amount":"0",
                       }).then((value) {
