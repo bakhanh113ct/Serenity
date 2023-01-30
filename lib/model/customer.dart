@@ -11,7 +11,6 @@ class Customer {
   String? image;
   String? phone;
   String? purchased;
-  Timestamp? dateCreated;
 
   Customer( 
       {this.idCustomer,
@@ -21,8 +20,7 @@ class Customer {
       this.address,
       this.image,
       this.phone,
-      this.purchased = '0',
-      this.dateCreated});
+      this.purchased = '0'});
 
   Customer.fromJson(Map<String, dynamic> json) {
     idCustomer = json['idCustomer'];
@@ -33,7 +31,6 @@ class Customer {
     image = json['image'];
     phone = json['phone'];
     purchased = json['purchased'];
-    dateCreated = json['dateCreated'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +43,6 @@ class Customer {
     data['image'] = image;
     data['phone'] = phone;
     data['purchased'] = purchased;
-    data['dateCreated'] = dateCreated;
     return data;
   }
   
@@ -60,7 +56,6 @@ class Customer {
     String? image,
     String? phone,
     String? purchased,
-    Timestamp? dateCreated
   }) {
     return Customer(
       idCustomer: idCustomer ??  this.idCustomer,
@@ -71,7 +66,6 @@ class Customer {
       image: image ?? this.image,
       phone: phone ?? this.phone,
       purchased: purchased ?? this.purchased,
-      dateCreated: dateCreated ?? this.dateCreated,
     );
   }
 }

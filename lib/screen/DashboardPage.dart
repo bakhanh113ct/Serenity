@@ -41,11 +41,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
         child: BlocBuilder<ReportBloc, ReportState>(
           builder: (context, state) {
             if(state is ReportLoading){
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             else if(state is ReportLoaded){
               return Container(
-              color: Color(0xFFDDF9E8),
+              color: const Color(0xFFDDF9E8),
               child: Column(
                 children: [
                   Padding(
@@ -138,7 +138,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 60,),
+                  const SizedBox(height: 60,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
@@ -171,7 +171,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                               padding: const EdgeInsets.symmetric(vertical: 50),
                               child: _buildDefaultColumnChart(state.dataColumn),
                             ))),
-                            SizedBox(width:20),
+                            const SizedBox(width:20),
                         Expanded(
                           flex: 1,
                           child: Container(
@@ -181,7 +181,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                             child: state.dataPie.length>4?Padding(
                               padding: const EdgeInsets.symmetric(vertical: 50),
                               child: _buildDefaultPieChart(state.dataPie),
-                            ):Center(child:Text("no data"))))
+                            ):const Center(child:Text("no data"))))
                         // Container(
                         //   child: SfCircularChart(
                             
@@ -243,7 +243,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
         //   ChartSampleData(x: 'Mongolia', y: 1.683),
         // ],
         dataSource: data,
-        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
+        xValueMapper: (ChartSampleData sales, _) => sales.x,
         yValueMapper: (ChartSampleData sales, _) => sales.y,
         pointColorMapper: (ChartSampleData sales, _) => CustomColor.second,
         dataLabelSettings: const DataLabelSettings(
@@ -309,7 +309,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           explodeIndex: 0,
           explodeOffset: '10%',
           dataSource: data,
-          xValueMapper: (ChartSampleData1 data, _) => data.x as String,
+          xValueMapper: (ChartSampleData1 data, _) => data.x,
           yValueMapper: (ChartSampleData1 data, _) => data.y,
           dataLabelMapper: (ChartSampleData1 data, _) => data.text,
           startAngle: 90,
