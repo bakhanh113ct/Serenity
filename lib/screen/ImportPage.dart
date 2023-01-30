@@ -47,7 +47,10 @@ class _ImportPageState extends State<ImportPage> with TickerProviderStateMixin {
         child: BlocBuilder<ImportOrderBloc, ImportOrderState>(
           builder: (context, state) {
             if (state is ImportOrderLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                  height: size.height,
+                  width: size.width,
+                  child: const Center(child: CircularProgressIndicator()));
             } else if (state is ImportOrderLoaded) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

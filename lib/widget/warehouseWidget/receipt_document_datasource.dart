@@ -28,7 +28,7 @@ class ReceiptDocumentDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
             ? ReceiptDocumentMoreButton(receiptDocument: dataGridCell.value,)
             : Text(dataGridCell.value.toString(),

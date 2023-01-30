@@ -7,9 +7,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:serenity/model/User.dart' as user_model;
 
 class EmployeeRepository {
+  static final EmployeeRepository _employeeRepository =
+      EmployeeRepository._internal();
+  factory EmployeeRepository() {
+    return _employeeRepository;
+  }
+  EmployeeRepository._internal();
+
   final _users = FirebaseFirestore.instance.collection('User');
   final storageRef = FirebaseStorage.instance.ref();
-
   Stream<List<user_model.User>> getEmployee() {
     return FirebaseFirestore.instance
         .collection('User')

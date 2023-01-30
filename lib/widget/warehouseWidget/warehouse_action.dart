@@ -19,7 +19,7 @@ class _WarehouseActionState extends State<WarehouseAction> {
       builder: (context) {
         return const ReceiptDocumentEditDialog(
           idReceiptDocument: '',
-          title: 'Make ReceiptDocument',
+          title: 'Make Receipt Document',
           isEdit: true,
         );
       },

@@ -18,7 +18,7 @@ import '../../bloc/blocDeliveryReceipt/delivery_receipt_bloc.dart';
 import '../../bloc/blocUser/user_repository.dart';
 import '../../model/User.dart';
 import '../../model/delivery_receipt.dart';
-import '../../model/detailOrder.dart';
+import '../../model/detail_order.dart';
 import '../../model/order.dart';
 import 'export_product_list.dart';
 
@@ -153,9 +153,8 @@ class _DeliveryReceiptEditDialogState extends State<DeliveryReceiptEditDialog> {
       user = await UserRepository().getUser();
     }
 
-    listDetailOrder = (await DetailOrderRepository()
-            .getListDetailOrder(widget.order.idOrder!))
-        .cast<DetailOrder>();
+    listDetailOrder = await DetailOrderRepository()
+            .getListDetailOrder(widget.order.idOrder!);
 
     listDetailOrder.forEach(((element) {
       totalMoney += double.parse(element.price!);

@@ -227,18 +227,30 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context, 'Cancel');
+                        context
+                            .read<EmployeeBloc>()
+                            .add(ResetPassword(email: widget.user.email!));
+                        Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 300, vertical: 16),
+                          borderRadius: BorderRadius.circular(8),
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          title: 'Notification',
+                          message:
+                              'To reset your password, an email was sent to email address ${widget.user.email}',
+                          duration: const Duration(seconds: 3),
+                        ).show(context);
                       },
                       style: ButtonStyle(
-                          // maximumSize:
-                          //     MaterialStateProperty.all(Size(110, 60)),
+                          // maximumSize: MaterialStateProperty.all(Size(110, 60)),
                           padding: MaterialStateProperty.all(
                               const EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 15)),
                           backgroundColor: MaterialStateProperty.all(
                               const Color(0xFF226B3F))),
                       child: const Text(
-                        'Cancle ',
+                        'Reset Password ',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -248,33 +260,30 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            context
-                                .read<EmployeeBloc>()
-                                .add(ResetPassword(email: widget.user.email!));
-                            Flushbar(
-                              flushbarPosition: FlushbarPosition.TOP,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 300, vertical: 16),
-                              borderRadius: BorderRadius.circular(8),
-                              flushbarStyle: FlushbarStyle.FLOATING,
-                              title: 'Notification',
-                              message:
-                                  'To reset your password, an email was sent to email address ${widget.user.email}',
-                              duration: const Duration(seconds: 3),
-                            ).show(context);
-                          },
-                          style: ButtonStyle(
-                              // maximumSize: MaterialStateProperty.all(Size(110, 60)),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .primaryColor, // red as border color
+                            ),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context, 'Cancel');
+                            },
+                            style: ButtonStyle(
+                              // maximumSize:
+                              //     MaterialStateProperty.all(Size(110, 60)),
                               padding: MaterialStateProperty.all(
                                   const EdgeInsets.symmetric(
                                       vertical: 12, horizontal: 15)),
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFF226B3F))),
-                          child: const Text(
-                            'Reset Password ',
-                            style: TextStyle(fontSize: 20),
+                              // backgroundColor: MaterialStateProperty.all(
+                              //     const Color(0xFF226B3F)),
+                            ),
+                            child: const Text(
+                              'Cancle ',
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -341,7 +350,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                                   //     MaterialStateProperty.all(Size(110, 60)),
                                   padding: MaterialStateProperty.all(
                                       const EdgeInsets.symmetric(
-                                          vertical: 12, horizontal: 15)),
+                                          vertical: 12, horizontal: 32)),
                                   backgroundColor: MaterialStateProperty.all(
                                       const Color(0xFF226B3F))),
                               child: const Text(

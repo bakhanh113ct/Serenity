@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/model/product.dart';
-import 'package:serenity/widget/warehouseWidget/check_warehouse_dialog.dart';
+
+import '../../repository/product_repository.dart';
+import '../modal_detail_product.dart';
 
 
 enum ActionOptions { view,  close }
@@ -31,17 +33,14 @@ class _ImportBookMoreButtonState extends State<ImportBookMoreButton> {
     }
   }
 
-  onView() {
+  onView() async {
+    var product =
+        await ProductRepository().getProductByName(widget.importBook.name!);
     showDialog(
       context: context,
-      builder: (context) {
-        // return ImportBookEditDialog(
-        //   idImportBook: widget.ImportBook.idImportBook!,
-        //   title: 'View ImportBook',
-        //   isEdit: false,
-        // );
-        return const CheckWarehouseDialog();
-      },
+      builder: (context) => AlertDialog(
+        content: ModalDetailProductPage(product: product),
+      ),
     );
   }
 
@@ -54,7 +53,7 @@ class _ImportBookMoreButtonState extends State<ImportBookMoreButton> {
     return isLoading
         ? const CircularProgressIndicator()
         : Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             child: PopupMenuButton<ActionOptions>(
                 onSelected: (ActionOptions value) {
                   if (value == ActionOptions.view) {
@@ -75,7 +74,7 @@ class _ImportBookMoreButtonState extends State<ImportBookMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.view,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.view_comfortable, color: Colors.black),
                           title: Text('View'),
                         ),
@@ -84,7 +83,7 @@ class _ImportBookMoreButtonState extends State<ImportBookMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.close,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.close_rounded, color: Colors.black),
                           title: Text('Close'),
                         ),
