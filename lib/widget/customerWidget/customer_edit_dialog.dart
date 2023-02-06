@@ -130,6 +130,7 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
       'image': editCustomer.image!,
       'dateOfBirth': editCustomer.dateOfBirth!,
     };
+    if(!mounted) return;
        setState(() {
         isLoading = false;
       });
