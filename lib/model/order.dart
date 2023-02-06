@@ -8,6 +8,7 @@ class MyOrder {
   String? idOrder;
   String? idVoucher;
   String? nameCustomer;
+  String? phone;
   String? price;
   String? profit;
   String? status;
@@ -19,6 +20,7 @@ class MyOrder {
       this.idOrder,
       this.idVoucher,
       this.nameCustomer,
+      this.phone,
       this.price,
       this.profit,
       this.status});
@@ -30,6 +32,7 @@ class MyOrder {
     idOrder = json['idOrder'];
     idVoucher = json['idVoucher'];
     nameCustomer = json['nameCustomer'];
+    phone = json['phone'];
     price = json['price'];
     profit = json['profit'];
     status = json['status'];

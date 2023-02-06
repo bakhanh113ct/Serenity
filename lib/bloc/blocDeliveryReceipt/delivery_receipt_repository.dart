@@ -9,6 +9,7 @@ import 'package:serenity/model/export_product.dart';
 
 import '../../model/delivery_receipt.dart';
 import '../../model/receipt_document.dart';
+import '../blocCustomer/customer_repository.dart';
 import '../blocOrder/order_repository.dart';
 
 class DeliveryReceiptRepository {
@@ -53,7 +54,10 @@ class DeliveryReceiptRepository {
 
       // update status of order
       var order = await OrderRepository().getOrderById(rc.idOrder!);
-      await OrderRepository().updateOrder(order.copyWith(status: 'Exported'));
+      await OrderRepository().updateOrder(order.copyWith(status: 'Completed'));
+
+      var customer = await CustomerRepository().getCustomer(order.idCustomer!);
+      await CustomerRepository().updateCustomer(customer.copyWith(purchased:(int.parse(customer.purchased!) + double.parse( order.price!)).round().toString()));
     });
   }
 

@@ -93,7 +93,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 600,
+          height: 630,
           width: 600,
           child: Column(
             children: [
@@ -215,21 +215,30 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, 'Cancel');
-                    },
-                    style: ButtonStyle(
-                        maximumSize:
-                            MaterialStateProperty.all(const Size(110, 60)),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .primaryColor, // red as border color
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Cancel');
+                      },
+                      style: ButtonStyle(
+                        // maximumSize:
+                        //     MaterialStateProperty.all(Size(110, 60)),
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 15)),
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xFF226B3F))),
-                    child: const Text(
-                      'Cancel ',
-                      style: TextStyle(fontSize: 20),
+                        // backgroundColor: MaterialStateProperty.all(
+                        //     const Color(0xFF226B3F)),
+                      ),
+                      child: const Text(
+                        'Cancel ',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -296,7 +305,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                 phone: phoneController.text,
                                 position: selectedValue,
                                 salary: int.tryParse(
-                                    salaryController.text.toString()),
+                                    salaryController.text.replaceAll(".", "")),
                                 state: 'active');
                             context.read<EmployeeBloc>().add(AddEmployee(
                                 user: user, password: passwordController.text));
@@ -306,16 +315,16 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                             //   print(value);
                             // });
 
-                            // Flushbar(
-                            //   flushbarPosition: FlushbarPosition.TOP,
-                            //   margin: const EdgeInsets.symmetric(
-                            //       horizontal: 300, vertical: 16),
-                            //   borderRadius: BorderRadius.circular(8),
-                            //   flushbarStyle: FlushbarStyle.FLOATING,
-                            //   title: 'Notification',
-                            //   message: 'Create user successful',
-                            //   duration: const Duration(seconds: 3),
-                            // ).show(context);
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 300, vertical: 16),
+                              borderRadius: BorderRadius.circular(8),
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              title: 'Notification',
+                              message: 'Create user successful',
+                              duration: const Duration(seconds: 3),
+                            ).show(context);
                           } else {
                             debugPrint('Điền đầy đủ thông tin');
                           }

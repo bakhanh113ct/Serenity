@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/model/User.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -21,8 +22,7 @@ class EmployeeDataSource extends DataGridSource {
                   value:
                       '${e.dateOfBirth!.toDate().day}/${e.dateOfBirth!.toDate().month}/${e.dateOfBirth!.toDate().year}'),
               DataGridCell<String>(columnName: 'email', value: e.email),
-              DataGridCell<double>(
-                  columnName: 'salary', value: e.salary!.toDouble()),
+              DataGridCell<int>(columnName: 'salary', value: e.salary!),
               DataGridCell<String>(columnName: 'status', value: e.state),
               DataGridCell<User>(columnName: 'button', value: e),
             ]))
@@ -40,7 +40,7 @@ class EmployeeDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((e) {
       Color backgroundColor = Colors.white;
       Color textColor = Colors.white;
-
+      final format = NumberFormat("###,###.###", "tr_TR");
       if (e.columnName == 'status') {
         if (e.value == 'active') {
           backgroundColor = Color(0xFFDCFBD7);
@@ -87,7 +87,9 @@ class EmployeeDataSource extends DataGridSource {
                   : Text(
                       e.columnName == 'STT'
                           ? (i++).toString()
-                          : e.value.toString(),
+                          : e.columnName == 'salary'
+                              ? format.format(e.value)
+                              : e.value.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(fontSize: 18, color: Colors.black),

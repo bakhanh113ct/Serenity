@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:serenity/model/export_product.dart';
+import 'package:serenity/repository/product_repository.dart';
+import 'package:serenity/widget/modal_detail_product.dart';
 
 
 enum ActionOptions { view, close }
@@ -30,16 +32,16 @@ class _ExportBookMoreButtonState extends State<ExportBookMoreButton> {
     }
   }
 
-  onView() {
+  onView() async {
+    var product = await ProductRepository().getProductByName(widget.exportBook.name!);
     showDialog(
       context: context,
-      builder: (context) {
-        return Container();
-      },
+      builder: (context) => AlertDialog(
+        content: ModalDetailProductPage(product: product),
+      ),
     );
   }
 
-  onPrint() {}
 
   onClose() {
     return;
@@ -50,7 +52,7 @@ class _ExportBookMoreButtonState extends State<ExportBookMoreButton> {
     return isLoading
         ? const CircularProgressIndicator()
         : Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             child: PopupMenuButton<ActionOptions>(
                 onSelected: (ActionOptions value) {
                   if (value == ActionOptions.view) {
@@ -70,7 +72,7 @@ class _ExportBookMoreButtonState extends State<ExportBookMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.view,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.view_comfortable, color: Colors.black),
                           title: Text('View'),
                         ),
@@ -79,7 +81,7 @@ class _ExportBookMoreButtonState extends State<ExportBookMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.close,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.close_rounded, color: Colors.black),
                           title: Text('Close'),
                         ),

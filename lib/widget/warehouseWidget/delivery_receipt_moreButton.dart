@@ -175,7 +175,7 @@ class _DeliveryReceiptMoreButtonState extends State<DeliveryReceiptMoreButton> {
     return isLoading
         ? const CircularProgressIndicator()
         : Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             child: PopupMenuButton<ActionOptions>(
                 onSelected: (ActionOptions value) {
                   if (value == ActionOptions.view) {
@@ -199,7 +199,7 @@ class _DeliveryReceiptMoreButtonState extends State<DeliveryReceiptMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.view,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.view_comfortable, color: Colors.black),
                           title: Text('View'),
                         ),
@@ -207,7 +207,7 @@ class _DeliveryReceiptMoreButtonState extends State<DeliveryReceiptMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.print,
                         child: ListTile(
-                          trailing: Icon(
+                          leading: Icon(
                             Icons.print,
                             color: Colors.black,
                           ),
@@ -218,7 +218,7 @@ class _DeliveryReceiptMoreButtonState extends State<DeliveryReceiptMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.close,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.close_rounded, color: Colors.black),
                           title: Text('Close'),
                         ),

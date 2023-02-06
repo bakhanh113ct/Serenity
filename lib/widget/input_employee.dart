@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class InputEmployee extends StatelessWidget {
   const InputEmployee({
@@ -24,19 +25,34 @@ class InputEmployee extends StatelessWidget {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             TextFormField(
               obscureText: text == 'Password',
-              keyboardType:
-                  text == 'Salary' || text == 'Phone number' || text == 'Amount'
-                      ? TextInputType.number
-                      : text == 'Email'
-                          ? TextInputType.emailAddress
-                          : TextInputType.text,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  if (text == 'Salary'||text=="Price"||text=="Historical Cost") {
+                    // controller.text = value;
+                    final format = NumberFormat("###,###.###", "tr_TR");
+                    controller.text =
+                        format.format(int.parse(value.replaceAll('.', '')));
+                    controller.selection = TextSelection.fromPosition(
+                        TextPosition(offset: controller.text.length));
+                  }
+                }
+              },
+              keyboardType: text == 'Salary' ||
+                      text == 'Phone number' ||
+                      text == 'Amount' ||
+                      text == 'Price' ||
+                      text == 'Historical Cost'
+                  ? TextInputType.number
+                  : text == 'Email'
+                      ? TextInputType.emailAddress
+                      : TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty)
                   return 'Please enter ' + text;
@@ -60,14 +76,14 @@ class InputEmployee extends StatelessWidget {
                       )
                     : null,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                border: OutlineInputBorder(
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ],
         ),

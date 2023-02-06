@@ -63,6 +63,7 @@ class ImportOrderDataSource extends DataGridSource {
       bool isCompleted = false;
       bool isPending = false;
       bool isChecked = false;
+      bool isTrouble = false;
 
       int index = 0;
       if (e.columnName == 'STT') {
@@ -77,6 +78,8 @@ class ImportOrderDataSource extends DataGridSource {
           isPending = true;
         } else if (e.value.status == 'checked') {
           isChecked = true;
+        } else if (e.value.status == 'trouble') {
+          isTrouble = true;
         }
       }
       if (e.columnName == 'status') {
@@ -115,7 +118,7 @@ class ImportOrderDataSource extends DataGridSource {
                       color: Colors.black,
                     ),
                     customItemsHeights: [
-                      if (isPending)
+                      if (isPending || isTrouble)
                         ...List<double>.filled(MenuItems.pending.length, 48),
 
                       if (isChecked)
@@ -130,7 +133,7 @@ class ImportOrderDataSource extends DataGridSource {
                       // ...List<double>.filled(1, 48),
                     ],
                     items: [
-                      if (isPending)
+                      if (isPending || isTrouble)
                         ...MenuItems.pending
                             .map((item) => DropdownMenuItem<MenuItem>(
                                   value: item,
@@ -154,40 +157,8 @@ class ImportOrderDataSource extends DataGridSource {
                                   value: item,
                                   child: MenuItems.buildItem(item),
                                 )),
-
-                      // if (isChecked)
-                      //   ...List<double>.filled(MenuItems.checked.length, 48),
-                      // if (isCompleted)
-                      //   ...List<double>.filled(MenuItems.completed.length, 48),
-                      // if (isCanceled)
-                      //   ...List<double>.filled(MenuItems.canceled.length, 48),
-                      // ...MenuItems.firstItems.map(
-                      //   (item) => DropdownMenuItem<MenuItem>(
-                      //     value: item,
-                      //     child: MenuItems.buildItem(item),
-                      //   ),
-                      // ),
-                      // if (!(isCanceled || isCompleted))
-                      //   const DropdownMenuItem<Divider>(
-                      //       enabled: false, child: Divider()),
-                      // // if (!isCanceled)
-                      // DropdownMenuItem<MenuItem>(
-                      //   value: MenuItems.paymentVoucher,
-                      //   child: MenuItems.buildItem(MenuItems.paymentVoucher),
-                      // ),
-                      // if (!(isCanceled || isCompleted))
-                      //   ...MenuItems.secondItems.map(
-                      //     (item) => DropdownMenuItem<MenuItem>(
-                      //       value: item,
-                      //       child: MenuItems.buildItem(item),
-                      //     ),
-                      //   ),
                     ],
                     onChanged: (value) {
-                      // print(importOrders
-                      //     .where((element) =>
-                      //         element.idImportOrder == e.value.idImportOrder)
-                      //     .first);
                       MenuItems.onChanged(
                         context!,
                         value as MenuItem,
@@ -253,12 +224,21 @@ class MenuItem {
 class MenuItems {
   static const List<MenuItem> completed = [edit, print, paymentVoucher];
   static const List<MenuItem> pending = [edit, print, check];
-  static const List<MenuItem> checked = [edit, check, paymentVoucher];
+  static const List<MenuItem> checked = [
+    edit,
+    check,
+    print,
+    paymentVoucher,
+    complete
+  ];
   static const List<MenuItem> canceled = [edit];
 
   static const edit = MenuItem(text: 'View/Edit', icon: Icons.edit);
   static const print = MenuItem(text: 'Print', icon: Icons.print);
   static const check = MenuItem(text: 'Check', icon: Icons.checklist);
+  static const complete =
+      MenuItem(text: 'Complete', icon: Icons.check_circle_sharp);
+
   static const paymentVoucher =
       MenuItem(text: 'Payment voucher', icon: Icons.edit_note);
 
@@ -299,10 +279,6 @@ class MenuItems {
             ));
         break;
       case MenuItems.check:
-        // List<ProductImportOrder> productImportOrder = importOrders
-        //     .where((element) => element.idImportOrder == order.idImportOrder)
-        //     .first
-        //     .listProduct!;
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -343,6 +319,12 @@ class MenuItems {
           }
         });
 
+        break;
+      case MenuItems.complete:
+        BlocProvider.of<ImportOrderBloc>(context).add(CompleteImportOrder(
+          id: order.idImportOrder!,
+          state: 'completed',
+        ));
         break;
     }
   }

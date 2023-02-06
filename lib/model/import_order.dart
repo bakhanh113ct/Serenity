@@ -31,34 +31,35 @@ class ImportOrder extends Equatable {
   List<ProductImportOrder>? listProduct;
   List<bool>? listCheck;
 
-  ImportOrder(
-      {this.nameA,
-      this.addressA,
-      this.phoneA,
-      this.bankA,
-      this.atBankA,
-      this.authorizedPersonA,
-      this.positionA,
-      this.noAuthorizationA,
-      this.dateAuthorizationA,
-      this.nameB,
-      this.addressB,
-      this.phoneB,
-      this.bankB,
-      this.atBankB,
-      this.authorizedPersonB,
-      this.positionB,
-      this.noAuthorizationB,
-      this.dateAuthorizationB,
-      this.pursuant,
-      this.dateCreated,
-      this.atPlace,
-      this.note,
-      this.totalPrice,
-      this.idImportOrder,
-      this.status,
-      this.listProduct,
-      this.listCheck});
+  ImportOrder({
+    this.nameA,
+    this.addressA,
+    this.phoneA,
+    this.bankA,
+    this.atBankA,
+    this.authorizedPersonA,
+    this.positionA,
+    this.noAuthorizationA,
+    this.dateAuthorizationA,
+    this.nameB,
+    this.addressB,
+    this.phoneB,
+    this.bankB,
+    this.atBankB,
+    this.authorizedPersonB,
+    this.positionB,
+    this.noAuthorizationB,
+    this.dateAuthorizationB,
+    this.pursuant,
+    this.dateCreated,
+    this.atPlace,
+    this.note,
+    this.totalPrice,
+    this.idImportOrder,
+    this.status,
+    this.listProduct,
+    this.listCheck,
+  });
 
   ImportOrder.fromJson(Map<String, dynamic> json) {
     nameA = json['nameA'];
@@ -126,6 +127,7 @@ class ImportOrder extends Equatable {
       data['listProduct'] = this.listProduct!.map((v) => v).toList();
     }
     data['listCheck'] = this.listCheck;
+
     return data;
   }
 
@@ -157,6 +159,6 @@ class ImportOrder extends Equatable {
         idImportOrder,
         status,
         listProduct,
-        listCheck
+        listCheck,
       ];
 }

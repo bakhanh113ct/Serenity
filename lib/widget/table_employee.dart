@@ -216,7 +216,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                                   // padding: EdgeInsets.all(16.0),
                                   alignment: Alignment.centerLeft,
                                   child: const Text(
-                                    'STT',
+                                    'NO',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,

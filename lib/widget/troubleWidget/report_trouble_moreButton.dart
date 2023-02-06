@@ -94,7 +94,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle:
                           TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
@@ -147,7 +146,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle: TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
                 ),
@@ -186,7 +184,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       Navigator.of(context).pop();
                     },
                     text: 'Cancel',
-                    iconData: Icons.cancel_outlined,
                     textStyle:  TextStyle(color: CustomColor.second , fontSize: 15),
                     iconColor: Colors.grey,
                   ),
@@ -206,7 +203,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     text: 'Payment',
-                    iconData: Icons.payment,
                     color: CustomColor.second,
                     textStyle: const TextStyle(color: Colors.white, fontSize: 15),
                     iconColor: Colors.white,
@@ -247,7 +243,6 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                         Navigator.of(context).pop();
                       },
                       text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
                       textStyle:
                           TextStyle(color: CustomColor.second, fontSize: 15),
                       iconColor: Colors.grey,
@@ -359,7 +354,7 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
     return isLoading
         ? const CircularProgressIndicator()
         : Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             child: PopupMenuButton<ActionOptions>(
                 onSelected: (ActionOptions value) {
                   if (value == ActionOptions.view) {
@@ -391,7 +386,7 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.view,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.view_comfortable, color: Colors.black),
                           title: Text('View'),
                         ),
@@ -399,7 +394,7 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.edit,
                         child: ListTile(
-                          trailing: Icon(
+                          leading: Icon(
                             Icons.edit,
                             color: Colors.black,
                           ),
@@ -409,17 +404,17 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.payment,
                         child: ListTile(
-                          trailing: Icon(
+                          leading: Icon(
                             Icons.payment,
                             color: Colors.black,
                           ),
-                          title: Text('Payment    '),
+                          title: Text('Payment'),
                         ),
                       ),
                       const PopupMenuItem(
                         value: ActionOptions.print,
                         child: ListTile(
-                          trailing: Icon(
+                          leading: Icon(
                             Icons.print,
                             color: Colors.black,
                           ),
@@ -430,7 +425,7 @@ class _ReportTroubleMoreButtonState extends State<ReportTroubleMoreButton> {
                       const PopupMenuItem(
                         value: ActionOptions.close,
                         child: ListTile(
-                          trailing:
+                          leading:
                               Icon(Icons.close_rounded, color: Colors.black),
                           title: Text('Close'),
                         ),

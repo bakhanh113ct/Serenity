@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/common/color.dart';
 import 'package:serenity/model/category.dart';
-import 'package:serenity/model/product.dart';
 import 'package:serenity/widget/item_cart.dart';
 import 'package:serenity/widget/item_product_menu.dart';
 
 import '../bloc/blocCart/bloc/cart_bloc.dart';
 import '../bloc/blocCheckOut/bloc/checkout_bloc.dart';
-import '../model/customer.dart';
+import '../bloc/blocOrder/order_bloc.dart';
+import '../model/Customer.dart';
 import '../model/product_cart.dart';
 import '../model/voucher.dart';
 
@@ -26,6 +27,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final _queryController = TextEditingController();
+  String methodPayment="";
   @override
   void initState() {
     BlocProvider.of<CartBloc>(context).add(LoadCart());
@@ -125,6 +127,7 @@ class _CartPageState extends State<CartPage> {
                             child: IconButton(
                               icon: Icon(Icons.chevron_right),
                               onPressed: () {
+                                BlocProvider.of<OrderBloc>(context).add(LoadOrder());
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -218,7 +221,7 @@ class _CartPageState extends State<CartPage> {
                                               fontSize: 26,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        Text("Order #12345",
+                                        Text("",
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w500,
@@ -286,7 +289,12 @@ class _CartPageState extends State<CartPage> {
                                                   Size(double.infinity, 60),
                                             ),
                                             onPressed: () {
-                                              _showCheckOut(state.listProductCart);
+                                              if(state.listProductCart.length==0){
+                                                errorCart();
+                                              }
+                                              else{
+                                                _showCheckOut(state.listProductCart);
+                                              }
                                             },
                                             child: Text(
                                               "Checkout",
@@ -469,6 +477,57 @@ class _CartPageState extends State<CartPage> {
                       },
                       selectedItem: null,
                     ),
+                    DropdownSearch<String>(
+                      // itemAsString: (Customer u) => u.name.toString(),
+                      popupProps: PopupProps.menu(
+                        // showSelectedItems: true,
+
+                        itemBuilder: (context, item, isSelected) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Container(
+                              height: 50,
+                              child: Text(
+                                item,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      items: ["Cash","ZaloPay"],
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                            labelText: "Method Payment",
+                            hintText: "Choose method",
+                            labelStyle: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                            hintStyle: TextStyle(
+                              fontSize: 20,
+                            ),
+                            border: InputBorder.none),
+                      ),
+                      dropdownBuilder: (context, selectedItem) {
+                        return selectedItem == null
+                            ? Container(
+                                child: Text("Choose method",style: TextStyle(
+                              fontSize: 20,
+                            ),),
+                              )
+                            : Text(
+                              selectedItem,
+                              style: TextStyle(fontSize: 18),
+                            );
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          methodPayment=value!;
+                        });
+                      },
+                      selectedItem: null,
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text("List items",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),)),
@@ -557,13 +616,45 @@ class _CartPageState extends State<CartPage> {
                                                   Size(double.infinity, 60),
                                             ),
                                             onPressed: () {
-                                              BlocProvider.of<CheckoutBloc>(context).add(Payment(listProductCart));
+                                              if(state.selectedCustomer==null){
+                                                errorCustomer();
+                                              }
+                                              else if(methodPayment==""){
+                                                errorMethodPayment();
+                                              }
+                                              else{
+                                                BlocProvider.of<CheckoutBloc>(context).add(Payment(listProductCart,methodPayment));
+                                                BlocProvider.of<CartBloc>(context).add(LoadCart());
+                                                // BlocProvider.of<OrderBloc>(context).add(LoadOrder());
+                                                Navigator.pop(context);
+                                              }
+                                              
                                             },
                                             child: Text(
                                               "Payment",
                                               style: TextStyle(fontSize: 18),
                                             )),
-                                            SizedBox(height: 20,)
+                                            SizedBox(height: 10,),
+                                            ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(30),
+                                                ),
+                                              ),
+                                              minimumSize:
+                                                  Size(double.infinity, 60),
+                                                  backgroundColor: Colors.grey
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(fontSize: 18),
+                                            )),
+                                            SizedBox(height: 10,)
                   ]),
                 ),
               ),
@@ -576,6 +667,45 @@ class _CartPageState extends State<CartPage> {
         );
       },
     );
+  }
+  void errorCustomer(){
+    Flushbar(
+      backgroundColor: Colors.red,
+                                flushbarPosition: FlushbarPosition.TOP,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 300, vertical: 16),
+                                borderRadius: BorderRadius.circular(10),
+                                flushbarStyle: FlushbarStyle.FLOATING,
+                                title: 'Error',
+                                message: 'Please choose customer!',
+                                duration: const Duration(seconds: 3),
+                              ).show(context);
+  }
+  void errorCart(){
+    Flushbar(
+      backgroundColor: Colors.red,
+                                flushbarPosition: FlushbarPosition.TOP,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 300, vertical: 16),
+                                borderRadius: BorderRadius.circular(10),
+                                flushbarStyle: FlushbarStyle.FLOATING,
+                                title: 'Error',
+                                message: 'Please add product!',
+                                duration: const Duration(seconds: 3),
+                              ).show(context);
+  }
+  void errorMethodPayment(){
+    Flushbar(
+      backgroundColor: Colors.red,
+                                flushbarPosition: FlushbarPosition.TOP,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 300, vertical: 16),
+                                borderRadius: BorderRadius.circular(10),
+                                flushbarStyle: FlushbarStyle.FLOATING,
+                                title: 'Error',
+                                message: 'Please choose method payment!',
+                                duration: const Duration(seconds: 3),
+                              ).show(context);
   }
 }
 

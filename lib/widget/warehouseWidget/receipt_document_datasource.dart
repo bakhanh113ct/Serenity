@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/widget/warehouseWidget/receipt_document_moreButton.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -28,7 +29,7 @@ class ReceiptDocumentDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
             ? ReceiptDocumentMoreButton(receiptDocument: dataGridCell.value,)
             : Text(dataGridCell.value.toString(),

@@ -10,7 +10,7 @@ import 'package:serenity/bloc/blocCustomer/customer_repository.dart';
 import 'package:serenity/bloc/blocReportTrouble/report_trouble_repository.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
 import 'package:serenity/common/color.dart';
-import 'package:serenity/model/customer.dart';
+import 'package:serenity/model/Customer.dart';
 import '../../bloc/blocTrouble/trouble_repository.dart';
 import '../../bloc/blocUser/user_repository.dart';
 import '../../model/User.dart';

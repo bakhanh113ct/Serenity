@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serenity/bloc/bloc_exports.dart';
+import '../../bloc/blocCustomer/customer_event.dart';
 import '../../bloc/blocCustomer/customer_repository.dart';
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import 'package:date_field/date_field.dart';
 class CustomerEditDialog extends StatefulWidget {
   const CustomerEditDialog({
@@ -129,6 +130,7 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
       'image': editCustomer.image!,
       'dateOfBirth': editCustomer.dateOfBirth!,
     };
+    if(!mounted) return;
        setState(() {
         isLoading = false;
       });
