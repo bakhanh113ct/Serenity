@@ -63,6 +63,7 @@ class ImportOrderDataSource extends DataGridSource {
       bool isCompleted = false;
       bool isPending = false;
       bool isChecked = false;
+      bool isTrouble = false;
 
       int index = 0;
       if (e.columnName == 'STT') {
@@ -77,6 +78,8 @@ class ImportOrderDataSource extends DataGridSource {
           isPending = true;
         } else if (e.value.status == 'checked') {
           isChecked = true;
+        } else if (e.value.status == 'trouble') {
+          isTrouble = true;
         }
       }
       if (e.columnName == 'status') {
@@ -115,7 +118,7 @@ class ImportOrderDataSource extends DataGridSource {
                       color: Colors.black,
                     ),
                     customItemsHeights: [
-                      if (isPending)
+                      if (isPending || isTrouble)
                         ...List<double>.filled(MenuItems.pending.length, 48),
 
                       if (isChecked)
@@ -130,7 +133,7 @@ class ImportOrderDataSource extends DataGridSource {
                       // ...List<double>.filled(1, 48),
                     ],
                     items: [
-                      if (isPending)
+                      if (isPending || isTrouble)
                         ...MenuItems.pending
                             .map((item) => DropdownMenuItem<MenuItem>(
                                   value: item,
@@ -221,12 +224,21 @@ class MenuItem {
 class MenuItems {
   static const List<MenuItem> completed = [edit, print, paymentVoucher];
   static const List<MenuItem> pending = [edit, print, check];
-  static const List<MenuItem> checked = [edit, check, paymentVoucher];
+  static const List<MenuItem> checked = [
+    edit,
+    check,
+    print,
+    paymentVoucher,
+    complete
+  ];
   static const List<MenuItem> canceled = [edit];
 
   static const edit = MenuItem(text: 'View/Edit', icon: Icons.edit);
   static const print = MenuItem(text: 'Print', icon: Icons.print);
   static const check = MenuItem(text: 'Check', icon: Icons.checklist);
+  static const complete =
+      MenuItem(text: 'Complete', icon: Icons.check_circle_sharp);
+
   static const paymentVoucher =
       MenuItem(text: 'Payment voucher', icon: Icons.edit_note);
 
@@ -307,6 +319,12 @@ class MenuItems {
           }
         });
 
+        break;
+      case MenuItems.complete:
+        BlocProvider.of<ImportOrderBloc>(context).add(CompleteImportOrder(
+          id: order.idImportOrder!,
+          state: 'completed',
+        ));
         break;
     }
   }

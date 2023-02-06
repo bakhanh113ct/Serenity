@@ -99,6 +99,7 @@ class _TroubleEditDialogState extends State<TroubleEditDialog> {
       'idCustomer': editTrouble.idCustomer!,
       'dateSolved': editTrouble.dateSolved!,
     };
+    if(!mounted) return;
     setState(() {
       isLoading = false;
     });

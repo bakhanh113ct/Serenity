@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:serenity/model/product.dart';
 
 import 'input_dropdown.dart';
@@ -23,10 +24,13 @@ class _ModalDetailProductPageState extends State<ModalDetailProductPage> {
   @override
   void initState() {
     nameController.text=widget.product.name!;
-    priceController.text=widget.product.price!;
-    historicalCostController.text=widget.product.historicalCost!;
+    // priceController.text=widget.product.price!;
+    // historicalCostController.text=widget.product.historicalCost!;
     decriptionController.text=widget.product.content!;
     categoryController.text=widget.product.category!;
+    final format = NumberFormat("###,###.###", "tr_TR");
+    historicalCostController.text = format.format(int.tryParse(widget.product.historicalCost!)).toString();
+    priceController.text = format.format(int.tryParse(widget.product.price!)).toString();
     super.initState();
   }
   @override

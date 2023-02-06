@@ -313,27 +313,27 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           // crossAxisAlignment: CrossAxisAlignment.,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              style: ButtonStyle(
-                                  // maximumSize:
-                                  //     MaterialStateProperty.all(const Size(110, 60)),
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(
-                                          vertical: 16, horizontal: 32)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color(0xFF226B3F))),
-                              child: const Text(
-                                'Cancel ',
-                                style: TextStyle(fontSize: 20),
-                                // textAlign: TextAlign.center,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
+                            // ElevatedButton(
+                            //   onPressed: () {
+                            //     Navigator.pop(context);
+                            //   },
+                            //   style: ButtonStyle(
+                            //       // maximumSize:
+                            //       //     MaterialStateProperty.all(const Size(110, 60)),
+                            //       padding: MaterialStateProperty.all(
+                            //           const EdgeInsets.symmetric(
+                            //               vertical: 16, horizontal: 32)),
+                            //       backgroundColor: MaterialStateProperty.all(
+                            //           const Color(0xFF226B3F))),
+                            //   child: const Text(
+                            //     'Cancel ',
+                            //     style: TextStyle(fontSize: 20),
+                            //     // textAlign: TextAlign.center,
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   width: 30,
+                            // ),
                             ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
@@ -383,7 +383,26 @@ class _PaymentVoucherScreenState extends State<PaymentVoucherScreen> {
                                     }).then((value) => doc.doc(value.id).update(
                                         {"idPaymentVoucher": value.id}));
                                   } else {
-                                    print('ipdate');
+                                    doc
+                                        .doc(widget
+                                            .paymentVoucher!.idPaymentVoucher)
+                                        .update({
+                                      "idUser": FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      "idImportOrder":
+                                          widget.importOrder.idImportOrder,
+                                      "date": DateTime.now(),
+                                      "receiver": receiverNameController.text,
+                                      "receiverAddress":
+                                          receiverAddressController.text,
+                                      "totalAmount": totalController.text,
+                                      "inWord": inWordsController.text,
+                                      "description": descriptionController.text,
+                                      "chiefAccountant":
+                                          chiefAccountantController.text,
+                                      "cashier": cashierController.text,
+                                      "voteMaker": voteMakerController.text,
+                                    });
                                   }
                                 }
                               },

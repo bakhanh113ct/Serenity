@@ -161,12 +161,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
                         //     });
                         //   });
                         // }, child: Text("Push data")),
-                        // ElevatedButton(onPressed: createPdf, child: Text("Test"))
-                        // ElevatedButton(
-                        //     onPressed: () async {
-                        //       await ReportRepository().dataColumnChart();
-                        //     },
-                        //     child: Text("HIHI"))
                         Expanded(
                           flex: 2,
                           child: Container(

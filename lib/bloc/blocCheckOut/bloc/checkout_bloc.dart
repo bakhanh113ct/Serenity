@@ -5,7 +5,7 @@ import 'package:serenity/bloc/blocOrder/order_repository.dart';
 import 'package:serenity/model/product_cart.dart';
 import 'package:serenity/repository/payment.dart';
 
-import '../../../model/customer.dart';
+import '../../../model/Customer.dart';
 import '../../../model/voucher.dart';
 
 part 'checkout_event.dart';

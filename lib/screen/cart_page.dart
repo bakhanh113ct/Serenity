@@ -13,7 +13,8 @@ import 'package:serenity/widget/item_product_menu.dart';
 
 import '../bloc/blocCart/bloc/cart_bloc.dart';
 import '../bloc/blocCheckOut/bloc/checkout_bloc.dart';
-import '../model/customer.dart';
+import '../bloc/blocOrder/order_bloc.dart';
+import '../model/Customer.dart';
 import '../model/product_cart.dart';
 import '../model/voucher.dart';
 
@@ -126,6 +127,7 @@ class _CartPageState extends State<CartPage> {
                             child: IconButton(
                               icon: Icon(Icons.chevron_right),
                               onPressed: () {
+                                BlocProvider.of<OrderBloc>(context).add(LoadOrder());
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -623,6 +625,7 @@ class _CartPageState extends State<CartPage> {
                                               else{
                                                 BlocProvider.of<CheckoutBloc>(context).add(Payment(listProductCart,methodPayment));
                                                 BlocProvider.of<CartBloc>(context).add(LoadCart());
+                                                // BlocProvider.of<OrderBloc>(context).add(LoadOrder());
                                                 Navigator.pop(context);
                                               }
                                               

@@ -37,7 +37,10 @@ class _EmployeePageState extends State<EmployeePage>
         child: BlocBuilder<EmployeeBloc, EmployeeState>(
           builder: (context, state) {
             if (state is EmployeeLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                  height: size.height,
+                  width: size.width,
+                  child: const Center(child: CircularProgressIndicator()));
             } else if (state is EmployeeLoaded) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

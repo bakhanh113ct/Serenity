@@ -388,7 +388,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
 
   Future<List<MyOrder>> getMyOrder(String text) async {
     List<MyOrder> allOrder = (await OrderRepository().getOrder() as List<MyOrder>)
-            .where((element) => element.status == 'Completed' && element.idOrder != null)
+            .where((element) => element.status == 'Pending' && element.idOrder != null)
             .toList();
 
     if (text.isEmpty || text == '') {

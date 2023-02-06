@@ -50,7 +50,7 @@ class ReceiptDocumentDataSource extends DataGridSource {
               DataGridCell<int>(columnName: 'amount', value: e.listProducts!.length),
               DataGridCell<String>(
                   columnName: 'totalPrice',
-                  value: double.parse(e.totalMoney!).round().toString().toVND()),
+                  value: e.totalMoney!),
               DataGridCell<String>(
                   columnName: 'dateCreated',
                   value:

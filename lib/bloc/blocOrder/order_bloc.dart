@@ -29,7 +29,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         tempSearch=listAllOrder;
       }
       else{
-        tempSearch=state.listAllOrder!.where((element) => element.nameCustomer!.toLowerCase().contains(event.query)).toList();
+        tempSearch=state.listAllOrder!.where((element) => element.nameCustomer!.toLowerCase().contains(event.query)||element.phone!.contains(event.query.toLowerCase())||element.idOrder!.toLowerCase().contains(event.query.toLowerCase())).toList();
       }   
       emit(OrderLoaded(tempSearch,state.listCompletedOrder,state.listPendingOrder,state.listCancelledOrder));
     });

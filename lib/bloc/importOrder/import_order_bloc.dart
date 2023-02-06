@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:serenity/model/import_order.dart';
+import 'package:serenity/model/product_import_order.dart';
 import 'package:serenity/repository/import_order_repository.dart';
 
 part 'import_order_event.dart';
@@ -23,6 +24,9 @@ class ImportOrderBloc extends Bloc<ImportOrderEvent, ImportOrderState> {
 
     on<UpdateStateImportOrder>((event, emit) =>
         importOrderRepository.updateStateImportOrder(
-            event.idImportOrder, event.state, event.listCheck));
+            event.idImportOrder, event.state, event.listCheck, event.products));
+
+    on<CompleteImportOrder>((event, emit) =>
+        importOrderRepository.completeImportOrder(event.id, event.state));
   }
 }

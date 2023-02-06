@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:serenity/model/category.dart';
 
-import '../../../model/customer.dart';
+import '../../../model/Customer.dart';
 import '../../../model/product.dart';
 import '../../../model/voucher.dart';
 

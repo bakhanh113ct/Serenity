@@ -9,7 +9,7 @@ import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../model/customer.dart';
+import '../../model/Customer.dart';
 import '../../model/order.dart';
 import '../../model/product_cart.dart';
 import '../../model/voucher.dart';
