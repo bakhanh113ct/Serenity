@@ -60,8 +60,8 @@ class _MainPageState extends State<MainPage> {
                       child: AnimatedBuilder(
                     animation: controller,
                     builder: (context, child) {
-                      // final pageTitle = _getTitleByIndex(controller.selectedIndex);
-                      switch (controller.selectedIndex) {
+                      if(state.user.position=="admin"){
+                        switch (controller.selectedIndex) {
                         case 0:
                           return const ProductPage();
                         case 1:
@@ -83,6 +83,28 @@ class _MainPageState extends State<MainPage> {
                         default:
                           return const ProfilePage();
                       }
+                      }
+                      else{
+                        switch (controller.selectedIndex) {
+                        case 0:
+                          return const ProductPage();
+                        case 1:
+                          return const OrderPage();
+                        case 2:
+                          return const CustomerPage();
+                        case 3:
+                          return const ImportPage();
+                        case 4:
+                          return const TroublePage();
+                        case 5:
+                          return const WarehousePage();
+                        case 6:
+                          return const ProfilePage();
+                        default:
+                          return const ProfilePage();
+                      }
+                      }
+                      // switchTab(state.user.position!);
                     },
                   )) // Your app screen body
                 ],
