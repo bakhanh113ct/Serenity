@@ -172,23 +172,44 @@ class _EditImportOrderState extends State<EditImportOrder> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFEBFDF2),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          title: const Text(
+            'Edit import order',
+            style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 30,
+                color: Color(0xFF226B3F),
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal),
+          ),
+          centerTitle: true,
+          backgroundColor: const Color(0xFFEBFDF2),
+          elevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
             child: Form(
               key: _formKey,
               child: Column(children: [
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Import order list',
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 30,
-                        color: Color(0xFF226B3F),
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
+                // const Align(
+                //   alignment: Alignment.center,
+                //   child: Text(
+                //     'Import order list',
+                //     style: TextStyle(
+                //         fontFamily: 'Poppins',
+                //         fontSize: 30,
+                //         color: Color(0xFF226B3F),
+                //         fontWeight: FontWeight.w600),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 16,
                 ),
@@ -526,43 +547,46 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                   fontFamily: 'Poppins',
                                   fontSize: 22,
                                   color: Color(0xFF226B3F),
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w700),
                             ),
-                            ElevatedButton(
-                              onPressed: () => showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  content: ModalAddProductImportOrder(
-                                      products: products),
-                                ),
-                              ).then((value) {
-                                if (value != null) {
-                                  ProductImportOrder productImportOrder =
-                                      ProductImportOrder.fromJson(
-                                          jsonDecode(value));
-                                  setState(() {
-                                    products.add(productImportOrder);
-                                  });
-                                }
-                              }),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'New ',
-                                    style: TextStyle(fontSize: 20),
+                            if (!readOnly)
+                              ElevatedButton(
+                                onPressed: () => showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    content: ModalAddProductImportOrder(
+                                        products: products),
                                   ),
-                                ],
+                                ).then((value) {
+                                  if (value != null) {
+                                    ProductImportOrder productImportOrder =
+                                        ProductImportOrder.fromJson(
+                                            jsonDecode(value));
+                                    setState(() {
+                                      products.add(productImportOrder);
+                                      widget.importOrder.listCheck!.add(false);
+                                    });
+                                  }
+                                }),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'New ',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                                style: ButtonStyle(
+                                    maximumSize: MaterialStateProperty.all(
+                                        const Size(110, 50)),
+                                    padding: MaterialStateProperty.all(
+                                        const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 15)),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        const Color(0xFF226B3F))),
                               ),
-                              style: ButtonStyle(
-                                  maximumSize: MaterialStateProperty.all(
-                                      const Size(110, 50)),
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 15)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color(0xFF226B3F))),
-                            ),
                           ],
                         ),
                         const SizedBox(
@@ -616,6 +640,9 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                           }
                                         });
                                       } else {
+                                        print(index);
+                                        widget.importOrder.listCheck!
+                                            .removeAt(index - 2);
                                         setState(() {
                                           products.removeWhere((element) =>
                                               element.product!.name == name);
@@ -709,7 +736,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                               });
                               // FocusScope.of(context).unfocus();
                               // print(products);
-
+                              // List<bool> listchecktemp = widget.importOrder.listCheck
                               if (_formKey.currentState!.validate() &&
                                   !listController
                                       .any((element) => element.text == '') &&
@@ -753,8 +780,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                   'status': widget.importOrder.status,
                                   'listProduct':
                                       products.map((e) => e.toJson()).toList(),
-                                  'listCheck': widget.importOrder.listCheck!
-                                    ..add(false),
+                                  'listCheck': widget.importOrder.listCheck,
                                 });
                                 // await importOrder.add({
                                 //   'nameA': enterpriseNameAControler.text,
@@ -842,7 +868,6 @@ class _EditImportOrderState extends State<EditImportOrder> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   // return '';
-
                 }
                 return null;
               },

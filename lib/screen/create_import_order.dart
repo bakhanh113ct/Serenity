@@ -147,23 +147,33 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEBFDF2),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        title: const Text(
+          'Create import order',
+          style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 30,
+              color: Color(0xFF226B3F),
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFEBFDF2),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
           child: Form(
             key: _formKey,
             child: Column(children: [
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Import order list',
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 30,
-                      color: Color(0xFF226B3F),
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
               const SizedBox(
                 height: 16,
               ),
@@ -743,7 +753,6 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   // return '';
-
                 }
                 return null;
               },

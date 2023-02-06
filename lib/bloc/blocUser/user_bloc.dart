@@ -28,7 +28,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UpdateAvatarUser>((event, emit) async {
       if (state is UserLoaded) {
         User newUser = event.user;
-        newUser.image = await UserRepository().updateAvatar(event.file);
+        newUser.image = await UserRepository()
+            .updateAvatar(newUser, event.file, event.context);
         await UserRepository().updateUser(newUser);
         emit(UserLoaded(newUser));
       }

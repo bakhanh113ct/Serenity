@@ -223,7 +223,7 @@ class MenuItem {
 
 class MenuItems {
   static const List<MenuItem> completed = [edit, print, paymentVoucher];
-  static const List<MenuItem> pending = [edit, print, check];
+  static const List<MenuItem> pending = [edit, print, check, cancel];
   static const List<MenuItem> checked = [
     edit,
     check,
@@ -233,6 +233,7 @@ class MenuItems {
   ];
   static const List<MenuItem> canceled = [edit];
 
+  static const cancel = MenuItem(text: 'Cancel', icon: Icons.delete);
   static const edit = MenuItem(text: 'View/Edit', icon: Icons.edit);
   static const print = MenuItem(text: 'Print', icon: Icons.print);
   static const check = MenuItem(text: 'Check', icon: Icons.checklist);
@@ -288,6 +289,12 @@ class MenuItems {
         break;
       case MenuItems.print:
         Print(order);
+        break;
+      case MenuItems.cancel:
+        BlocProvider.of<ImportOrderBloc>(context).add(CompleteImportOrder(
+          id: order.idImportOrder!,
+          state: 'canceled',
+        ));
         break;
       case MenuItems.paymentVoucher:
         await FirebaseFirestore.instance

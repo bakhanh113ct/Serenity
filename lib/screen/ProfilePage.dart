@@ -191,22 +191,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                     if (image != null) {
                                       context.read<UserBloc>().add(
-                                          UpdateAvatarUser(
-                                              File(image!.path), user));
-                                    } else
+                                          UpdateAvatarUser(File(image!.path),
+                                              user, context));
+                                    } else {
                                       context
                                           .read<UserBloc>()
                                           .add(UpdateUser(user));
-                                    Flushbar(
-                                      flushbarPosition: FlushbarPosition.TOP,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 300, vertical: 16),
-                                      borderRadius: BorderRadius.circular(8),
-                                      flushbarStyle: FlushbarStyle.FLOATING,
-                                      title: 'Notification',
-                                      message: 'Update information successful',
-                                      duration: const Duration(seconds: 3),
-                                    ).show(context);
+                                      Flushbar(
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 300, vertical: 16),
+                                        borderRadius: BorderRadius.circular(8),
+                                        flushbarStyle: FlushbarStyle.FLOATING,
+                                        title: 'Notification',
+                                        message:
+                                            'Update information successful',
+                                        duration: const Duration(seconds: 3),
+                                      ).show(context);
+                                    }
                                   },
                                   child: Text(
                                     'Save ',

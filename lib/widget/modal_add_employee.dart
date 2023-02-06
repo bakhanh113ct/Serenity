@@ -93,7 +93,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
       child: Form(
         key: _formKey,
         child: Container(
-          height: 630,
+          height: 610,
           width: 600,
           child: Column(
             children: [
@@ -111,7 +111,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                         image == null
                             ? Container(
                                 // margin: EdgeInsets.only(top: 50),
-                                height: 170,
+                                height: 180,
                                 width: 170,
                                 child: const CircleAvatar(
                                   backgroundColor: Colors.white,

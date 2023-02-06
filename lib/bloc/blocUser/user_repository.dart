@@ -30,17 +30,26 @@ class UserRepository {
 
   updateUser(CustomUser.User oldUser) async {
     CustomUser.User? user;
-    await _users.doc(oldUser!.idUser).update(oldUser.toJson());
+    await _users.doc(oldUser.idUser).update(oldUser.toJson());
     print('update User');
     return user;
   }
 
-  updateAvatar(File file) async {
-    final mountainsRef = storageRef.child("avatarKhanh_test.jpg");
+  updateAvatar(CustomUser.User user, File file, BuildContext context) async {
+    final mountainsRef = storageRef.child('${user.idUser}.jpg');
     try {
       print('update avatar user');
       await mountainsRef.putFile(file);
       final imageUrl = await mountainsRef.getDownloadURL();
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        margin: const EdgeInsets.symmetric(horizontal: 300, vertical: 16),
+        borderRadius: BorderRadius.circular(8),
+        flushbarStyle: FlushbarStyle.FLOATING,
+        title: 'Notification',
+        message: 'Update information successful',
+        duration: const Duration(seconds: 3),
+      ).show(context);
       return imageUrl;
     } catch (e) {
       // ...

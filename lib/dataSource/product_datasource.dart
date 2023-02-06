@@ -173,7 +173,7 @@ class MenuItems {
         onPress(product.product!.name, product, index);
         break;
       case MenuItems.remove:
-        onPress(product.product!.name, null, null);
+        onPress(product.product!.name, null, index);
         break;
       case MenuItems.importVoucher:
         //Do something

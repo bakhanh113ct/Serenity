@@ -180,7 +180,33 @@ class _TableProductCheckingState extends State<TableProductChecking> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_listChoose!.any((element) => element == false) &&
+                if (_listChoose!.where((element) => element == true).length ==
+                    _listChoose!.length) {
+                  List<ProductImportOrder> products =
+                      List.from(widget.importOrder.listProduct!);
+                  int i = 0;
+                  products.forEach(
+                    (element) => element.trouble = widget.listTrouble[i++],
+                  );
+                  BlocProvider.of<ImportOrderBloc>(context).add(
+                      UpdateStateImportOrder(
+                          idImportOrder: widget.importOrder.idImportOrder!,
+                          state: 'checked',
+                          listCheck: _listChoose!,
+                          products: products));
+                  // Navigator.pop(context);
+
+                  Flushbar(
+                    flushbarPosition: FlushbarPosition.TOP,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 300, vertical: 16),
+                    borderRadius: BorderRadius.circular(8),
+                    flushbarStyle: FlushbarStyle.FLOATING,
+                    title: 'Notification',
+                    message: 'Successful',
+                    duration: const Duration(seconds: 2),
+                  ).show(context);
+                } else if (_listChoose!.any((element) => element == false) &&
                     (_listChoose!.where((element) => element == true).length +
                             widget.listTrouble
                                 .where((element) => element != '')
@@ -219,32 +245,7 @@ class _TableProductCheckingState extends State<TableProductChecking> {
                     message: 'Please check full',
                     duration: const Duration(seconds: 2),
                   ).show(context);
-                } else {
-                  List<ProductImportOrder> products =
-                      List.from(widget.importOrder.listProduct!);
-                  int i = 0;
-                  products.forEach(
-                    (element) => element.trouble = widget.listTrouble[i++],
-                  );
-                  BlocProvider.of<ImportOrderBloc>(context).add(
-                      UpdateStateImportOrder(
-                          idImportOrder: widget.importOrder.idImportOrder!,
-                          state: 'checked',
-                          listCheck: _listChoose!,
-                          products: products));
-                  // Navigator.pop(context);
-
-                  Flushbar(
-                    flushbarPosition: FlushbarPosition.TOP,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 300, vertical: 16),
-                    borderRadius: BorderRadius.circular(8),
-                    flushbarStyle: FlushbarStyle.FLOATING,
-                    title: 'Notification',
-                    message: 'Successful',
-                    duration: const Duration(seconds: 2),
-                  ).show(context);
-                }
+                } else {}
                 // ImportOrderBloc().add(UpdateStateImportOrder(
                 //     idImportOrder: widget.importOrder.idImportOrder!,
                 //     state: 'checked',
