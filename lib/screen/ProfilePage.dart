@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -176,17 +177,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     User user = User(
-                                      idUser: state.user.idUser,
-                                      fullName: nameControler.text,
-                                      phone: phoneControler.text,
-                                      email: emailControler.text,
-                                      dateOfBirth:
-                                          Timestamp.fromDate(selectedDate!),
-                                      salary: state.user.salary,
-                                      image: state.user.image,
-                                      position: state.user.position,
-                                      address: addressControler.text,
-                                    );
+                                        idUser: state.user.idUser,
+                                        fullName: nameControler.text,
+                                        phone: phoneControler.text,
+                                        email: emailControler.text,
+                                        dateOfBirth:
+                                            Timestamp.fromDate(selectedDate!),
+                                        salary: state.user.salary,
+                                        image: state.user.image,
+                                        position: state.user.position,
+                                        address: addressControler.text,
+                                        state: state.user.state);
 
                                     if (image != null) {
                                       context.read<UserBloc>().add(
@@ -196,6 +197,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       context
                                           .read<UserBloc>()
                                           .add(UpdateUser(user));
+                                    Flushbar(
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 300, vertical: 16),
+                                      borderRadius: BorderRadius.circular(8),
+                                      flushbarStyle: FlushbarStyle.FLOATING,
+                                      title: 'Notification',
+                                      message: 'Update information successful',
+                                      duration: const Duration(seconds: 3),
+                                    ).show(context);
                                   },
                                   child: Text(
                                     'Save ',

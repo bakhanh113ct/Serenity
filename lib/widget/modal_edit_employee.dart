@@ -327,8 +327,8 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
                                           : widget.user.image,
                                       phone: phoneController.text,
                                       position: positionValue,
-                                      salary: int.tryParse(
-                                          salaryController.text.toString()),
+                                      salary: int.tryParse(salaryController.text
+                                          .replaceAll('.', '')),
                                       state: stateValue);
                                   context
                                       .read<EmployeeBloc>()
