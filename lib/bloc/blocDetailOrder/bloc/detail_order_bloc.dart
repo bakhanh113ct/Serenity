@@ -10,20 +10,21 @@ part 'detail_order_event.dart';
 part 'detail_order_state.dart';
 
 class DetailOrderBloc extends Bloc<DetailOrderEvent, DetailOrderState> {
+  final detailOrder=DetailOrderRepository();
   DetailOrderBloc() : super(DetailOrderInitial()) {
     on<LoadDetailOrder>((event, emit) async {
       emit(DetailOrderLoading());
-      final List<DetailOrder> listDetailOrder=await DetailOrderRepository().getDetailOrder(event.idOrder);
-      final MyOrder order=await DetailOrderRepository().getOrder(event.idOrder);     
+      final List<DetailOrder> listDetailOrder=await detailOrder.getDetailOrder(event.idOrder);
+      final MyOrder order=await detailOrder.getOrder(event.idOrder);     
       emit(DetailOrderLoaded(order, listDetailOrder));
     });
     on<CancelDetailOrder>((event, emit) async {
       final state=this.state as DetailOrderLoaded;
-      await DetailOrderRepository().cancelDetailOrder(state.order!.idOrder!);
+      await detailOrder.cancelDetailOrder(state.order!.idOrder!);
     });
     on<CompleteDetailOrder>((event, emit) async {
       final state=this.state as DetailOrderLoaded;
-      await DetailOrderRepository().completeDetailOrder(state.order!.idOrder!);
+      await detailOrder.completeDetailOrder(state.order!.idOrder!);
     });
   }
 }

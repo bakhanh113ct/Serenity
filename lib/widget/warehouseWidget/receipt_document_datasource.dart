@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:intl/intl.dart';
 import 'package:serenity/widget/warehouseWidget/receipt_document_moreButton.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -49,7 +50,7 @@ class ReceiptDocumentDataSource extends DataGridSource {
               DataGridCell<int>(columnName: 'amount', value: e.listProducts!.length),
               DataGridCell<String>(
                   columnName: 'totalPrice',
-                  value: e.totalMoney!),
+                  value: double.parse(e.totalMoney!).round().toString().toVND()),
               DataGridCell<String>(
                   columnName: 'dateCreated',
                   value:

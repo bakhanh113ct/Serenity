@@ -236,7 +236,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                         //     const Color(0xFF226B3F)),
                       ),
                       child: const Text(
-                        'Cancle ',
+                        'Cancel ',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -305,7 +305,7 @@ class _ModalAddEmployeeState extends State<ModalAddEmployee> {
                                 phone: phoneController.text,
                                 position: selectedValue,
                                 salary: int.tryParse(
-                                    salaryController.text.replaceAll('.', '')),
+                                    salaryController.text.replaceAll(".", "")),
                                 state: 'active');
                             context.read<EmployeeBloc>().add(AddEmployee(
                                 user: user, password: passwordController.text));

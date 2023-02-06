@@ -19,7 +19,8 @@ class UserRepository {
     });
     return user;
   }
-   getUserByIdUser(String idUser) async {
+
+  getUserByIdUser(String idUser) async {
     CustomUser.User? user;
     await _users.where('idUser', isEqualTo: idUser).get().then((value) {
       user = CustomUser.User.fromJson(value.docs.first.data());
@@ -27,10 +28,9 @@ class UserRepository {
     return user;
   }
 
-
   updateUser(CustomUser.User oldUser) async {
     CustomUser.User? user;
-    await _users.doc('OmCcBlzgrWNHLpsbTZ4r').update(oldUser.toJson());
+    await _users.doc(oldUser!.idUser).update(oldUser.toJson());
     print('update User');
     return user;
   }

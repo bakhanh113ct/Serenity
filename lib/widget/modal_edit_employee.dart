@@ -53,6 +53,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
       ..text =
           '${widget.user.dateOfBirth!.toDate().day}/${widget.user.dateOfBirth!.toDate().month}/${widget.user.dateOfBirth!.toDate().year}/';
     // passwordController = TextEditingController()..text = '';
+    final format = NumberFormat("###,###.###", "tr_TR");
     salaryController = TextEditingController()
       ..text = format.format(widget.user.salary).toString();
 

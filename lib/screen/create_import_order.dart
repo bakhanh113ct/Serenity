@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -645,43 +646,59 @@ class _CreateImportOrderState extends State<CreateImportOrder> {
                               CollectionReference importOrder =
                                   FirebaseFirestore.instance
                                       .collection('ImportOrder');
-                              await importOrder.add({
-                                'nameA': enterpriseNameAControler.text,
-                                'addressA': addressAControler.text,
-                                'phoneA': phoneAControler.text,
-                                'bankA': bankAControler.text,
-                                'atBankA': bankOpenAControler.text,
-                                'authorizedPersonA':
-                                    nameAuthorizedAControler.text,
-                                'positionA': positionAuthorizedAControler.text,
-                                'noAuthorizationA':
-                                    noLetterAuthorizationAControler.text,
-                                'dateAuthorizationA': dateA,
-                                // dateLetterAuthorizationAControler.text
-                                'nameB': enterpriseNameBControler.text,
-                                'addressB': addressBControler.text,
-                                'phoneB': phoneAControler.text,
-                                'bankB': bankBControler.text,
-                                'atBankB': bankOpenBControler.text,
-                                'authorizedPersonB':
-                                    nameAuthorizedBControler.text,
-                                'positionB': positionAuthorizedBControler.text,
-                                'noAuthorizationB':
-                                    noLetterAuthorizationBControler.text,
-                                'dateAuthorizationB': dateB,
-                                'pursuant': pursuantControler.text,
-                                'dateCreated': dateCreated,
-                                'atPlace': placeControler.text,
-                                'note': noteController.text,
-                                'totalPrice': calculateTotal(),
-                                'status': 'pending',
-                                'listProduct':
-                                    products.map((e) => e.toJson()).toList(),
-                                'listCheck': List.generate(
-                                    products.length, (index) => false),
-                              }).then((value) => importOrder
-                                  .doc(value.id)
-                                  .update({'idImportOrder': value.id}));
+                              await importOrder
+                                  .add({
+                                    'nameA': enterpriseNameAControler.text,
+                                    'addressA': addressAControler.text,
+                                    'phoneA': phoneAControler.text,
+                                    'bankA': bankAControler.text,
+                                    'atBankA': bankOpenAControler.text,
+                                    'authorizedPersonA':
+                                        nameAuthorizedAControler.text,
+                                    'positionA':
+                                        positionAuthorizedAControler.text,
+                                    'noAuthorizationA':
+                                        noLetterAuthorizationAControler.text,
+                                    'dateAuthorizationA': dateA,
+                                    // dateLetterAuthorizationAControler.text
+                                    'nameB': enterpriseNameBControler.text,
+                                    'addressB': addressBControler.text,
+                                    'phoneB': phoneAControler.text,
+                                    'bankB': bankBControler.text,
+                                    'atBankB': bankOpenBControler.text,
+                                    'authorizedPersonB':
+                                        nameAuthorizedBControler.text,
+                                    'positionB':
+                                        positionAuthorizedBControler.text,
+                                    'noAuthorizationB':
+                                        noLetterAuthorizationBControler.text,
+                                    'dateAuthorizationB': dateB,
+                                    'pursuant': pursuantControler.text,
+                                    'dateCreated': dateCreated,
+                                    'atPlace': placeControler.text,
+                                    'note': noteController.text,
+                                    'totalPrice': calculateTotal(),
+                                    'status': 'pending',
+                                    'listProduct': products
+                                        .map((e) => e.toJson())
+                                        .toList(),
+                                    'listCheck': List.generate(
+                                        products.length, (index) => false),
+                                  })
+                                  .then((value) => importOrder
+                                      .doc(value.id)
+                                      .update({'idImportOrder': value.id}))
+                                  .then((value) => Flushbar(
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 300, vertical: 16),
+                                        borderRadius: BorderRadius.circular(8),
+                                        flushbarStyle: FlushbarStyle.FLOATING,
+                                        title: 'Notification',
+                                        message:
+                                            'Create import order successful',
+                                        duration: const Duration(seconds: 3),
+                                      ).show(context));
                             }
                           },
                           style: ButtonStyle(

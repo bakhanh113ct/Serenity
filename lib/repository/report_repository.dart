@@ -7,6 +7,7 @@ import '../model/Customer.dart';
 class ReportRepository {
   final orders= FirebaseFirestore.instance.collection("Order");
   final customers= FirebaseFirestore.instance.collection("Customer");
+  final reportTroubles= FirebaseFirestore.instance.collection("ReportTrouble");
   Future<String> quantityOrderInMonth()async{
     final dateStart=DateTime(DateTime.now().year,DateTime.now().month,1);
     final dateEnd=DateTime(DateTime.now().year,DateTime.now().month+1,1);
@@ -38,8 +39,18 @@ class ReportRepository {
     double total=0;
     await orders.where("dateCreated",isGreaterThan: dateStart).where("dateCreated",isLessThan: dateEnd).get().then((value){
       value.docs.forEach((element) { 
-        if(element.data()['status']!="Cancelled"){
+        if(element.data()['status']=="Completed"){
           total+=double.tryParse(element.data()['price'].toString())!;
+        }
+      });
+    });
+    await reportTroubles.where("dateCreated",isGreaterThan: dateStart).where("dateCreated",isLessThan: dateEnd).get().then((value){
+      value.docs.forEach((element) { 
+        if(element.data()['isCompensate']==false&&element.data()['status']=="Paymented"){
+          total-=double.tryParse(element.data()['totalMoney'].toString())!;
+        }
+        else if(element.data()['isCompensate']==true&&element.data()['status']=="Paymented"){
+          total+=double.tryParse(element.data()['totalMoney'].toString())!;
         }
       });
     });
@@ -56,9 +67,21 @@ class ReportRepository {
         if(element.data()['status']=="Completed"){
           total+=double.tryParse(element.data()['profit'].toString())!;
         }
+      });   
+    });
+    await reportTroubles.where("dateCreated",isGreaterThan: dateStart).where("dateCreated",isLessThan: dateEnd).get().then((value){
+      value.docs.forEach((element) { 
+        if(element.data()['isCompensate']==false&&element.data()['status']=="Paymented"){
+          total-=double.tryParse(element.data()['totalMoney'].toString())!;
+        }
+        else if(element.data()['isCompensate']==true&&element.data()['status']=="Paymented"){
+          total+=double.tryParse(element.data()['totalMoney'].toString())!;
+        }
       });
     });
     print(total.toString());
+    if(total<0)
+    total=0;
     return format.format(total)+'đ';
   }
   Future<int> customerInMonth()async{
@@ -84,6 +107,16 @@ class ReportRepository {
               }
            });
        });
+       await reportTroubles.where("dateCreated",isGreaterThan: dateStart).where("dateCreated",isLessThan: dateEnd).get().then((value){
+      value.docs.forEach((element) { 
+        if(element.data()['isCompensate']==false&&element.data()['status']=="Paymented"){
+          total-=double.tryParse(element.data()['totalMoney'].toString())!;
+        }
+        else if(element.data()['isCompensate']==true&&element.data()['status']=="Paymented"){
+          total+=double.tryParse(element.data()['totalMoney'].toString())!;
+        }
+      });
+    });
        data.add(ChartSampleData(x: i.toString(), y: total));
     }
     return data;

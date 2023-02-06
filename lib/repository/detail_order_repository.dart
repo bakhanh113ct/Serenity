@@ -5,6 +5,12 @@ import 'package:serenity/model/order.dart';
 import '../model/detail_order.dart';
 
 class DetailOrderRepository {
+  static final DetailOrderRepository _employeeRepository =
+      DetailOrderRepository._internal();
+  factory DetailOrderRepository() {
+    return _employeeRepository;
+  }
+  DetailOrderRepository._internal();
   final orders = FirebaseFirestore.instance.collection("Order");
   final detailOrders = FirebaseFirestore.instance.collection("DetailOrder");
 
