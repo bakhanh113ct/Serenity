@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serenity/widget/table_employee.dart';
 
+import '../bloc/blocUser/user_bloc.dart';
+import '../bloc/blocUser/user_state.dart';
 import '../bloc/employee/employee_bloc.dart';
 import '../common/color.dart';
 import '../model/import_order.dart';
@@ -59,33 +61,46 @@ class _EmployeePageState extends State<EmployeePage>
                             color: Color(0xFF226B3F),
                             fontWeight: FontWeight.w600),
                       ),
-                      ElevatedButton(
-                        onPressed: () => showDialog<String>(
-                          // barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) => const AlertDialog(
-                            // title: const Text('AlertDialog Title'),
-                            content: ModalAddEmployee(),
-                          ),
-                        ),
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    vertical: 13, horizontal: 15)),
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xFF226B3F))),
-                        child: Row(
-                          children: const [
-                            Text(
-                              'New',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Icon(
-                              Icons.add,
-                              size: 20,
-                            )
-                          ],
-                        ),
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserLoaded) {
+                            if (state.user.position == 'admin') {
+                              return ElevatedButton(
+                                onPressed: () => showDialog<String>(
+                                  // barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      const AlertDialog(
+                                    // title: const Text('AlertDialog Title'),
+                                    content: ModalAddEmployee(),
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        const EdgeInsets.symmetric(
+                                            vertical: 13, horizontal: 15)),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        const Color(0xFF226B3F))),
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      'New',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Icon(
+                                      Icons.add,
+                                      size: 20,
+                                    )
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
                       )
                     ],
                   ),
@@ -129,17 +144,30 @@ class _EmployeePageState extends State<EmployeePage>
                                   ]),
                             ),
                           ),
-                          Container(
-                            width: double.maxFinite,
-                            height: 600,
-                            child: TabBarView(
-                                controller: tabController,
-                                children: const [
-                                  TableEmployee(state: 'all'),
-                                  TableEmployee(state: 'active'),
-                                  TableEmployee(state: 'inactive'),
-                                  // TableEmployee(),
-                                ]),
+                          BlocBuilder<UserBloc, UserState>(
+                            builder: (context, state) {
+                              if (state is UserLoaded) {
+                                return Container(
+                                  width: double.maxFinite,
+                                  height: 600,
+                                  child: TabBarView(
+                                      controller: tabController,
+                                      children: [
+                                        TableEmployee(
+                                          state: 'all',
+                                          user: state.user,
+                                        ),
+                                        TableEmployee(
+                                            state: 'active', user: state.user),
+                                        TableEmployee(
+                                            state: 'inactive',
+                                            user: state.user),
+                                        // TableEmployee(),
+                                      ]),
+                                );
+                              } else
+                                return SizedBox();
+                            },
                           )
                         ],
                       )),

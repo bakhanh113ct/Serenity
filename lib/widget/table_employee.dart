@@ -11,8 +11,9 @@ import '../bloc/employee/employee_bloc.dart';
 import '../common/color.dart';
 
 class TableEmployee extends StatefulWidget {
-  const TableEmployee({super.key, required this.state});
+  const TableEmployee({super.key, required this.state, required this.user});
   final String state;
+  final User user;
   @override
   State<TableEmployee> createState() => _TableEmployeeState();
 }
@@ -68,16 +69,18 @@ class _TableEmployeeState extends State<TableEmployee> {
               employeeDataSource = EmployeeDataSource(
                   employeeData: List.from(employees),
                   onPress: (user) {
-                    showDialog<String>(
-                      // barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        // title: const Text('AlertDialog Title'),
-                        content: ModalEditEmployee(
-                          user: user,
+                    if (widget.user.position == 'admin') {
+                      showDialog<String>(
+                        // barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          // title: const Text('AlertDialog Title'),
+                          content: ModalEditEmployee(
+                            user: user,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   });
               return Column(
                 children: [

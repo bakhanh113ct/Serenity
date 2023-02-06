@@ -19,7 +19,8 @@ class UpdateUser extends UserEvent {
 class UpdateAvatarUser extends UserEvent {
   final File file;
   final User user;
-  const UpdateAvatarUser(this.file, this.user);
+  final BuildContext context;
+  const UpdateAvatarUser(this.file, this.user, this.context);
   @override
   List<Object> get props => [file, user];
 }
