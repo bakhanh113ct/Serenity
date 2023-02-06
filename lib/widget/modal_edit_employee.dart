@@ -44,7 +44,7 @@ class _ModalEditEmployeeState extends State<ModalEditEmployee> {
 
   @override
   void initState() {
-    final format = NumberFormat("###,###.###", "tr_TR");
+    // final format = NumberFormat("###,###.###", "tr_TR");
     nameController = TextEditingController()..text = widget.user.fullName!;
     emailController = TextEditingController()..text = widget.user.email!;
     addressController = TextEditingController()..text = widget.user.address!;
