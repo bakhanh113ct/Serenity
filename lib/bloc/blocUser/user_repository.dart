@@ -36,7 +36,7 @@ class UserRepository {
   }
 
   updateAvatar(CustomUser.User user, File file, BuildContext context) async {
-    final mountainsRef = storageRef.child('avatar_test.jpg');
+    final mountainsRef = storageRef.child('${user.idUser}.jpg');
     try {
       print('update avatar user');
       await mountainsRef.putFile(file);

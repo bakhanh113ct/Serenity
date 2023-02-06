@@ -565,6 +565,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                             jsonDecode(value));
                                     setState(() {
                                       products.add(productImportOrder);
+                                      widget.importOrder.listCheck!.add(false);
                                     });
                                   }
                                 }),
@@ -639,6 +640,9 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                           }
                                         });
                                       } else {
+                                        print(index);
+                                        widget.importOrder.listCheck!
+                                            .removeAt(index - 2);
                                         setState(() {
                                           products.removeWhere((element) =>
                                               element.product!.name == name);
@@ -732,7 +736,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                               });
                               // FocusScope.of(context).unfocus();
                               // print(products);
-
+                              // List<bool> listchecktemp = widget.importOrder.listCheck
                               if (_formKey.currentState!.validate() &&
                                   !listController
                                       .any((element) => element.text == '') &&
@@ -776,8 +780,7 @@ class _EditImportOrderState extends State<EditImportOrder> {
                                   'status': widget.importOrder.status,
                                   'listProduct':
                                       products.map((e) => e.toJson()).toList(),
-                                  'listCheck': widget.importOrder.listCheck!
-                                    ..add(false),
+                                  'listCheck': widget.importOrder.listCheck,
                                 });
                                 // await importOrder.add({
                                 //   'nameA': enterpriseNameAControler.text,
