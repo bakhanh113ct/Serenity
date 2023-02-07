@@ -6,8 +6,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../model/receipt_document.dart';
 
-
-
 class ReceiptDocumentDataSource extends DataGridSource {
   var phone = '';
   final BuildContext context;
@@ -15,7 +13,8 @@ class ReceiptDocumentDataSource extends DataGridSource {
   List<ReceiptDocument> allReceiptDocuments = [];
   int newRowsPerPage = 1;
   ReceiptDocumentDataSource(
-      {required List<ReceiptDocument> receiptDocuments, required this.context}) {
+      {required List<ReceiptDocument> receiptDocuments,
+      required this.context}) {
     if (receiptDocuments.isEmpty) return;
     allReceiptDocuments = receiptDocuments;
     buildDataGridRows();
@@ -31,12 +30,14 @@ class ReceiptDocumentDataSource extends DataGridSource {
       return Container(
         alignment: Alignment.centerLeft,
         child: dataGridCell.columnName == 'more'
-            ? ReceiptDocumentMoreButton(receiptDocument: dataGridCell.value,)
+            ? ReceiptDocumentMoreButton(
+                receiptDocument: dataGridCell.value,
+              )
             : Text(dataGridCell.value.toString(),
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    overflow: TextOverflow.ellipsis),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                overflow: TextOverflow.ellipsis),
       );
     }).toList());
   }
@@ -46,11 +47,12 @@ class ReceiptDocumentDataSource extends DataGridSource {
     _receiptDocuments = allReceiptDocuments
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'no', value: i++),
-              DataGridCell<String>(columnName: 'nameSupplier', value: e.nameSupplier),
-              DataGridCell<int>(columnName: 'amount', value: e.listProducts!.length),
               DataGridCell<String>(
-                  columnName: 'totalPrice',
-                  value: e.totalMoney!),
+                  columnName: 'nameSupplier', value: e.nameSupplier),
+              DataGridCell<int>(
+                  columnName: 'amount', value: e.listProducts!.length),
+              DataGridCell<String>(
+                  columnName: 'totalPrice', value: e.totalMoney!),
               DataGridCell<String>(
                   columnName: 'dateCreated',
                   value:
