@@ -131,7 +131,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
                             ),
                             Text(
                               'Check Warehouse',
-                              style: Theme.of(context).textTheme.headline2,
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
                             const SizedBox(
                               height: 30,
@@ -146,7 +146,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
                                     title: Text(
                                       'Choose Order',
                                       style:
-                                          Theme.of(context).textTheme.headline2,
+                                          Theme.of(context).textTheme.displayMedium,
                                     ))),
                             const SizedBox(
                               height: 20,
@@ -178,13 +178,14 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
                                     title: Text(
                                       'Contents',
                                       style:
-                                          Theme.of(context).textTheme.headline2,
+                                          Theme.of(context).textTheme.displayMedium,
                                     ))),
                             const SizedBox(
                               height: 10,
                             ),
                             myOrder.idOrder == null
-                                ? Container()
+                                ? Container(
+                                  )
                                 : Container(
                                     margin: const EdgeInsets.only(
                                         top: 5, left: 10, bottom: 20),
@@ -223,7 +224,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
                                                           color: Colors.black),
                                                     ),
                                                   )
-                                                : const ListTile(
+                                                 : const ListTile(
                                                     leading: Icon(
                                                       Icons.error,
                                                       color: Colors.red,
@@ -294,7 +295,7 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
                     ),
                     title: Text('${e.name}'),
                     subtitle: Text(
-                        'Amount: ${e.amount!}x \nStock: ${stock ? pro.data!.amount : (pro.data!.idProduct == null ? 0 : e.amount)}'),
+                        'Amount: ${e.amount!}x \nStock: ${stock ? pro.data!.amount : (pro.data!.idProduct == null ? 0 : pro.data!.amount)}'),
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(pro.data!.image!),
                     ),
@@ -341,48 +342,57 @@ class _CheckWarehouseDialogState extends State<CheckWarehouseDialog> {
   Future<Product> getProduct(String idProduct, DetailOrder dt) async {
     var pro = await ImportBookRepository().getProductImportBook(idProduct);
     if (int.parse(pro.amount!) < int.parse(dt.amount!)) {
-      setState(() {
-        isCheck = false;
-      });
+      if(mounted){
+        setState(() {
+          isCheck = false;
+        });
+      }
+     
     }
     return pro;
   }
 
   Widget _chooseOrderInfo() {
-    return DropdownSearch<MyOrder>(
-      asyncItems: (filter) => getMyOrder(filter.toLowerCase()),
-      compareFn: (i, s) {
-        if (i.idOrder == null || s.idOrder == null) return false;
-        return i.idOrder!.toLowerCase().compareTo(s.idOrder!.toLowerCase()) > 0;
-      },
-      dropdownBuilder: _myOrderDropDownBuilder,
-      popupProps: PopupPropsMultiSelection.dialog(
-        isFilterOnline: true,
-        showSelectedItems: true,
-        showSearchBox: true,
-        itemBuilder: _myOrderPopupItemBuilder,
-      ),
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
-          labelText: 'Choose Order',
-          filled: true,
-          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-        ),
-      ),
-      onChanged: ((value) async {
-        if (value!.idOrder == null) return;
-        listDetailOrder =
-            await DetailOrderRepository().getListDetailOrder(value.idOrder!);
-        setState(() {
-          myOrder = value;
-        });
-      }),
-      validator: ((value) {
-        if (value == null) {
-          return 'Please choose a import order';
-        }
-        return null;
-      }),
+    return StatefulBuilder(
+      builder: (context, StateSetter setter) {
+        return DropdownSearch<MyOrder>(
+          asyncItems: (filter) => getMyOrder(filter.toLowerCase()),
+          compareFn: (i, s) {
+            if (i.idOrder == null || s.idOrder == null) return false;
+            return i.idOrder!.toLowerCase().compareTo(s.idOrder!.toLowerCase()) > 0;
+          },
+          dropdownBuilder: _myOrderDropDownBuilder,
+          popupProps: PopupPropsMultiSelection.dialog(
+            isFilterOnline: true,
+            showSelectedItems: true,
+            showSearchBox: true,
+            itemBuilder: _myOrderPopupItemBuilder,
+          ),
+          dropdownDecoratorProps: DropDownDecoratorProps(
+            dropdownSearchDecoration: InputDecoration(
+              labelText: 'Choose Order',
+              filled: true,
+              fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+            ),
+          ),
+          onChanged: ((value) async {
+            if (value!.idOrder == null) return;
+            listDetailOrder =
+                await DetailOrderRepository().getListDetailOrder(value.idOrder!);
+              setState(() {
+                myOrder = value;
+                isCheck = true;
+              });
+          
+          }),
+          validator: ((value) {
+            if (value == null ) {
+              return 'Please choose a import order';
+            }
+            return null;
+          }),
+        );
+      }
     );
   }
 
